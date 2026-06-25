@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scene Pack Builder"
+  short_description: "Build standardized interactive scene packs for animation."
+  default_prompt: "Create or validate a standardized scene pack with backgrounds, props, anchors, action templates, and previews."

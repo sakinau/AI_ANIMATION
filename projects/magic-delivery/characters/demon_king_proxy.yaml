@@ -1,0 +1,29 @@
+character_id: demon_king_proxy
+role: antagonist_customer
+source_type: single_png_with_face_overlay
+scale_reference_height: 720
+animate:
+  fla_path: an/demon_king_proxy.fla
+  export_root: projects/magic-delivery/renders/an
+  current_status: simulated_in_remotion
+layers:
+  body:
+    idle: magic-delivery/characters/demon_king.png
+  face:
+    neutral: 免费素材库/处理后/表情/表情-平静.png
+    shocked: 免费素材库/处理后/表情/表情-惊讶.png
+    angry: 免费素材库/处理后/表情/表情-暴怒.png
+    happy: 免费素材库/处理后/表情/表情-狂喜.png
+  mouth:
+    closed: generated
+    a: generated
+    o: generated
+actions:
+  wait_angry:
+    body_pose: idle
+    expression_cycle: [angry, shocked]
+    mouth_cycle: [closed, a, closed]
+  eat_happy:
+    body_pose: idle
+    expression_cycle: [shocked, happy]
+    mouth_cycle: [o, closed]

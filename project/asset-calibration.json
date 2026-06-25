@@ -1,0 +1,32 @@
+{
+  "character": "橙衣男",
+  "stage": {
+    "wrapperWidth": 300,
+    "wrapperHeight": 640,
+    "targetHeight": 620,
+    "left": 190,
+    "top": 500
+  },
+  "poses": {
+    "指向": {
+      "width": 337,
+      "height": 779,
+      "face": {"centerX": 192, "centerY": 169, "size": 90}
+    },
+    "抱臂": {
+      "width": 258,
+      "height": 779,
+      "face": {"centerX": 134, "centerY": 169, "size": 88}
+    },
+    "行走": {
+      "width": 204,
+      "height": 761,
+      "face": {"centerX": 112, "centerY": 168, "size": 86}
+    },
+    "坐姿": {
+      "width": 370,
+      "height": 720,
+      "face": {"centerX": 252, "centerY": 154, "size": 86}
+    }
+  }
+}

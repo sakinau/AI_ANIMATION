@@ -1,0 +1,125 @@
+project_id: magic-delivery
+asset_root: projects/magic-delivery/assets
+directories:
+  license_records:
+    - 00_license_records
+    - 00_license_records/license_screenshots
+    - 00_license_records/source_pages
+  characters:
+    - 01_characters/delivery_guy/psd
+    - 01_characters/delivery_guy/png_parts
+    - 01_characters/delivery_guy/expressions
+    - 01_characters/demon_king/psd
+    - 01_characters/demon_king/png_parts
+    - 01_characters/demon_king/expressions
+    - 01_characters/supporting
+  backgrounds:
+    - 02_backgrounds/modern_city
+    - 02_backgrounds/portal
+    - 02_backgrounds/demon_castle
+    - 02_backgrounds/battlefield
+    - 02_backgrounds/world_saved
+  props:
+    - 03_props/delivery_bag
+    - 03_props/food_box
+    - 03_props/magic_receipt
+    - 03_props/phone
+    - 03_props/scooter
+  ui:
+    - 04_ui/phone_app
+    - 04_ui/delivery_order
+    - 04_ui/timer
+    - 04_ui/map_nav
+    - 04_ui/system_popups
+  fx:
+    - 05_fx/portal
+    - 05_fx/magic_blast
+    - 05_fx/smoke_dust
+    - 05_fx/speed_lines
+    - 05_fx/impact
+    - 05_fx/glowing_aura
+  audio:
+    - 06_sfx/whoosh
+    - 06_sfx/impact
+    - 06_sfx/magic
+    - 06_sfx/ui_beeps
+    - 06_sfx/comedy
+    - 07_music/temp_tracks
+source_strategy:
+  ai_generated:
+    best_for:
+      - 主角
+      - 魔王
+      - 魔王城背景
+      - 核心道具
+      - 统一风格表情
+    rule: "生成后拆层并登记为 AI Generated，不直接声称可商用，按使用平台条款复核。"
+  free_assets:
+    best_for:
+      - 通用音效
+      - UI beep
+      - whoosh
+      - 烟尘
+      - 速度线
+      - 临时背景参考
+    rule: "授权不清楚的素材只能 Candidate，不进入正式工程。"
+  paid_assets:
+    best_for:
+      - AE 特效包
+      - 商用音效库
+      - 漫画转场包
+      - 免版税音乐
+    rule: "优先购买可复用、授权明确、支持商用的生产型资产。"
+chrome_search_keywords:
+  characters:
+    - "沙雕动画 外卖员 角色设计"
+    - "delivery guy cartoon character png"
+    - "demon king cartoon character png"
+    - "chibi demon king transparent png"
+  backgrounds:
+    - "魔王城 大殿 背景 插画"
+    - "fantasy demon castle interior background"
+    - "dark throne room cartoon background"
+    - "magic portal transparent png"
+  ui:
+    - "外卖 app UI 弹窗 素材"
+    - "delivery app UI vector"
+    - "RPG UI popup transparent"
+    - "countdown timer UI png"
+  fx:
+    - "magic portal effect transparent"
+    - "anime speed lines png transparent"
+    - "cartoon explosion smoke png"
+    - "manga impact effect png"
+  audio:
+    - "free whoosh sound effect commercial use"
+    - "free magic spell sound effect royalty free"
+    - "cartoon impact sound effect royalty free"
+license_manifest_fields:
+  - asset_id
+  - category
+  - asset_name
+  - intended_use
+  - source_type
+  - source_site
+  - source_url
+  - download_url
+  - author_or_vendor
+  - license_name
+  - commercial_use_allowed
+  - attribution_required
+  - modification_allowed
+  - redistribution_allowed
+  - ai_training_restriction
+  - purchase_price
+  - invoice_or_order_id
+  - download_date
+  - license_capture_path
+  - local_file_path
+  - file_format
+  - resolution_or_sample_rate
+  - has_alpha
+  - style_notes
+  - risk_level
+  - approval_status
+  - notes

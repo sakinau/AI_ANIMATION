@@ -1,0 +1,51 @@
+character_id: delivery_guy
+role: protagonist
+source_type: processed_png_parts
+scale_reference_height: 820
+face_normalization:
+  canvas: [180, 132]
+  face_box: [132, 92]
+  normalized_dir: 免费素材库/处理后/表情_标准化
+pose_anchors:
+  idle: {left: 121, top: 116, width: 142, height: 104, eye_line: 48, mouth_anchor: [70, 78]}
+  walk: {left: 123, top: 132, width: 142, height: 104, eye_line: 48, mouth_anchor: [70, 78]}
+  point: {left: 126, top: 116, width: 142, height: 104, eye_line: 48, mouth_anchor: [70, 78]}
+  sit: {left: 124, top: 108, width: 142, height: 104, eye_line: 48, mouth_anchor: [70, 78]}
+animate:
+  fla_path: an/delivery_guy.fla
+  export_root: projects/magic-delivery/renders/an
+  current_status: simulated_in_remotion
+layers:
+  body:
+    idle: 免费素材库/处理后/人物/橙衣男/橙衣男-抱臂.png
+    walk: 免费素材库/处理后/人物/橙衣男/橙衣男-行走.png
+    point: 免费素材库/处理后/人物/橙衣男/橙衣男-指向.png
+    sit: 免费素材库/处理后/人物/橙衣男/橙衣男-坐姿.png
+  face:
+    neutral: 免费素材库/处理后/表情/表情-平静.png
+    doubtful: 免费素材库/处理后/表情/表情-怀疑.png
+    shocked: 免费素材库/处理后/表情/表情-惊讶.png
+    angry: 免费素材库/处理后/表情/表情-愤怒.png
+    furious: 免费素材库/处理后/表情/表情-暴怒.png
+    smirk: 免费素材库/处理后/表情/表情-邪笑.png
+  mouth:
+    closed: generated
+    a: generated
+    o: generated
+actions:
+  enter_walk:
+    body_pose: walk
+    expression_cycle: [neutral, shocked]
+    mouth_cycle: [closed]
+  explain_point:
+    body_pose: point
+    expression_cycle: [doubtful, angry, doubtful]
+    mouth_cycle: [a, closed, o, closed]
+  panic_talk:
+    body_pose: idle
+    expression_cycle: [shocked, furious, shocked]
+    mouth_cycle: [a, o, closed, a]
+  hold_react:
+    body_pose: idle
+    expression_cycle: [neutral, smirk]
+    mouth_cycle: [closed]

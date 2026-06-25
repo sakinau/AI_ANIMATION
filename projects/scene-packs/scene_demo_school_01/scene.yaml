@@ -1,0 +1,144 @@
+scene_id: scene_demo_school_01
+name: 学校走廊交互样板
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_desk: backgrounds/close_desk.png
+  comfy_school_wide: backgrounds/comfy_school_wide.png
+  stylelock_school_wide_055: backgrounds/stylelock_school_wide_055.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character:
+  - layers/chair_back.png
+  - layers/desk_back.png
+  front_character:
+  - layers/chair_front.png
+  - layers/desk_front.png
+  - layers/door_frame_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.28
+    y: 0.82
+    scale: 0.86
+    facing: right
+  stand_right:
+    x: 0.66
+    y: 0.82
+    scale: 0.84
+    facing: left
+  sit_chair_1:
+    x: 0.44
+    y: 0.79
+    scale: 0.82
+    facing: right
+  desk_center:
+    x: 0.51
+    y: 0.61
+    scale: 1.0
+  desk_phone:
+    x: 0.58
+    y: 0.55
+    scale: 1.0
+  desk_book:
+    x: 0.47
+    y: 0.56
+    scale: 1.0
+  desk_cup:
+    x: 0.64
+    y: 0.56
+    scale: 1.0
+  door_entry:
+    x: 0.83
+    y: 0.82
+    scale: 0.78
+    facing: left
+  door_handle:
+    x: 0.8
+    y: 0.52
+    scale: 1.0
+props:
+  phone:
+    label: 手机
+    variants:
+      table: props/phone_table.png
+      hand: props/phone_hand.png
+    default_anchor: desk_phone
+    pivot: center
+  book:
+    label: 书
+    variants:
+      closed: props/book_closed.png
+      open: props/book_open.png
+    default_anchor: desk_book
+    pivot: center
+  cup:
+    label: 杯子
+    variants:
+      table: props/cup_table.png
+      hand: props/cup_hand.png
+    default_anchor: desk_cup
+    pivot: center
+  cup_comfy:
+    label: Comfy杯子
+    variants:
+      table: props/cup_comfy_table.png
+    pivot: center
+    default_anchor: desk_cup
+  book_comfy:
+    label: Comfy书本
+    variants:
+      closed: props/book_comfy_closed.png
+    pivot: center
+    default_anchor: desk_book
+  phone_comfy:
+    label: Comfy手机
+    variants:
+      table: props/phone_comfy_table.png
+    pivot: center
+    default_anchor: desk_phone
+supported_actions:
+- stand
+- sit
+- pick_up
+- put_down
+- hand_over
+- enter_from_door
+- inspect_close
+action_templates:
+  sit:
+    duration: 1.0
+    actor_state_sequence:
+    - stand
+    - bend
+    - sit
+    target_anchor: sit_chair_1
+    requires_front_layers:
+    - chair_front
+  pick_up:
+    duration: 1.2
+    actor_state_sequence:
+    - reach
+    - grab
+    - hold
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: desk_phone
+    - time: 0.7
+      variant: hand
+      anchor: actor.hand_r
+  enter_from_door:
+    duration: 1.4
+    actor_state_sequence:
+    - offscreen
+    - walk
+    - stand
+    from_anchor: door_entry
+    requires_front_layers:
+    - door_frame_front

@@ -1,0 +1,30 @@
+character_id: wukong_proxy
+runtime: remotion_sim
+source_note: "Public-domain Journey to the West test proxy using available local collage assets."
+states:
+  idle: {clip: idle, loop: true, pose: idle, expression: neutral}
+  talk: {clip: talk, loop: true, pose: idle, expression: neutral, mouth: talk}
+  walk: {clip: walk, loop: true, pose: walk, expression: neutral}
+  point: {clip: point, loop: false, pose: point, expression: angry}
+  shock: {clip: shock, loop: false, pose: idle, expression: shocked}
+  recoil: {clip: recoil, loop: false, pose: idle, expression: shocked}
+  attack: {clip: attack, loop: false, pose: point, expression: furious}
+  think: {clip: think, loop: true, pose: idle, expression: doubtful}
+transitions:
+  default: 0.12
+anchors:
+  foot: [0.50, 0.96]
+  head: [0.50, 0.16]
+  hand_right: [0.70, 0.48]
+  hand_left: [0.30, 0.52]
+assets:
+  body:
+    idle: 免费素材库/处理后/人物/橙衣男/橙衣男-抱臂.png
+    walk: 免费素材库/处理后/人物/橙衣男/橙衣男-行走.png
+    point: 免费素材库/处理后/人物/橙衣男/橙衣男-指向.png
+  face:
+    neutral: 免费素材库/处理后/表情_标准化/表情-平静.png
+    doubtful: 免费素材库/处理后/表情_标准化/表情-怀疑.png
+    shocked: 免费素材库/处理后/表情_标准化/表情-惊讶.png
+    angry: 免费素材库/处理后/表情_标准化/表情-愤怒.png
+    furious: 免费素材库/处理后/表情_标准化/表情-暴怒.png

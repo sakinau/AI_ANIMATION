@@ -1,0 +1,27 @@
+{
+  "name": "ai-animatrion",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "studio": "powershell -ExecutionPolicy Bypass -File scripts/start-studio.ps1",
+    "render": "powershell -ExecutionPolicy Bypass -File scripts/render-video.ps1",
+    "render:magic": "powershell -ExecutionPolicy Bypass -File scripts/render-magic-delivery.ps1",
+    "render:an-ae": "powershell -ExecutionPolicy Bypass -File scripts/render-an-ae-test.ps1",
+    "render:state-machine": "powershell -ExecutionPolicy Bypass -File scripts/render-state-machine-test.ps1",
+    "build:ae": "F:\\Animation_AI\\tools\\node\\node.exe scripts/generate-ae-script.mjs",
+    "build:ae:magic": "F:\\Animation_AI\\tools\\node\\node.exe scripts/generate-magic-ae-script.mjs",
+    "validate": "python scripts/validate_workflow.py",
+    "validate:magic": "python scripts/validate_magic_delivery.py"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.474",
+    "@remotion/media": "4.0.474",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.474"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "typescript": "5.8.3"
+  }
+}

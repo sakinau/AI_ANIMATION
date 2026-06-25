@@ -1,0 +1,150 @@
+project_id: magic-delivery
+fps: 12
+aspect: "16:9"
+format:
+  width: 1920
+  height: 1080
+
+camera_presets:
+  establishing_pan:
+    description: "Wide shot with slow horizontal pan and background parallax."
+    max_scale: 1.08
+    max_translate_px: 90
+  push_in:
+    description: "Slow push toward the active speaker or prop."
+    max_scale: 1.18
+    max_translate_px: 50
+  pull_back:
+    description: "Reveal more scene context after a punchline or reversal."
+    max_scale: 1.16
+    max_translate_px: 50
+  truck_left:
+    description: "Lateral move following travel or route logic."
+    max_scale: 1.10
+    max_translate_px: 120
+  truck_right:
+    description: "Lateral move following travel or route logic."
+    max_scale: 1.10
+    max_translate_px: 120
+  over_shoulder:
+    description: "Dialogue composition with foreground shoulder or prop layer."
+    max_scale: 1.12
+    max_translate_px: 40
+  insert_closeup:
+    description: "Close shot for phone, order, receipt, button, or key prop."
+    max_scale: 1.22
+    max_translate_px: 36
+  reaction_cut:
+    description: "Short character reaction shot driven by expression swap."
+    max_scale: 1.12
+    max_translate_px: 30
+  static_hold:
+    description: "Still shot only when UI/dialogue/expression carries the beat."
+    max_scale: 1.00
+    max_translate_px: 0
+
+actions:
+  scooter_enter:
+    motion: "x_enter + brake_squash + dust_pop"
+    duration_frames: 18
+  hand_food_bag:
+    motion: "small_step + bag_raise + hold"
+    duration_frames: 24
+  shocked_recoil:
+    motion: "head_back + shoulder_up + freeze_hold"
+    duration_frames: 14
+  system_popup:
+    motion: "popup_scale + screen_dim"
+    duration_frames: 10
+  phone_tap:
+    motion: "hand_up + phone_glow + ui_expand"
+    duration_frames: 18
+  proof_photo:
+    motion: "camera_snap + stamp_pop"
+    duration_frames: 20
+  voice_appeal:
+    motion: "phone_raise + call_ui_loop + expression_swap"
+    duration_frames: 36
+  block_with_bag:
+    motion: "impact_left + bag_shield + short_recoil"
+    duration_frames: 20
+  route_recalc:
+    motion: "map_insert + path_draw + golden_sweep"
+    duration_frames: 28
+  confirm_button:
+    motion: "finger_tap + crack_close + alert_fade"
+    duration_frames: 20
+  eat_and_review:
+    motion: "steam_loop + star_pop + relaxed_drop"
+    duration_frames: 24
+  phone_closeup:
+    motion: "insert_push + new_order_ping"
+    duration_frames: 16
+
+expressions:
+  determined_sweat: ["serious", "sweat", "focus"]
+  neutral_to_smirk: ["neutral", "smirk"]
+  shocked: ["wide_eye", "open_mouth"]
+  comic_panic: ["panic", "sweat_burst"]
+  serious: ["serious", "flat_mouth"]
+  heroic_resolve: ["focus", "rim_light"]
+  angry_panic: ["anger", "panic"]
+  soft_realization: ["soft", "embarrassed"]
+  blank: ["blank", "tiny_eye"]
+
+transitions:
+  impact_cut:
+    duration_frames: 4
+    components: ["brief_flash", "bass_hit"]
+  subtitle_slam:
+    duration_frames: 6
+    components: ["text_pop"]
+  cut:
+    duration_frames: 0
+    components: []
+  glitch_realm_shift:
+    duration_frames: 8
+    components: ["rgb_split", "noise", "single_horizontal_jump"]
+  whip_pan:
+    duration_frames: 8
+    components: ["directional_blur", "x_sweep"]
+  smoke_wipe_fast:
+    duration_frames: 10
+    components: ["smoke_matte", "parallax_push"]
+  match_cut_prop:
+    duration_frames: 4
+    components: ["prop_anchor"]
+  cut_to_black:
+    duration_frames: 8
+    components: ["fade_black", "ui_ping"]
+
+vfx_policy:
+  default: none
+  require_reason_for_non_none: true
+  max_fullscreen_flash_frames: 8
+  max_shake_frames: 6
+  max_shake_amplitude_px_1080p: 6
+  forbid_looping_shake: true
+  forbid_unmotivated_flicker: true
+
+qa:
+  total_duration_tolerance_frames: 6
+  max_subtitle_lines: 2
+  min_subtitle_seconds: 0.8
+  safe_area_bottom_px: 58
+  max_camera_scale: 1.22
+  max_motion_intensity: 0.75
+  min_camera_changes_per_60s: 5
+  min_framing_types_per_60s: 3
+  required_per_shot:
+    - shot_id
+    - duration
+    - location
+    - action
+    - expression
+    - dialogue
+    - ui
+    - vfx
+    - transition
+    - camera
+    - assets

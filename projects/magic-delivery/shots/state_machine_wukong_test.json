@@ -1,0 +1,240 @@
+{
+  "project_id": "state-machine-test",
+  "sequence_id": "kana_rina_dialogue_test",
+  "title": "状态机测试：香奈与里奈的赛前交锋",
+  "source_basis": "Adapted from F:/Animation_AI/src/dialogue-data.ts and F:/Animation_AI/timeline.json. Only script text was read; source project code/assets were not modified.",
+  "runtime_seconds": 60,
+  "fps": 12,
+  "format": {"width": 1920, "height": 1080},
+  "characters": {
+    "wukong": "香奈",
+    "monk": "里奈",
+    "demon": "主持人"
+  },
+  "shots": [
+    {
+      "shot_id": "KR01",
+      "duration": 6,
+      "background": "stage",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": 0, "y": -10, "scale": 1.02},
+          {"time": 3, "x": -55, "y": -12, "scale": 1.08},
+          {"time": 6, "x": -80, "y": -10, "scale": 1.10}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "walk", "x": 0.30, "y": 0.80, "scale": 0.82},
+          {"time": 2.2, "state": "talk", "x": 0.35, "y": 0.80, "scale": 0.86}
+        ],
+        "monk": [
+          {"time": 0, "state": "think", "x": 0.64, "y": 0.80, "scale": 0.78}
+        ],
+        "demon": [
+          {"time": 0, "state": "talk", "x": 0.50, "y": 0.81, "scale": 0.62},
+          {"time": 4.0, "state": "idle", "x": 0.50, "y": 0.81, "scale": 0.62}
+        ]
+      },
+      "ui": "赛前一小时：选手入场",
+      "vfx": "none",
+      "speaker": "主持人",
+      "dialogue": "接下来是咏叹调，年纪轻轻就横扫世界级大奖的天才画家。"
+    },
+    {
+      "shot_id": "KR02",
+      "duration": 7,
+      "background": "stage",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": -80, "y": -10, "scale": 1.10},
+          {"time": 3, "x": -170, "y": -18, "scale": 1.26},
+          {"time": 7, "x": -135, "y": -16, "scale": 1.22}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "talk", "x": 0.35, "y": 0.80, "scale": 0.88},
+          {"time": 3.6, "state": "point", "x": 0.38, "y": 0.80, "scale": 0.90}
+        ],
+        "monk": [
+          {"time": 0, "state": "think", "x": 0.64, "y": 0.80, "scale": 0.78},
+          {"time": 5.0, "state": "shock", "x": 0.62, "y": 0.80, "scale": 0.80}
+        ]
+      },
+      "ui": "香奈状态：主动试探",
+      "vfx": "sweat",
+      "speaker": "香奈",
+      "dialogue": "早上好。我刚才向你打过招呼，你完全没有注意到。"
+    },
+    {
+      "shot_id": "KR03",
+      "duration": 7,
+      "background": "factory",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": 95, "y": -12, "scale": 1.14},
+          {"time": 3, "x": 150, "y": -20, "scale": 1.28},
+          {"time": 7, "x": 120, "y": -14, "scale": 1.20}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "idle", "x": 0.34, "y": 0.80, "scale": 0.84},
+          {"time": 5.2, "state": "think", "x": 0.35, "y": 0.80, "scale": 0.86}
+        ],
+        "monk": [
+          {"time": 0, "state": "shock", "x": 0.62, "y": 0.80, "scale": 0.82},
+          {"time": 1.6, "state": "talk", "x": 0.61, "y": 0.80, "scale": 0.82},
+          {"time": 5.0, "state": "recoil", "x": 0.63, "y": 0.80, "scale": 0.80}
+        ]
+      },
+      "ui": "里奈状态：回神",
+      "vfx": "none",
+      "speaker": "里奈",
+      "dialogue": "啊，对不起……我在想些事情。"
+    },
+    {
+      "shot_id": "KR04",
+      "duration": 8,
+      "background": "stage",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": -90, "y": -12, "scale": 1.12},
+          {"time": 4, "x": -150, "y": -18, "scale": 1.30},
+          {"time": 8, "x": -100, "y": -12, "scale": 1.18}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "think", "x": 0.34, "y": 0.80, "scale": 0.86},
+          {"time": 2.2, "state": "point", "x": 0.39, "y": 0.80, "scale": 0.92},
+          {"time": 5.5, "state": "talk", "x": 0.37, "y": 0.80, "scale": 0.90}
+        ],
+        "monk": [
+          {"time": 0, "state": "idle", "x": 0.62, "y": 0.80, "scale": 0.80},
+          {"time": 4.8, "state": "think", "x": 0.62, "y": 0.80, "scale": 0.80}
+        ]
+      },
+      "ui": "攻击点：观众席",
+      "vfx": "hit_star",
+      "speaker": "香奈",
+      "dialogue": "心事？是吗？你好像一直在看观众席。那里有比我更让你在意的人。"
+    },
+    {
+      "shot_id": "KR05",
+      "duration": 7,
+      "background": "cinema",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": 70, "y": -6, "scale": 1.10},
+          {"time": 3, "x": 135, "y": -14, "scale": 1.28},
+          {"time": 7, "x": 80, "y": -8, "scale": 1.14}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "point", "x": 0.36, "y": 0.80, "scale": 0.88},
+          {"time": 3.0, "state": "talk", "x": 0.34, "y": 0.80, "scale": 0.86}
+        ],
+        "monk": [
+          {"time": 0, "state": "recoil", "x": 0.62, "y": 0.80, "scale": 0.82},
+          {"time": 3.2, "state": "think", "x": 0.64, "y": 0.80, "scale": 0.80}
+        ]
+      },
+      "ui": "沉默：压力累积",
+      "vfx": "smoke_ring",
+      "speaker": "旁白",
+      "dialogue": "里奈没有回答。香奈也知道，这不是随便挑衅就会动摇的对手。"
+    },
+    {
+      "shot_id": "KR06",
+      "duration": 8,
+      "background": "factory",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": -30, "y": -10, "scale": 1.08},
+          {"time": 4, "x": 0, "y": -20, "scale": 1.22},
+          {"time": 8, "x": -60, "y": -12, "scale": 1.16}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "think", "x": 0.35, "y": 0.80, "scale": 0.86},
+          {"time": 2.4, "state": "talk", "x": 0.37, "y": 0.80, "scale": 0.90},
+          {"time": 6.0, "state": "idle", "x": 0.35, "y": 0.80, "scale": 0.86}
+        ],
+        "monk": [
+          {"time": 0, "state": "think", "x": 0.62, "y": 0.80, "scale": 0.80},
+          {"time": 4.2, "state": "idle", "x": 0.62, "y": 0.80, "scale": 0.80}
+        ]
+      },
+      "ui": "内心判断：对手很强",
+      "vfx": "none",
+      "speaker": "香奈",
+      "dialogue": "她不是靠赛前挑衅就能动摇的人。即便如此，我还是要站在这里。"
+    },
+    {
+      "shot_id": "KR07",
+      "duration": 8,
+      "background": "stage",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": -60, "y": -8, "scale": 1.10},
+          {"time": 3.5, "x": -125, "y": -18, "scale": 1.30},
+          {"time": 8, "x": 20, "y": -10, "scale": 1.12}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "talk", "x": 0.35, "y": 0.80, "scale": 0.88},
+          {"time": 3.2, "state": "point", "x": 0.42, "y": 0.80, "scale": 0.94},
+          {"time": 6.3, "state": "idle", "x": 0.40, "y": 0.80, "scale": 0.90}
+        ],
+        "monk": [
+          {"time": 0, "state": "think", "x": 0.62, "y": 0.80, "scale": 0.80},
+          {"time": 5.0, "state": "shock", "x": 0.61, "y": 0.80, "scale": 0.82}
+        ],
+        "demon": [
+          {"time": 5.2, "state": "talk", "x": 0.50, "y": 0.81, "scale": 0.64}
+        ]
+      },
+      "ui": "比赛即将开始",
+      "vfx": "dust",
+      "speaker": "香奈",
+      "dialogue": "啊……果然，从根本上就不一样。正因为如此，我才会来到这里。"
+    },
+    {
+      "shot_id": "KR08",
+      "duration": 9,
+      "background": "stage",
+      "camera": {
+        "keyframes": [
+          {"time": 0, "x": 0, "y": -12, "scale": 1.16},
+          {"time": 4, "x": 0, "y": -4, "scale": 1.04},
+          {"time": 9, "x": 0, "y": 0, "scale": 1.00}
+        ]
+      },
+      "state_timeline": {
+        "wukong": [
+          {"time": 0, "state": "idle", "x": 0.34, "y": 0.80, "scale": 0.86},
+          {"time": 3.5, "state": "shock", "x": 0.36, "y": 0.80, "scale": 0.88},
+          {"time": 6.2, "state": "walk", "x": 0.42, "y": 0.80, "scale": 0.88}
+        ],
+        "monk": [
+          {"time": 0, "state": "idle", "x": 0.62, "y": 0.80, "scale": 0.80},
+          {"time": 3.5, "state": "shock", "x": 0.60, "y": 0.80, "scale": 0.82},
+          {"time": 6.0, "state": "walk", "x": 0.56, "y": 0.80, "scale": 0.82}
+        ],
+        "demon": [
+          {"time": 0, "state": "talk", "x": 0.50, "y": 0.81, "scale": 0.64},
+          {"time": 4.0, "state": "idle", "x": 0.50, "y": 0.81, "scale": 0.64}
+        ]
+      },
+      "ui": "开赛：状态机进入行动段",
+      "vfx": "speed_smoke",
+      "speaker": "主持人",
+      "dialogue": "好了，开始！两个人同时动了起来，会场的空气一下子被点燃。"
+    }
+  ]
+}

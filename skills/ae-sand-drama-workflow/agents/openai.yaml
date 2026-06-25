@@ -1,0 +1,3 @@
+display_name: AN/AE 沙雕动画工作流
+short_description: 用 Animate 管角色动画，用 AE 管镜头合成，并用 Remotion 快速预览测试片。
+default_prompt: 为这个短剧项目建立 AN/AE/Remotion 沙雕动画工作流，整理素材、角色动作、镜头表、AE 合成结构，并制作可预览测试片段。

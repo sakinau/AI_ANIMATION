@@ -1,0 +1,286 @@
+{
+  "title": "午夜值班守则",
+  "subtitle": "规则怪谈动画样片",
+  "scenes": [
+    {
+      "id": "S01",
+      "duration": 15,
+      "location": "lobby",
+      "title": "新工作",
+      "expression": "neutral",
+      "action": "enter",
+      "fx": "none",
+      "beats": [
+        "凌晨十一点五十分，林默第一次来到长宁工人电影院值夜班。",
+        "交班的老保安一句话也没说，只递来一张折得发白的纸。",
+        "纸的最上方写着：值班期间，请严格遵守以下规则。"
+      ]
+    },
+    {
+      "id": "S02",
+      "duration": 15,
+      "location": "lobby",
+      "title": "规则一",
+      "expression": "serious",
+      "action": "read",
+      "fx": "rule",
+      "beats": [
+        "规则一：零点以后，售票大厅只允许出现一名保安。",
+        "如果监控中出现第二名保安，不要抬头确认。",
+        "立刻关闭三号屏幕，并在桌下数到三十。"
+      ]
+    },
+    {
+      "id": "S03",
+      "duration": 15,
+      "location": "lobby",
+      "title": "规则二",
+      "expression": "serious",
+      "action": "point",
+      "fx": "rule",
+      "beats": [
+        "规则二：电梯显示负一层时，不要按开门键。",
+        "这座老影院没有地下室。",
+        "无论里面的人怎样呼救，都要回答：维修人员已经下班。"
+      ]
+    },
+    {
+      "id": "S04",
+      "duration": 15,
+      "location": "corridor",
+      "title": "规则三",
+      "expression": "worried",
+      "action": "look",
+      "fx": "rule",
+      "beats": [
+        "规则三：一点十五分，放映厅后的员工通道会多出一扇门。",
+        "不要数门，也不要看门牌。",
+        "听到有人叫你的名字，就把手电筒照向自己的脚。"
+      ]
+    },
+    {
+      "id": "S05",
+      "duration": 15,
+      "location": "lobby",
+      "title": "零点整",
+      "expression": "neutral",
+      "action": "idle",
+      "fx": "clock",
+      "beats": [
+        "墙上的秒针越过十二，整栋楼突然安静下来。",
+        "电话线没有接通，桌上的旧电话却响了一声。",
+        "林默想起纸背面还有一行小字：电话只会响一次。"
+      ]
+    },
+    {
+      "id": "S06",
+      "duration": 15,
+      "location": "lobby",
+      "title": "第二名保安",
+      "expression": "shocked",
+      "action": "turn",
+      "fx": "glitch",
+      "beats": [
+        "三号监控里，一个穿同样制服的人走进大堂。",
+        "那个人停在林默身后，慢慢抬起了头。",
+        "屏幕中的脸，和林默一模一样。"
+      ]
+    },
+    {
+      "id": "S07",
+      "duration": 15,
+      "location": "lobby",
+      "title": "数到三十",
+      "expression": "afraid",
+      "action": "hide",
+      "fx": "shadow",
+      "beats": [
+        "林默关掉三号屏幕，钻到桌下开始数数。",
+        "数到十七时，一双黑色皮鞋停在桌外。",
+        "一个和他相同的声音轻声问：你数错了吗？"
+      ]
+    },
+    {
+      "id": "S08",
+      "duration": 15,
+      "location": "lobby",
+      "title": "不要回答",
+      "expression": "afraid",
+      "action": "freeze",
+      "fx": "pulse",
+      "beats": [
+        "林默咬住舌尖，没有回答。",
+        "他继续数到三十，皮鞋终于转身离开。",
+        "重新抬头时，三号屏幕上只剩一把空椅子。"
+      ]
+    },
+    {
+      "id": "S09",
+      "duration": 15,
+      "location": "lobby",
+      "title": "负一层",
+      "expression": "worried",
+      "action": "look",
+      "fx": "elevator",
+      "beats": [
+        "零点四十分，电梯数字从七直接跳到了负一。",
+        "门缝里传出女人的哭声：求你开门，我的孩子还在里面。",
+        "开门键亮了起来，像是在等待他的手指。"
+      ]
+    },
+    {
+      "id": "S10",
+      "duration": 15,
+      "location": "lobby",
+      "title": "标准回答",
+      "expression": "serious",
+      "action": "point",
+      "fx": "red",
+      "beats": [
+        "林默后退一步：维修人员已经下班。",
+        "哭声立刻停止。电梯门内传来指甲刮擦金属的声音。",
+        "显示屏重新变成一层，但门上多了五道湿漉漉的手印。"
+      ]
+    },
+    {
+      "id": "S11",
+      "duration": 15,
+      "location": "lobby",
+      "title": "观众求助",
+      "expression": "neutral",
+      "action": "turn",
+      "fx": "none",
+      "beats": [
+        "一点十分，一名女观众跑来，说四号厅里有人一直敲门。",
+        "她递给林默一把钥匙，请他陪自己去员工通道。",
+        "钥匙牌写着四号厅，纸上的第四条规则却被墨水涂黑了。"
+      ]
+    },
+    {
+      "id": "S12",
+      "duration": 15,
+      "location": "corridor",
+      "title": "员工通道",
+      "expression": "worried",
+      "action": "walk",
+      "fx": "flicker",
+      "beats": [
+        "林默来到放映厅后的员工通道，女人却已经不见了。",
+        "两侧房门整齐排列，尽头的红灯一明一灭。",
+        "他忽然发现，每一扇门上都写着四号厅。"
+      ]
+    },
+    {
+      "id": "S13",
+      "duration": 15,
+      "location": "corridor",
+      "title": "不要数门",
+      "expression": "afraid",
+      "action": "freeze",
+      "fx": "doors",
+      "beats": [
+        "左边六扇，右边六扇，尽头似乎还有一扇。",
+        "林默意识到自己已经开始数门。",
+        "走廊两侧同时响起十三下门锁转动的声音。"
+      ]
+    },
+    {
+      "id": "S14",
+      "duration": 15,
+      "location": "corridor",
+      "title": "有人叫他",
+      "expression": "shocked",
+      "action": "look",
+      "fx": "shadow",
+      "beats": [
+        "走廊尽头传来老保安的声音：林默，快过来。",
+        "他立刻把手电照向自己的脚。",
+        "光圈里却出现了两个人的影子。"
+      ]
+    },
+    {
+      "id": "S15",
+      "duration": 15,
+      "location": "corridor",
+      "title": "影子先动",
+      "expression": "afraid",
+      "action": "run",
+      "fx": "chase",
+      "beats": [
+        "第二道影子抬起手，指向林默身后的房门。",
+        "门内传出自己的声音：快进来，外面的不是你。",
+        "林默关掉手电，凭记忆朝楼梯口狂奔。"
+      ]
+    },
+    {
+      "id": "S16",
+      "duration": 15,
+      "location": "corridor",
+      "title": "被涂黑的规则",
+      "expression": "serious",
+      "action": "read",
+      "fx": "rule",
+      "beats": [
+        "楼梯间的墙上贴着另一份守则。",
+        "第四条没有被涂黑：不要帮助寻找四号厅的女观众。",
+        "四号厅已经封闭七年。她会把保安带给门后的东西。"
+      ]
+    },
+    {
+      "id": "S17",
+      "duration": 15,
+      "location": "corridor",
+      "title": "纸上的新字",
+      "expression": "shocked",
+      "action": "read",
+      "fx": "write",
+      "beats": [
+        "林默手里的守则慢慢渗出一行红字。",
+        "规则五：如果你已经看见两个影子，请确认哪一个会呼吸。",
+        "不会呼吸的那个，才是你。"
+      ]
+    },
+    {
+      "id": "S18",
+      "duration": 15,
+      "location": "corridor",
+      "title": "呼吸",
+      "expression": "afraid",
+      "action": "freeze",
+      "fx": "breath",
+      "beats": [
+        "林默屏住呼吸，胸口却仍在起伏。",
+        "身后的脚步也停了下来。另一个林默贴在他耳边呼吸。",
+        "他终于明白，守则并不是写给活人的。"
+      ]
+    },
+    {
+      "id": "S19",
+      "duration": 15,
+      "location": "lobby",
+      "title": "清晨交班",
+      "expression": "blank",
+      "action": "enter",
+      "fx": "glitch",
+      "beats": [
+        "早上六点，新来的保安推开大堂玻璃门。",
+        "值夜班的林默坐在桌后，微笑着递出一张折得发白的纸。",
+        "他一句话也没有说。"
+      ]
+    },
+    {
+      "id": "S20",
+      "duration": 15,
+      "location": "lobby",
+      "title": "规则零",
+      "expression": "smile",
+      "action": "point",
+      "fx": "final",
+      "beats": [
+        "新保安翻到纸的背面，那里多出了一条从未见过的规则。",
+        "规则零：如果交班人叫林默，请不要接过他递来的纸。",
+        "因为真正的林默，还在员工通道里数门。"
+      ]
+    }
+  ]
+}

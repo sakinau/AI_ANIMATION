@@ -1,0 +1,60 @@
+project_id: magic-delivery
+sequence_id: an_ae_60s_test
+format:
+  width: 1920
+  height: 1080
+  fps: 12
+layers:
+  source_assets:
+    root: public/免费素材库
+    role: "Store raw and processed PNG/GIF material."
+  animate_character:
+    owner: Adobe Animate
+    status: simulated_in_remotion_until_animate_is_installed
+    output_contract: "projects/magic-delivery/renders/an/{sequence_id}/{shot_id}/{character_id}/frame-0000.png"
+    responsibilities:
+      - body pose swap
+      - expression swap
+      - simple mouth cycle
+      - idle/talk/walk/point loops
+      - hand and prop gesture timing
+  ae_composite:
+    owner: After Effects
+    responsibilities:
+      - background and foreground layout
+      - imported Animate character sequences
+      - camera movement
+      - VFX and UI overlays
+      - subtitles
+      - final packaging
+  remotion_preview:
+    owner: Remotion
+    role: "Preview and render MP4 when Animate/AE are unavailable or before manual polish."
+characters:
+  delivery_guy:
+    manifest: projects/magic-delivery/characters/delivery_guy.yaml
+    source: public/免费素材库/处理后/人物/橙衣男
+  demon_king_proxy:
+    manifest: projects/magic-delivery/characters/demon_king_proxy.yaml
+    source: public/magic-delivery/characters/demon_king.png
+quality_gates:
+  require_horizontal_1080p: true
+  require_camera_per_shot: true
+  require_vfx_reason: true
+  require_normalized_expressions: true
+  require_pose_face_anchors: true
+  forbid_audience_debug_labels: true
+  forbid_looping_random_shake: true
+  min_action_beats_per_60s: 8
+  min_internal_focus_change_shots_per_60s: 2
+  animate_layer_must_define:
+    - body_pose
+    - expression
+    - mouth_cycle
+    - action_loop
+    - pose_anchor
+  ae_layer_must_define:
+    - background
+    - camera
+    - subtitles
+    - vfx

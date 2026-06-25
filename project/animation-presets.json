@@ -1,0 +1,36 @@
+{
+  "motions": {
+    "still": {"durationFrames": 1, "fromX": 0, "toX": 0, "fromY": 0, "toY": 0, "fromOpacity": 1, "toOpacity": 1},
+    "enter": {"durationFrames": 18, "fromX": -55, "toX": 0, "fromY": 0, "toY": 0, "fromOpacity": 0, "toOpacity": 1},
+    "walkIn": {"durationFrames": 30, "fromX": 72, "toX": 0, "fromY": 0, "toY": 0, "fromOpacity": 1, "toOpacity": 1},
+    "runPast": {"durationFrames": 24, "fromX": 190, "toX": -310, "fromY": 0, "toY": 0, "fromOpacity": 1, "toOpacity": 0.25},
+    "hide": {"durationFrames": 12, "fromX": 0, "toX": 0, "fromY": 0, "toY": 82, "fromOpacity": 1, "toOpacity": 1}
+  },
+  "actionMotion": {
+    "enter": "enter",
+    "walk": "walkIn",
+    "run": "runPast",
+    "hide": "hide"
+  },
+  "poseBeats": {
+    "idle": ["抱臂", "指向", "抱臂"],
+    "read": ["抱臂", "指向", "抱臂"],
+    "point": ["指向", "抱臂", "指向"],
+    "look": ["抱臂", "指向", "抱臂"],
+    "turn": ["指向", "抱臂", "指向"],
+    "freeze": ["抱臂", "抱臂", "指向"],
+    "hide": ["抱臂", "抱臂", "指向"],
+    "walk": ["行走", "抱臂", "指向"],
+    "run": ["行走", "行走", "抱臂"],
+    "enter": ["行走", "抱臂", "指向"]
+  },
+  "expressionBeats": {
+    "neutral": ["neutral", "serious", "worried"],
+    "serious": ["serious", "worried", "serious"],
+    "worried": ["worried", "shocked", "afraid"],
+    "shocked": ["shocked", "afraid", "serious"],
+    "afraid": ["afraid", "shocked", "afraid"],
+    "blank": ["blank", "neutral", "blank"],
+    "smile": ["neutral", "smile", "shocked"]
+  }
+}

@@ -1,0 +1,46 @@
+project_id: magic-delivery
+schema_name: ai_controllable_animation_state_machine
+version: 0.1
+format:
+  width: 1920
+  height: 1080
+  fps: 12
+runtime_targets:
+  - remotion_sim
+  - adobe_animate
+  - spine
+  - rive
+  - unity_animator
+  - ae_precomp
+character_manifest_required_fields:
+  - character_id
+  - runtime
+  - states
+  - transitions
+  - anchors
+shot_track_required_fields:
+  - time
+  - state
+  - x
+  - y
+  - scale
+rules:
+  audience_render_forbid_debug_text: true
+  unknown_state_is_error: true
+  character_runtime_executes_clips_only: true
+  ai_outputs_state_timeline_not_raw_frames: true
+  ae_owns_camera_vfx_subtitles_packaging: true
+minimum_state_set:
+  - idle
+  - talk
+  - walk
+  - point
+  - shock
+  - recoil
+recommended_state_set:
+  - attack
+  - angry_talk
+  - celebrate
+  - think
+  - disguise
+  - reveal
