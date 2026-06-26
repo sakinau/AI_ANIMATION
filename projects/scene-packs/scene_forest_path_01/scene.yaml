@@ -1,0 +1,226 @@
+scene_id: scene_forest_path_01
+name: 诅咒森林道路交互样板
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_sign: backgrounds/close_sign.png
+  close_dragon: backgrounds/close_dragon.png
+  close_path: backgrounds/close_path.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/bush_front.png
+  - layers/vines_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.3
+    y: 0.84
+    scale: 0.86
+    facing: right
+  stand_right:
+    x: 0.66
+    y: 0.84
+    scale: 0.86
+    facing: left
+  path_center:
+    x: 0.5
+    y: 0.78
+    scale: 1.0
+  signpost:
+    x: 0.24
+    y: 0.66
+    scale: 1.0
+  vine_trap:
+    x: 0.52
+    y: 0.73
+    scale: 1.0
+  barrier_center:
+    x: 0.52
+    y: 0.57
+    scale: 1.0
+  dragon_head:
+    x: 0.73
+    y: 0.48
+    scale: 1.0
+  qr_board:
+    x: 0.58
+    y: 0.56
+    scale: 1.0
+  mushroom_patch:
+    x: 0.36
+    y: 0.76
+    scale: 1.0
+  fog_center:
+    x: 0.5
+    y: 0.58
+    scale: 1.0
+  map_hand:
+    x: 0.42
+    y: 0.54
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+props:
+  signpost:
+    label: 森林路牌
+    variants:
+      front: props/signpost_front.png
+    default_anchor: signpost
+    pivot: center
+    variant_scales:
+      front: 0.82
+  vine_trap:
+    label: 藤蔓陷阱
+    variants:
+      ground: props/vine_trap_ground.png
+      hand: props/vine_trap_hand.png
+    default_anchor: vine_trap
+    pivot: center
+    variant_scales:
+      ground: 0.95
+      hand: 0.7
+  magic_barrier:
+    label: 魔法屏障
+    variants:
+      active: props/magic_barrier_active.png
+    default_anchor: barrier_center
+    pivot: center
+    variant_scales:
+      active: 0.95
+  dragon:
+    label: 巨龙
+    variants:
+      head: props/dragon_head.png
+      close: props/dragon_head_close.png
+    default_anchor: dragon_head
+    pivot: center
+    variant_scales:
+      head: 0.88
+      close: 1.0
+  qr_board:
+    label: 扫码牌
+    variants:
+      table: props/qr_board_table.png
+      hand: props/qr_board_hand.png
+    default_anchor: qr_board
+    pivot: center
+    variant_scales:
+      table: 0.72
+      hand: 0.62
+  mushroom:
+    label: 发光蘑菇
+    variants:
+      patch: props/mushroom_patch.png
+    default_anchor: mushroom_patch
+    pivot: center
+    variant_scales:
+      patch: 0.82
+  fog:
+    label: 迷雾
+    variants:
+      puff: props/fog_puff.png
+    default_anchor: fog_center
+    pivot: center
+    variant_scales:
+      puff: 1.5
+  delivery_map:
+    label: 配送地图
+    variants:
+      hand: props/delivery_map_hand.png
+      close: props/delivery_map_close.png
+    default_anchor: map_hand
+    pivot: center
+    variant_scales:
+      hand: 0.72
+      close: 0.96
+supported_actions:
+- stand
+- enter_forest
+- read_sign
+- clear_vines
+- open_barrier
+- encounter_dragon
+- scan_qr
+- check_map
+- fog_reveal
+- inspect_close
+action_templates:
+  enter_forest:
+    duration: 1.2
+    actor_state_sequence:
+    - walk
+    - slow
+    - stand
+    target_anchor: path_center
+  read_sign:
+    duration: 1.2
+    prop: signpost
+    prop_sequence:
+    - time: 0.0
+      variant: front
+      anchor: signpost
+  clear_vines:
+    duration: 1.3
+    prop: vine_trap
+    prop_sequence:
+    - time: 0.0
+      variant: ground
+      anchor: vine_trap
+    - time: 0.8
+      variant: hand
+      anchor: actor.hand_r
+  open_barrier:
+    duration: 1.0
+    prop: magic_barrier
+    prop_sequence:
+    - time: 0.0
+      variant: active
+      anchor: barrier_center
+      motion: pulse
+  encounter_dragon:
+    duration: 1.5
+    prop: dragon
+    prop_sequence:
+    - time: 0.0
+      variant: head
+      anchor: dragon_head
+    - time: 0.9
+      variant: close
+      anchor: close_insert_center
+  scan_qr:
+    duration: 1.4
+    prop: qr_board
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: qr_board
+    - time: 0.7
+      variant: hand
+      anchor: actor.hand_r
+  check_map:
+    duration: 1.2
+    prop: delivery_map
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: map_hand
+    - time: 0.65
+      variant: close
+      anchor: close_insert_center
+  fog_reveal:
+    duration: 1.0
+    prop: fog
+    prop_sequence:
+    - time: 0.0
+      variant: puff
+      anchor: fog_center
+      motion: fade

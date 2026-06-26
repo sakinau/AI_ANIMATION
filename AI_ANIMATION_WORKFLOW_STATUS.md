@@ -685,6 +685,62 @@ Checked 17 referenced assets and 13 anchors
 
 Workflow note: with scene_city_street_01, scene_fantasy_hall_01, and scene_demo_school_01, the project now has three reusable scene contexts: real-world delivery, fantasy climax, and general dialogue/school-style interaction testing.
 
+## 2026-06-26 Forest Path Scene Pack
+
+Added a fourth complete scene pack for fantasy-route obstacle and encounter beats:
+
+```text
+projects/scene-packs/scene_forest_path_01/
+```
+
+Purpose: support cursed forest / delivery-road scenes where characters can enter a dangerous path, read signs, clear vines, open a magic barrier, check a delivery map, and negotiate with a dragon through a QR-scan gag.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_forest_path_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_sign, close_dragon, close_path
+- foreground layers: bush_front, vines_front
+- props: signpost, vine_trap, magic_barrier, dragon, qr_board, mushroom, fog, delivery_map
+- anchors: 12 named staging points
+- supported actions: 10
+
+Key action templates:
+
+- enter_forest
+- read_sign
+- clear_vines
+- open_barrier
+- encounter_dragon
+- scan_qr
+- check_map
+- fog_reveal
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_props.png
+preview_obstacles.png
+preview_dragon_scan.png
+preview_dragon_close.png
+preview_map_close.png
+forest_path_props_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_forest_path_01 is valid
+Checked 19 referenced assets and 12 anchors
+```
+
+Workflow note: this pack expands the scene-pack library from dialogue/delivery staging into obstacle-based interaction. It is designed for action-template testing before investing in detailed limb animation or final art replacement.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.

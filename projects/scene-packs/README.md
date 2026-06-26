@@ -70,6 +70,26 @@ Current coverage:
 - 13 anchors
 - 10 supported actions
 
+### `scene_forest_path_01`
+
+Cursed forest / fantasy road obstacle scene.
+
+Best for:
+
+- courier entering a forest road;
+- reading warning signposts and checking a delivery map;
+- vine-trap and magic-barrier obstacles;
+- dragon encounter / QR scan gag;
+- fog reveal and mushroom detail;
+- close-up inserts for map, sign, and dragon reaction beats.
+
+Current coverage:
+
+- 5 backgrounds
+- 8 prop groups
+- 12 anchors
+- 10 supported actions
+
 ## Validation
 
 Validate a pack with:
