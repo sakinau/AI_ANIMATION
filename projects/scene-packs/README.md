@@ -90,6 +90,26 @@ Current coverage:
 - 12 anchors
 - 10 supported actions
 
+### `scene_takeout_shop_01`
+
+Takeout shop / counter interaction scene.
+
+Best for:
+
+- courier picking up a delivery order;
+- counter dialogue between courier and clerk;
+- meal packing and handoff beats;
+- QR payment and receipt close-up inserts;
+- kitchen steam / food reveal inserts;
+- menu-board, table, drink, and delivery-bag interactions.
+
+Current coverage:
+
+- 6 backgrounds
+- 9 prop groups
+- 16 anchors
+- 12 supported actions
+
 ## Validation
 
 Validate a pack with:

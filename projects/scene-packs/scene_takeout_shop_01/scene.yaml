@@ -1,0 +1,288 @@
+scene_id: scene_takeout_shop_01
+name: takeout shop counter interaction pack
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_counter: backgrounds/close_counter.png
+  close_kitchen: backgrounds/close_kitchen.png
+  close_menu: backgrounds/close_menu.png
+  close_table: backgrounds/close_table.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/counter_front.png
+  - layers/shelf_front.png
+  - layers/kitchen_window_frame_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.28
+    y: 0.84
+    scale: 0.86
+    facing: right
+  stand_counter:
+    x: 0.47
+    y: 0.84
+    scale: 0.88
+    facing: right
+  clerk_counter:
+    x: 0.67
+    y: 0.78
+    scale: 0.78
+    facing: left
+  table_sit_left:
+    x: 0.18
+    y: 0.83
+    scale: 0.78
+    facing: right
+  table_sit_right:
+    x: 0.28
+    y: 0.83
+    scale: 0.78
+    facing: left
+  counter_center:
+    x: 0.56
+    y: 0.64
+    scale: 1.0
+  counter_meal:
+    x: 0.48
+    y: 0.61
+    scale: 1.0
+  counter_receipt:
+    x: 0.61
+    y: 0.59
+    scale: 1.0
+  counter_qr:
+    x: 0.72
+    y: 0.57
+    scale: 1.0
+  counter_bell:
+    x: 0.41
+    y: 0.61
+    scale: 1.0
+  bag_floor:
+    x: 0.34
+    y: 0.8
+    scale: 1.0
+  drink_counter:
+    x: 0.78
+    y: 0.6
+    scale: 1.0
+  kitchen_window:
+    x: 0.51
+    y: 0.42
+    scale: 1.0
+  menu_board:
+    x: 0.79
+    y: 0.16
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  steam_center:
+    x: 0.51
+    y: 0.38
+    scale: 1.0
+props:
+  meal_tray:
+    label: meal tray
+    variants:
+      counter: props/meal_tray_counter.png
+      hand: props/meal_tray_hand.png
+      close: props/meal_tray_close.png
+    default_anchor: counter_meal
+    pivot: center
+    variant_scales:
+      counter: 0.78
+      hand: 0.58
+      close: 1.0
+  noodle_bowl:
+    label: noodle bowl
+    variants:
+      table: props/noodle_bowl_table.png
+      close: props/noodle_bowl_close.png
+    default_anchor: counter_meal
+    pivot: center
+    variant_scales:
+      table: 0.76
+      close: 1.0
+  receipt:
+    label: receipt
+    variants:
+      counter: props/receipt_counter.png
+      hand: props/receipt_hand.png
+      close: props/receipt_close.png
+    default_anchor: counter_receipt
+    pivot: center
+    variant_scales:
+      counter: 0.62
+      hand: 0.56
+      close: 0.95
+  qr_code:
+    label: qr payment code
+    variants:
+      counter: props/qr_code_counter.png
+      hand: props/qr_code_hand.png
+      close: props/qr_code_close.png
+    default_anchor: counter_qr
+    pivot: center
+    variant_scales:
+      counter: 0.58
+      hand: 0.54
+      close: 0.9
+  drink:
+    label: drink cup
+    variants:
+      counter: props/drink_counter.png
+      hand: props/drink_hand.png
+    default_anchor: drink_counter
+    pivot: center
+    variant_scales:
+      counter: 0.58
+      hand: 0.52
+  delivery_bag:
+    label: delivery bag
+    variants:
+      floor: props/delivery_bag_floor.png
+      hand: props/delivery_bag_hand.png
+    default_anchor: bag_floor
+    pivot: center
+    variant_scales:
+      floor: 0.78
+      hand: 0.58
+  counter_bell:
+    label: counter bell
+    variants:
+      idle: props/counter_bell_idle.png
+    default_anchor: counter_bell
+    pivot: center
+    variant_scales:
+      idle: 0.72
+  menu_board:
+    label: menu board
+    variants:
+      close: props/menu_board_close.png
+    default_anchor: menu_board
+    pivot: center
+    variant_scales:
+      close: 0.82
+  steam:
+    label: kitchen steam
+    variants:
+      puff: props/steam_puff.png
+    default_anchor: steam_center
+    pivot: center
+    variant_scales:
+      puff: 1.0
+supported_actions:
+- stand
+- sit_table
+- ring_bell
+- pack_meal
+- pick_up_order
+- hand_over_meal
+- scan_payment
+- read_receipt
+- inspect_menu
+- kitchen_steam
+- drink_pickup
+- inspect_close
+action_templates:
+  sit_table:
+    duration: 1.0
+    actor_state_sequence:
+    - stand
+    - turn
+    - sit
+    target_anchor: table_sit_left
+  ring_bell:
+    duration: 0.8
+    prop: counter_bell
+    prop_sequence:
+    - time: 0.0
+      variant: idle
+      anchor: counter_bell
+      motion: tap
+  pack_meal:
+    duration: 1.4
+    prop: meal_tray
+    prop_sequence:
+    - time: 0.0
+      variant: counter
+      anchor: counter_meal
+    - time: 0.75
+      variant: hand
+      anchor: clerk_counter
+  pick_up_order:
+    duration: 1.2
+    prop: delivery_bag
+    prop_sequence:
+    - time: 0.0
+      variant: floor
+      anchor: bag_floor
+    - time: 0.65
+      variant: hand
+      anchor: actor.hand_r
+  hand_over_meal:
+    duration: 1.2
+    prop: meal_tray
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: clerk_counter
+    - time: 0.7
+      variant: hand
+      anchor: actor.hand_l
+  scan_payment:
+    duration: 1.1
+    prop: qr_code
+    prop_sequence:
+    - time: 0.0
+      variant: counter
+      anchor: counter_qr
+    - time: 0.65
+      variant: close
+      anchor: close_insert_center
+  read_receipt:
+    duration: 1.1
+    prop: receipt
+    prop_sequence:
+    - time: 0.0
+      variant: counter
+      anchor: counter_receipt
+    - time: 0.55
+      variant: close
+      anchor: close_insert_center
+  inspect_menu:
+    duration: 1.0
+    background: close_menu
+    prop: menu_board
+    prop_sequence:
+    - time: 0.0
+      variant: close
+      anchor: close_insert_center
+  kitchen_steam:
+    duration: 0.8
+    prop: steam
+    prop_sequence:
+    - time: 0.0
+      variant: puff
+      anchor: steam_center
+      motion: loop_up
+  drink_pickup:
+    duration: 0.9
+    prop: drink
+    prop_sequence:
+    - time: 0.0
+      variant: counter
+      anchor: drink_counter
+    - time: 0.55
+      variant: hand
+      anchor: actor.hand_r

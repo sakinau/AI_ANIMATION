@@ -741,6 +741,65 @@ Checked 19 referenced assets and 12 anchors
 
 Workflow note: this pack expands the scene-pack library from dialogue/delivery staging into obstacle-based interaction. It is designed for action-template testing before investing in detailed limb animation or final art replacement.
 
+## 2026-06-26 Takeout Shop Scene Pack
+
+Added a fifth complete scene pack for food pickup, counter dialogue, and small-object interaction beats:
+
+```text
+projects/scene-packs/scene_takeout_shop_01/
+```
+
+Purpose: support real-world delivery pickup scenes and general shop-counter scenes. This directly addresses the earlier weak point where characters had too few props and scene objects to interact with.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_takeout_shop_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_counter, close_kitchen, close_menu, close_table
+- foreground layers: counter_front, shelf_front, kitchen_window_frame_front
+- props: meal_tray, noodle_bowl, receipt, qr_code, drink, delivery_bag, counter_bell, menu_board, steam
+- anchors: 16 named staging points
+- supported actions: 12
+
+Key action templates:
+
+- ring_bell
+- pack_meal
+- pick_up_order
+- hand_over_meal
+- scan_payment
+- read_receipt
+- inspect_menu
+- kitchen_steam
+- drink_pickup
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_props.png
+preview_handover.png
+preview_scan_receipt.png
+preview_kitchen_steam.png
+preview_meal_close.png
+preview_menu_close.png
+preview_qr_close.png
+takeout_shop_props_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_takeout_shop_01 is valid
+Checked 27 referenced assets and 16 anchors
+```
+
+Workflow note: this pack is a useful template for future "interaction-dense" locations. A good scene pack should not only provide a wide background; it should include foreground occlusion, prop states, close-up inserts, and action templates that let the animation executor move named objects between named anchors.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
