@@ -10,6 +10,8 @@ backgrounds:
   close_desk: backgrounds/close_desk.png
   comfy_school_wide: backgrounds/comfy_school_wide.png
   stylelock_school_wide_055: backgrounds/stylelock_school_wide_055.png
+  close_blackboard: backgrounds/close_blackboard.png
+  close_door: backgrounds/close_door.png
 layers:
   background:
   - backgrounds/wide.png
@@ -85,6 +87,38 @@ anchors:
   close_insert_center:
     x: 0.5
     y: 0.5
+    scale: 1.0
+  ui_center:
+    x: 0.5
+    y: 0.42
+    scale: 1.0
+  ui_top_right:
+    x: 0.72
+    y: 0.25
+    scale: 0.85
+  bubble_left:
+    x: 0.33
+    y: 0.28
+    scale: 1.0
+  bubble_right:
+    x: 0.67
+    y: 0.28
+    scale: 1.0
+  reaction_left:
+    x: 0.31
+    y: 0.24
+    scale: 1.0
+  reaction_right:
+    x: 0.69
+    y: 0.24
+    scale: 1.0
+  blackboard_center:
+    x: 0.5
+    y: 0.42
+    scale: 1.0
+  door_close_center:
+    x: 0.5
+    y: 0.52
     scale: 1.0
 props:
   phone:
@@ -185,6 +219,48 @@ props:
     variant_scales:
       table: 0.62
       hand: 0.58
+  ui_popup:
+    label: UI弹窗
+    variants:
+      order: props/order_popup.png
+      warning: props/warning_popup.png
+    default_anchor: ui_center
+    pivot: center
+    variant_scales:
+      order: 0.82
+      warning: 0.82
+  dialogue_bubble:
+    label: 对话气泡
+    variants:
+      left: props/dialogue_bubble_left.png
+      right: props/dialogue_bubble_right.png
+    default_anchor: bubble_left
+    pivot: center
+    variant_scales:
+      left: 0.72
+      right: 0.72
+  reaction_mark:
+    label: 反应符号
+    variants:
+      exclaim: props/reaction_exclaim.png
+      question: props/reaction_question.png
+      speed: props/speed_lines.png
+    default_anchor: reaction_left
+    pivot: center
+    variant_scales:
+      exclaim: 0.65
+      question: 0.65
+      speed: 1.2
+  environment_insert:
+    label: 环境插入图
+    variants:
+      blackboard: props/blackboard_insert.png
+      door: props/door_insert.png
+    default_anchor: close_insert_center
+    pivot: center
+    variant_scales:
+      blackboard: 0.92
+      door: 0.82
 supported_actions:
 - stand
 - sit
@@ -199,6 +275,13 @@ supported_actions:
 - unlock_door
 - deliver_bag
 - show_closeup
+- show_order_popup
+- show_warning_popup
+- show_dialogue
+- reaction_pop
+- speed_emphasis
+- inspect_blackboard
+- inspect_door
 action_templates:
   sit:
     duration: 1.0
@@ -332,3 +415,70 @@ action_templates:
     - time: 1.0
       variant: floor
       anchor: floor_delivery_bag
+  show_order_popup:
+    duration: 1.2
+    camera: hold_medium
+    prop: ui_popup
+    prop_sequence:
+    - time: 0.0
+      variant: order
+      anchor: ui_center
+    - time: 0.18
+      variant: order
+      anchor: ui_center
+      motion: pop_in
+  show_warning_popup:
+    duration: 1.0
+    camera: shake_short
+    prop: ui_popup
+    prop_sequence:
+    - time: 0.0
+      variant: warning
+      anchor: ui_center
+      motion: pop_in
+  show_dialogue:
+    duration: 1.4
+    prop: dialogue_bubble
+    prop_sequence:
+    - time: 0.0
+      variant: left
+      anchor: bubble_left
+    - time: 0.7
+      variant: right
+      anchor: bubble_right
+  reaction_pop:
+    duration: 0.7
+    prop: reaction_mark
+    prop_sequence:
+    - time: 0.0
+      variant: exclaim
+      anchor: reaction_left
+      motion: pop
+    - time: 0.35
+      variant: question
+      anchor: reaction_right
+      motion: pop
+  speed_emphasis:
+    duration: 0.6
+    prop: reaction_mark
+    prop_sequence:
+    - time: 0.0
+      variant: speed
+      anchor: ui_center
+      motion: slide
+  inspect_blackboard:
+    duration: 1.4
+    background: close_blackboard
+    prop: environment_insert
+    prop_sequence:
+    - time: 0.0
+      variant: blackboard
+      anchor: blackboard_center
+  inspect_door:
+    duration: 1.2
+    background: close_door
+    prop: environment_insert
+    prop_sequence:
+    - time: 0.0
+      variant: door
+      anchor: door_close_center

@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path("projects/scene-packs/scene_demo_school_01")
+BACKGROUNDS = ROOT / "backgrounds"
 PROPS = ROOT / "props"
 PREVIEWS = ROOT / "previews"
 
@@ -115,6 +116,101 @@ def save_chalk(path: Path, hand: bool = False) -> None:
     img.save(path)
 
 
+def save_order_popup(path: Path) -> None:
+    img = canvas(620, 430)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((18, 18, 602, 412), radius=32, fill=(250, 250, 244, 245), outline=(28, 28, 32, 255), width=8)
+    d.rounded_rectangle((48, 52, 572, 126), radius=18, fill=(255, 186, 64, 255), outline=(28, 28, 32, 255), width=5)
+    d.rectangle((72, 80, 312, 100), fill=(38, 38, 42, 255))
+    d.rounded_rectangle((54, 158, 566, 220), radius=16, fill=(235, 242, 250, 255), outline=(80, 90, 100, 255), width=4)
+    d.rounded_rectangle((54, 244, 566, 306), radius=16, fill=(235, 242, 250, 255), outline=(80, 90, 100, 255), width=4)
+    d.rounded_rectangle((54, 334, 260, 386), radius=18, fill=(90, 180, 96, 255), outline=(28, 28, 32, 255), width=4)
+    d.rounded_rectangle((360, 334, 566, 386), radius=18, fill=(226, 84, 72, 255), outline=(28, 28, 32, 255), width=4)
+    d.rectangle((84, 176, 378, 190), fill=(45, 70, 95, 255))
+    d.rectangle((84, 262, 516, 276), fill=(45, 70, 95, 255))
+    img.save(path)
+
+
+def save_warning_popup(path: Path) -> None:
+    img = canvas(680, 360)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((18, 18, 662, 342), radius=28, fill=(42, 35, 44, 248), outline=(255, 224, 88, 255), width=9)
+    d.polygon([(78, 84), (138, 220), (18, 220)], fill=(255, 208, 58, 255), outline=(28, 28, 32, 255))
+    d.rectangle((72, 122, 84, 178), fill=(28, 28, 32, 255))
+    d.ellipse((68, 190, 88, 210), fill=(28, 28, 32, 255))
+    for y, w in ((96, 430), (154, 360), (212, 480)):
+        d.rounded_rectangle((180, y, 180 + w, y + 28), radius=10, fill=(244, 244, 232, 255))
+    img.save(path)
+
+
+def save_dialogue_bubble(path: Path, tail: str = "left") -> None:
+    img = canvas(560, 260)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((28, 24, 532, 188), radius=34, fill=(255, 255, 250, 245), outline=(28, 28, 32, 255), width=6)
+    if tail == "left":
+        d.polygon([(118, 184), (72, 238), (178, 188)], fill=(255, 255, 250, 245), outline=(28, 28, 32, 255))
+    else:
+        d.polygon([(442, 184), (488, 238), (382, 188)], fill=(255, 255, 250, 245), outline=(28, 28, 32, 255))
+    for y, w in ((70, 390), (112, 310), (154, 360)):
+        d.rounded_rectangle((84, y, 84 + w, y + 14), radius=5, fill=(48, 64, 82, 255))
+    img.save(path)
+
+
+def save_reaction_mark(path: Path, kind: str) -> None:
+    img = canvas(240, 240)
+    d = ImageDraw.Draw(img)
+    if kind == "exclaim":
+        d.polygon([(108, 28), (154, 28), (142, 146), (120, 146)], fill=(255, 226, 64, 255), outline=(28, 28, 32, 255))
+        d.ellipse((103, 166, 157, 220), fill=(255, 226, 64, 255), outline=(28, 28, 32, 255), width=6)
+    elif kind == "question":
+        d.arc((54, 28, 182, 150), 200, 535, fill=(86, 190, 235, 255), width=24)
+        d.line((126, 142, 126, 164), fill=(86, 190, 235, 255), width=22)
+        d.ellipse((101, 184, 151, 234), fill=(86, 190, 235, 255), outline=(28, 28, 32, 255), width=5)
+    else:
+        for i, x in enumerate((40, 80, 120, 160)):
+            d.line((x, 210, x + 34, 40 + i * 12), fill=(255, 255, 255, 220), width=10)
+            d.line((x, 210, x + 34, 40 + i * 12), fill=(78, 160, 220, 255), width=5)
+    img.save(path)
+
+
+def save_blackboard_insert(path: Path) -> None:
+    img = canvas(900, 520)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((34, 34, 866, 430), radius=14, fill=(42, 78, 66, 255), outline=(36, 28, 22, 255), width=12)
+    d.rectangle((70, 465, 830, 492), fill=(115, 82, 54, 255), outline=(36, 28, 22, 255))
+    for i, y in enumerate((100, 160, 220, 292)):
+        d.line((110, y, 760 - i * 70, y + 10), fill=(235, 238, 218, 210), width=9)
+    d.line((112, 350, 420, 388), fill=(255, 226, 72, 255), width=12)
+    d.line((620, 456, 740, 456), fill=(245, 245, 235, 255), width=12)
+    img.save(path)
+
+
+def save_door_insert(path: Path) -> None:
+    img = canvas(760, 620)
+    d = ImageDraw.Draw(img)
+    d.rectangle((0, 0, 760, 620), fill=(205, 196, 174, 255))
+    d.rounded_rectangle((190, 48, 540, 594), radius=8, fill=(70, 56, 48, 255), outline=(28, 28, 32, 255), width=10)
+    d.rectangle((232, 96, 500, 298), fill=(54, 45, 42, 255), outline=(28, 28, 32, 255), width=6)
+    d.rectangle((232, 332, 500, 548), fill=(54, 45, 42, 255), outline=(28, 28, 32, 255), width=6)
+    d.ellipse((470, 298, 520, 348), fill=(236, 196, 72, 255), outline=(28, 28, 32, 255), width=5)
+    d.polygon([(544, 64), (710, 0), (710, 620), (544, 594)], fill=(38, 31, 29, 210))
+    img.save(path)
+
+
+def save_cropped_backgrounds() -> list[tuple[str, Path]]:
+    wide = Image.open(BACKGROUNDS / "wide.png").convert("RGBA")
+    crops = [
+        ("close_blackboard", BACKGROUNDS / "close_blackboard.png", (420, 180, 1350, 700)),
+        ("close_door", BACKGROUNDS / "close_door.png", (230, 360, 820, 910)),
+    ]
+    outputs = []
+    for label, out, box in crops:
+        crop = wide.crop(box).resize((1920, 1080), Image.Resampling.LANCZOS)
+        crop.save(out)
+        outputs.append((label, out))
+    return outputs
+
+
 def save_contact_sheet(output_path: Path, assets: list[tuple[str, Path]]) -> None:
     thumb = (180, 150)
     margin = 24
@@ -145,6 +241,7 @@ def save_contact_sheet(output_path: Path, assets: list[tuple[str, Path]]) -> Non
 
 
 def main() -> None:
+    BACKGROUNDS.mkdir(parents=True, exist_ok=True)
     PROPS.mkdir(parents=True, exist_ok=True)
     PREVIEWS.mkdir(parents=True, exist_ok=True)
     outputs = [
@@ -161,12 +258,40 @@ def main() -> None:
         ("key_hand", PROPS / "key_hand.png", lambda p: save_key(p, hand=True)),
         ("chalk_table", PROPS / "chalk_table.png", lambda p: save_chalk(p)),
         ("chalk_hand", PROPS / "chalk_hand.png", lambda p: save_chalk(p, hand=True)),
+        ("order_popup", PROPS / "order_popup.png", lambda p: save_order_popup(p)),
+        ("warning_popup", PROPS / "warning_popup.png", lambda p: save_warning_popup(p)),
+        ("dialogue_bubble_left", PROPS / "dialogue_bubble_left.png", lambda p: save_dialogue_bubble(p, "left")),
+        ("dialogue_bubble_right", PROPS / "dialogue_bubble_right.png", lambda p: save_dialogue_bubble(p, "right")),
+        ("reaction_exclaim", PROPS / "reaction_exclaim.png", lambda p: save_reaction_mark(p, "exclaim")),
+        ("reaction_question", PROPS / "reaction_question.png", lambda p: save_reaction_mark(p, "question")),
+        ("speed_lines", PROPS / "speed_lines.png", lambda p: save_reaction_mark(p, "speed")),
+        ("blackboard_insert", PROPS / "blackboard_insert.png", lambda p: save_blackboard_insert(p)),
+        ("door_insert", PROPS / "door_insert.png", lambda p: save_door_insert(p)),
     ]
     for _, path, maker in outputs:
         maker(path)
         print(path)
+    bg_outputs = save_cropped_backgrounds()
+    for _, path in bg_outputs:
+        print(path)
     save_contact_sheet(PREVIEWS / "school_extra_props_contact_sheet.png", [(name, path) for name, path, _ in outputs])
+    ui_names = {
+        "order_popup",
+        "warning_popup",
+        "dialogue_bubble_left",
+        "dialogue_bubble_right",
+        "reaction_exclaim",
+        "reaction_question",
+        "speed_lines",
+        "blackboard_insert",
+        "door_insert",
+    }
+    save_contact_sheet(
+        PREVIEWS / "school_ui_state_contact_sheet.png",
+        [(name, path) for name, path, _ in outputs if name in ui_names] + bg_outputs,
+    )
     print(PREVIEWS / "school_extra_props_contact_sheet.png")
+    print(PREVIEWS / "school_ui_state_contact_sheet.png")
 
 
 if __name__ == "__main__":

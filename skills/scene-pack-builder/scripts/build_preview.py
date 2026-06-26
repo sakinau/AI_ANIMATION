@@ -129,7 +129,42 @@ def render_preview(scene_pack: Path, name: str) -> Path:
         paste_prop(scene_pack, data, canvas, "phone", "close", "close_insert_center", 0.92)
         draw.text((60, 60), "inspect_close: phone.close", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
 
-    if name != "inspect_close":
+    if name in ("ui_states", "all"):
+        paste_prop(scene_pack, data, canvas, "ui_popup", "order", "ui_center")
+        paste_prop(scene_pack, data, canvas, "reaction_mark", "exclaim", "reaction_left")
+        paste_prop(scene_pack, data, canvas, "reaction_mark", "question", "reaction_right")
+        draw.text((60, 60), "UI/state overlays", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name in ("dialogue", "all"):
+        if "stand_left" in anchors:
+            draw_actor(draw, anchors["stand_left"], "speaker A", (90, 150, 230), *size, font)
+        if "stand_right" in anchors:
+            draw_actor(draw, anchors["stand_right"], "speaker B", (230, 120, 80), *size, font)
+        paste_prop(scene_pack, data, canvas, "dialogue_bubble", "left", "bubble_left")
+        paste_prop(scene_pack, data, canvas, "dialogue_bubble", "right", "bubble_right")
+
+    if name in ("warning", "all"):
+        paste_prop(scene_pack, data, canvas, "ui_popup", "warning", "ui_center")
+        paste_prop(scene_pack, data, canvas, "reaction_mark", "speed", "ui_center")
+        draw.text((60, 60), "warning popup + speed emphasis", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name in ("inspect_blackboard", "all"):
+        close_bg = data.get("backgrounds", {}).get("close_blackboard")
+        if close_bg:
+            canvas = open_layer(scene_pack, close_bg, size)
+            draw = ImageDraw.Draw(canvas)
+        paste_prop(scene_pack, data, canvas, "environment_insert", "blackboard", "blackboard_center")
+        draw.text((60, 60), "inspect_blackboard", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name in ("inspect_door", "all"):
+        close_bg = data.get("backgrounds", {}).get("close_door")
+        if close_bg:
+            canvas = open_layer(scene_pack, close_bg, size)
+            draw = ImageDraw.Draw(canvas)
+        paste_prop(scene_pack, data, canvas, "environment_insert", "door", "door_close_center")
+        draw.text((60, 60), "inspect_door / unlock target", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name not in ("inspect_close", "inspect_blackboard", "inspect_door"):
         for rel in data.get("layers", {}).get("front_character", []):
             canvas.alpha_composite(open_layer(scene_pack, rel, size))
 
@@ -143,11 +178,42 @@ def render_preview(scene_pack: Path, name: str) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("scene_pack")
-    parser.add_argument("--preview", default="all", choices=["wide", "sit", "pick_phone", "props", "read_note", "handover", "inspect_close", "all"])
+    parser.add_argument(
+        "--preview",
+        default="all",
+        choices=[
+            "wide",
+            "sit",
+            "pick_phone",
+            "props",
+            "read_note",
+            "handover",
+            "inspect_close",
+            "ui_states",
+            "dialogue",
+            "warning",
+            "inspect_blackboard",
+            "inspect_door",
+            "all",
+        ],
+    )
     args = parser.parse_args()
 
     scene_pack = Path(args.scene_pack)
-    names = ["wide", "sit", "pick_phone", "props", "read_note", "handover", "inspect_close"] if args.preview == "all" else [args.preview]
+    names = [
+        "wide",
+        "sit",
+        "pick_phone",
+        "props",
+        "read_note",
+        "handover",
+        "inspect_close",
+        "ui_states",
+        "dialogue",
+        "warning",
+        "inspect_blackboard",
+        "inspect_door",
+    ] if args.preview == "all" else [args.preview]
     for name in names:
         print(render_preview(scene_pack, name))
 
