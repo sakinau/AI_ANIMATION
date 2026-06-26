@@ -170,6 +170,26 @@ Current coverage:
 - 13 anchors
 - 12 supported actions
 
+### `scene_overlay_vfx_01`
+
+Universal overlay / transition / reaction VFX pack.
+
+Best for:
+
+- speed-line and radial-impact overlays;
+- portal transitions, black cuts, white flashes, and diagonal wipes;
+- dialogue bubbles and reaction icons;
+- order popups and warning popups;
+- focus spotlights and comic burst emphasis;
+- reusable cross-scene information and motion accents.
+
+Current coverage:
+
+- 4 stage backgrounds
+- 8 prop groups
+- 12 anchors
+- 12 supported actions
+
 ## Validation
 
 Validate a pack with:

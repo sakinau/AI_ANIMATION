@@ -1,0 +1,258 @@
+scene_id: scene_overlay_vfx_01
+name: universal overlay transition and reaction VFX pack
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  neutral_stage: backgrounds/neutral_stage.png
+  dark_stage: backgrounds/dark_stage.png
+  bright_stage: backgrounds/bright_stage.png
+  speed_stage: backgrounds/speed_stage.png
+layers:
+  background:
+  - backgrounds/neutral_stage.png
+  behind_character: []
+  front_character: []
+  overlay:
+  - layers/dim_overlay.png
+  - layers/vignette_overlay.png
+anchors:
+  screen_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  screen_top:
+    x: 0.5
+    y: 0.18
+    scale: 1.0
+  screen_bottom:
+    x: 0.5
+    y: 0.82
+    scale: 1.0
+  left_dialogue:
+    x: 0.3
+    y: 0.28
+    scale: 1.0
+  right_dialogue:
+    x: 0.7
+    y: 0.28
+    scale: 1.0
+  left_reaction:
+    x: 0.3
+    y: 0.32
+    scale: 1.0
+  right_reaction:
+    x: 0.7
+    y: 0.32
+    scale: 1.0
+  order_popup_center:
+    x: 0.5
+    y: 0.42
+    scale: 1.0
+  portal_center:
+    x: 0.5
+    y: 0.54
+    scale: 1.0
+  focus_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  wipe_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  burst_center:
+    x: 0.5
+    y: 0.42
+    scale: 1.0
+props:
+  speed_lines:
+    label: speed lines
+    variants:
+      horizontal: props/speed_lines_horizontal.png
+      radial: props/speed_lines_radial.png
+    default_anchor: screen_center
+    pivot: center
+    variant_scales:
+      horizontal: 1.0
+      radial: 1.0
+  portal:
+    label: portal transition
+    variants:
+      open: props/portal_open.png
+      close: props/portal_close.png
+    default_anchor: portal_center
+    pivot: center
+    variant_scales:
+      open: 1.0
+      close: 0.95
+  transition_wipe:
+    label: transition wipe
+    variants:
+      black: props/wipe_black.png
+      white_flash: props/wipe_white_flash.png
+      diagonal: props/wipe_diagonal.png
+    default_anchor: wipe_center
+    pivot: center
+    variant_scales:
+      black: 1.0
+      white_flash: 1.0
+      diagonal: 1.0
+  dialogue_bubble:
+    label: dialogue bubble
+    variants:
+      left: props/dialogue_bubble_left.png
+      right: props/dialogue_bubble_right.png
+    default_anchor: left_dialogue
+    pivot: center
+    variant_scales:
+      left: 0.9
+      right: 0.9
+  reaction_icon:
+    label: reaction icon
+    variants:
+      exclaim: props/reaction_exclaim.png
+      question: props/reaction_question.png
+      plus: props/reaction_plus.png
+    default_anchor: left_reaction
+    pivot: center
+    variant_scales:
+      exclaim: 0.72
+      question: 0.72
+      plus: 0.72
+  order_popup:
+    label: order popup
+    variants:
+      normal: props/order_popup_normal.png
+      warning: props/order_popup_warning.png
+    default_anchor: order_popup_center
+    pivot: center
+    variant_scales:
+      normal: 0.82
+      warning: 0.82
+  focus_spotlight:
+    label: focus spotlight
+    variants:
+      spot: props/focus_spotlight.png
+    default_anchor: focus_center
+    pivot: center
+    variant_scales:
+      spot: 1.0
+  comic_burst:
+    label: comic burst
+    variants:
+      burst: props/comic_burst.png
+    default_anchor: burst_center
+    pivot: center
+    variant_scales:
+      burst: 0.9
+supported_actions:
+- show_speed_lines
+- show_radial_impact
+- open_portal_transition
+- white_flash
+- black_cut
+- diagonal_wipe
+- show_dialogue_bubble
+- reaction_pop
+- show_order_popup
+- show_warning_popup
+- focus_spotlight
+- comic_burst
+action_templates:
+  show_speed_lines:
+    duration: 0.6
+    prop: speed_lines
+    prop_sequence:
+    - time: 0.0
+      variant: horizontal
+      anchor: screen_center
+      motion: slide_left
+  show_radial_impact:
+    duration: 0.5
+    prop: speed_lines
+    prop_sequence:
+    - time: 0.0
+      variant: radial
+      anchor: screen_center
+      motion: scale_burst
+  open_portal_transition:
+    duration: 1.0
+    prop: portal
+    prop_sequence:
+    - time: 0.0
+      variant: open
+      anchor: portal_center
+      motion: pulse
+  white_flash:
+    duration: 0.35
+    prop: transition_wipe
+    prop_sequence:
+    - time: 0.0
+      variant: white_flash
+      anchor: wipe_center
+      motion: flash
+  black_cut:
+    duration: 0.35
+    prop: transition_wipe
+    prop_sequence:
+    - time: 0.0
+      variant: black
+      anchor: wipe_center
+  diagonal_wipe:
+    duration: 0.65
+    prop: transition_wipe
+    prop_sequence:
+    - time: 0.0
+      variant: diagonal
+      anchor: wipe_center
+      motion: slide_right
+  show_dialogue_bubble:
+    duration: 0.8
+    prop: dialogue_bubble
+    prop_sequence:
+    - time: 0.0
+      variant: left
+      anchor: left_dialogue
+      motion: pop_in
+  reaction_pop:
+    duration: 0.45
+    prop: reaction_icon
+    prop_sequence:
+    - time: 0.0
+      variant: exclaim
+      anchor: left_reaction
+      motion: pop_in
+  show_order_popup:
+    duration: 0.8
+    prop: order_popup
+    prop_sequence:
+    - time: 0.0
+      variant: normal
+      anchor: order_popup_center
+      motion: pop_in
+  show_warning_popup:
+    duration: 0.8
+    prop: order_popup
+    prop_sequence:
+    - time: 0.0
+      variant: warning
+      anchor: order_popup_center
+      motion: shake
+  focus_spotlight:
+    duration: 0.8
+    prop: focus_spotlight
+    prop_sequence:
+    - time: 0.0
+      variant: spot
+      anchor: focus_center
+      motion: fade_in
+  comic_burst:
+    duration: 0.55
+    prop: comic_burst
+    prop_sequence:
+    - time: 0.0
+      variant: burst
+      anchor: burst_center
+      motion: scale_burst

@@ -980,6 +980,67 @@ Checked 19 referenced assets and 13 anchors
 
 Workflow note: this pack directly supports the state-machine animation direction. Instead of asking AI to invent a battle frame by frame, the planner can call named VFX states such as `slash_attack`, `cast_shield`, `explosion_hit`, and `warning_flash`, then let AE/Remotion/Animate execute predictable transforms.
 
+## 2026-06-26 Universal Overlay/VFX Scene Pack
+
+Added a ninth complete scene pack for cross-scene overlays, transitions, UI, and reaction effects:
+
+```text
+projects/scene-packs/scene_overlay_vfx_01/
+```
+
+Purpose: provide reusable information and motion accents that can be applied over any location. This avoids rebuilding speed lines, dialogue bubbles, popups, transition wipes, portal effects, and reaction icons inside every individual scene pack.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_overlay_vfx_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: neutral_stage, dark_stage, bright_stage, speed_stage
+- overlay layers: dim_overlay, vignette_overlay
+- props: speed_lines, portal, transition_wipe, dialogue_bubble, reaction_icon, order_popup, focus_spotlight, comic_burst
+- anchors: 12 reusable screen-space anchors
+- supported actions: 12
+
+Key action templates:
+
+- show_speed_lines
+- show_radial_impact
+- open_portal_transition
+- white_flash
+- black_cut
+- diagonal_wipe
+- show_dialogue_bubble
+- reaction_pop
+- show_order_popup
+- show_warning_popup
+- focus_spotlight
+- comic_burst
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_speed_lines.png
+preview_portal_wipe.png
+preview_dialogue_reactions.png
+preview_order_popup.png
+preview_focus_burst.png
+preview_flash_warning.png
+overlay_vfx_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_overlay_vfx_01 is valid
+Checked 22 referenced assets and 12 anchors
+```
+
+Workflow note: this pack is the common "motion accent" layer for the animation executor. It lets shot plans add movement and information beats without changing the base location pack: e.g. `show_speed_lines`, `reaction_pop`, `white_flash`, or `show_warning_popup`.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
