@@ -110,6 +110,26 @@ Current coverage:
 - 16 anchors
 - 12 supported actions
 
+### `scene_customer_room_01`
+
+Customer living room / delivery handoff scene.
+
+Best for:
+
+- courier arriving at a customer's door;
+- door handoff and delivery confirmation beats;
+- placing food on a coffee table;
+- sitting on a sofa and opening a food box;
+- TV warning / phone confirmation inserts;
+- remote, key, window, and package interactions.
+
+Current coverage:
+
+- 7 backgrounds
+- 8 prop groups
+- 15 anchors
+- 13 supported actions
+
 ## Validation
 
 Validate a pack with:

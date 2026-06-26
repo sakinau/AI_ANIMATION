@@ -800,6 +800,67 @@ Checked 27 referenced assets and 16 anchors
 
 Workflow note: this pack is a useful template for future "interaction-dense" locations. A good scene pack should not only provide a wide background; it should include foreground occlusion, prop states, close-up inserts, and action templates that let the animation executor move named objects between named anchors.
 
+## 2026-06-26 Customer Room Scene Pack
+
+Added a sixth complete scene pack for delivery handoff and indoor living-room interaction beats:
+
+```text
+projects/scene-packs/scene_customer_room_01/
+```
+
+Purpose: complete the real-world delivery chain after city street and takeout shop scenes. This pack supports the moment where the courier reaches the customer, hands over the meal, confirms the order, and the scene can continue into sofa/table/TV interactions.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_customer_room_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_door, close_table, close_tv, close_window, close_package
+- foreground layers: coffee_table_front, sofa_front, door_frame_front
+- props: meal_bag, food_box, phone, tv_popup, remote, key, package, curtain
+- anchors: 15 named staging points
+- supported actions: 13
+
+Key action templates:
+
+- enter_room
+- door_handoff
+- place_meal_on_table
+- open_food_box
+- confirm_delivery
+- sit_sofa
+- watch_tv_warning
+- pick_remote
+- unlock_door
+- open_package
+- inspect_window
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_props.png
+preview_door_handoff.png
+preview_sofa_food.png
+preview_tv_warning.png
+preview_food_close.png
+preview_tv_close.png
+preview_package_close.png
+customer_room_props_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_customer_room_01 is valid
+Checked 26 referenced assets and 15 anchors
+```
+
+Workflow note: the current real-world delivery chain now has city_street -> takeout_shop -> customer_room. This makes it possible to stage a coherent delivery episode using named actions instead of isolated backgrounds.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
