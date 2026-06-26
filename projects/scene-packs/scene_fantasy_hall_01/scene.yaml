@@ -1,0 +1,232 @@
+scene_id: scene_fantasy_hall_01
+name: 魔王城大厅交互样板
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_throne: backgrounds/close_throne.png
+  close_portal: backgrounds/close_portal.png
+  close_table: backgrounds/close_table.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/throne_front.png
+  - layers/table_front.png
+  - layers/portal_frame_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.28
+    y: 0.83
+    scale: 0.86
+    facing: right
+  stand_right:
+    x: 0.66
+    y: 0.83
+    scale: 0.88
+    facing: left
+  throne_sit:
+    x: 0.5
+    y: 0.77
+    scale: 0.94
+    facing: front
+  table_center:
+    x: 0.5
+    y: 0.61
+    scale: 1.0
+  table_meal:
+    x: 0.45
+    y: 0.56
+    scale: 1.0
+  table_scroll:
+    x: 0.56
+    y: 0.55
+    scale: 1.0
+  table_coin:
+    x: 0.64
+    y: 0.57
+    scale: 1.0
+  portal_entry:
+    x: 0.8
+    y: 0.82
+    scale: 0.84
+    facing: left
+  portal_center:
+    x: 0.8
+    y: 0.52
+    scale: 1.0
+  handoff_mid:
+    x: 0.47
+    y: 0.55
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  warning_center:
+    x: 0.5
+    y: 0.32
+    scale: 1.0
+  weapon_rack:
+    x: 0.22
+    y: 0.62
+    scale: 1.0
+props:
+  meal_box:
+    label: 外卖盒
+    variants:
+      table: props/meal_box_table.png
+      hand: props/meal_box_hand.png
+      close: props/meal_box_close.png
+    default_anchor: table_meal
+    pivot: center
+    variant_scales:
+      table: 0.72
+      hand: 0.55
+      close: 1.0
+  magic_scroll:
+    label: 魔法订单
+    variants:
+      table: props/magic_scroll_table.png
+      hand: props/magic_scroll_hand.png
+      close: props/magic_scroll_close.png
+    default_anchor: table_scroll
+    pivot: center
+    variant_scales:
+      table: 0.68
+      hand: 0.58
+      close: 0.95
+  coin:
+    label: 金币
+    variants:
+      table: props/coin_table.png
+      hand: props/coin_hand.png
+    default_anchor: table_coin
+    pivot: center
+    variant_scales:
+      table: 0.7
+      hand: 0.65
+  portal:
+    label: 传送门
+    variants:
+      open: props/portal_open.png
+    default_anchor: portal_center
+    pivot: center
+    variant_scales:
+      open: 1.05
+  magic_warning:
+    label: 魔法警告
+    variants:
+      warning: props/magic_warning.png
+    default_anchor: warning_center
+    pivot: center
+    variant_scales:
+      warning: 0.82
+  sword:
+    label: 短剑
+    variants:
+      table: props/sword_table.png
+      hand: props/sword_hand.png
+    default_anchor: weapon_rack
+    pivot: center
+    variant_scales:
+      table: 0.72
+      hand: 0.66
+supported_actions:
+- stand
+- sit_throne
+- enter_from_portal
+- deliver_meal
+- read_magic_order
+- hand_over_coin
+- open_portal
+- show_magic_warning
+- inspect_close
+- draw_sword
+action_templates:
+  sit_throne:
+    duration: 1.0
+    actor_state_sequence:
+    - stand
+    - turn
+    - sit
+    target_anchor: throne_sit
+    requires_front_layers:
+    - throne_front
+  enter_from_portal:
+    duration: 1.3
+    actor_state_sequence:
+    - offscreen
+    - step_out
+    - stand
+    from_anchor: portal_entry
+    requires_front_layers:
+    - portal_frame_front
+  deliver_meal:
+    duration: 1.4
+    actor_state_sequence:
+    - carry
+    - extend
+    - release
+    prop: meal_box
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 0.85
+      variant: table
+      anchor: table_meal
+  read_magic_order:
+    duration: 1.5
+    actor_state_sequence:
+    - reach
+    - hold
+    - read
+    prop: magic_scroll
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: table_scroll
+    - time: 0.65
+      variant: close
+      anchor: close_insert_center
+  hand_over_coin:
+    duration: 1.1
+    prop: coin
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 0.7
+      variant: table
+      anchor: table_coin
+  open_portal:
+    duration: 1.0
+    prop: portal
+    prop_sequence:
+    - time: 0.0
+      variant: open
+      anchor: portal_center
+  show_magic_warning:
+    duration: 1.0
+    prop: magic_warning
+    prop_sequence:
+    - time: 0.0
+      variant: warning
+      anchor: warning_center
+      motion: pop_in
+  draw_sword:
+    duration: 1.0
+    prop: sword
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: weapon_rack
+    - time: 0.65
+      variant: hand
+      anchor: actor.hand_r

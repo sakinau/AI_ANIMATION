@@ -570,6 +570,62 @@ Checked 43 referenced assets and 23 anchors
 
 Workflow note: UI/state overlays are a high-leverage way to make sand-animation scenes feel more dynamic. They should be used for order notifications, rule reveals, warnings, comedy reactions, and fast emphasis cuts before investing in harder limb animation.
 
+## 2026-06-26 Fantasy Hall Scene Pack
+
+Added a second complete scene pack to expand beyond the school test environment:
+
+`	ext
+projects/scene-packs/scene_fantasy_hall_01/
+`
+
+Purpose: support the original comedy-fantasy delivery story with a demon-king hall, portal entry, meal delivery, magic order reading, payment handoff, and warning beats.
+
+Generated deterministic assets with:
+
+`	ext
+scripts/create_fantasy_hall_scene_pack.py
+`
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_throne, close_portal, close_table
+- foreground layers: 	hrone_front, 	able_front, portal_frame_front
+- props: meal_box, magic_scroll, coin, portal, magic_warning, sword
+- anchors: 13 named staging points
+- supported actions: 10
+
+Key action templates:
+
+- enter_from_portal
+- deliver_meal
+- 
+ead_magic_order
+- hand_over_coin
+- open_portal
+- show_magic_warning
+- sit_throne
+- draw_sword
+
+Preview coverage:
+
+`	ext
+preview_wide.png
+preview_props.png
+preview_deliver_meal.png
+preview_portal_warning.png
+preview_magic_order_close.png
+fantasy_hall_props_contact_sheet.png
+`
+
+Validation status:
+
+`	ext
+OK: scene_fantasy_hall_01 is valid
+Checked 20 referenced assets and 13 anchors
+`
+
+Asset strategy note: this pack is intentionally deterministic/PIL-generated rather than ComfyUI-generated. The goal is stable staging and action control first; final art can be replaced later while keeping the same anchors, prop IDs, and action templates.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
