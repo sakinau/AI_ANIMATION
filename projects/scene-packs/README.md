@@ -150,6 +150,26 @@ Current coverage:
 - 15 anchors
 - 12 supported actions
 
+### `scene_battlefield_01`
+
+Battlefield / action VFX scene.
+
+Best for:
+
+- hero and enemy face-off shots;
+- slash attacks, impact clashes, explosions, and shield blocks;
+- ground cracks, dust rolls, and knockback beats;
+- combat health-bar and warning UI overlays;
+- crater, left-side, right-side, and sky close-up inserts;
+- reusable high-motion climax shots.
+
+Current coverage:
+
+- 6 backgrounds
+- 8 prop groups
+- 13 anchors
+- 12 supported actions
+
 ## Validation
 
 Validate a pack with:

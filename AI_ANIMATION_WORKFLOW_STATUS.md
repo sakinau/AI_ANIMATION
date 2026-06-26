@@ -921,6 +921,65 @@ Checked 25 referenced assets and 15 anchors
 
 Workflow note: the current fantasy route now has forest_path -> fantasy_market -> fantasy_hall. This gives the animation planner a mid-route public scene where exposition, comedy trading, and route decisions can happen without forcing everything into a throne room.
 
+## 2026-06-26 Battlefield Action/VFX Scene Pack
+
+Added an eighth complete scene pack for action scenes and reusable battle effects:
+
+```text
+projects/scene-packs/scene_battlefield_01/
+```
+
+Purpose: provide stable action-state assets for climax and conflict scenes. This pack is less about location dialogue and more about executable combat states: slash, impact, shield, explosion, dust, ground crack, health UI, and warning UI.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_battlefield_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_crater, close_left, close_right, close_sky
+- foreground / overlay layers: foreground_rocks, background_smoke
+- props: explosion, slash, shield, impact, dust, ground_crack, health_bar, warning_banner
+- anchors: 13 named staging points
+- supported actions: 12
+
+Key action templates:
+
+- enter_battle
+- slash_attack
+- cast_shield
+- impact_clash
+- explosion_hit
+- ground_crack
+- dust_roll
+- enemy_health_show
+- warning_flash
+- knockback
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_props.png
+preview_slash_clash.png
+preview_shield_explosion.png
+preview_ground_crack.png
+preview_combat_ui.png
+preview_explosion_close.png
+battlefield_vfx_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_battlefield_01 is valid
+Checked 19 referenced assets and 13 anchors
+```
+
+Workflow note: this pack directly supports the state-machine animation direction. Instead of asking AI to invent a battle frame by frame, the planner can call named VFX states such as `slash_attack`, `cast_shield`, `explosion_hit`, and `warning_flash`, then let AE/Remotion/Animate execute predictable transforms.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.

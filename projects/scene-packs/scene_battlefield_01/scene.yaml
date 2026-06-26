@@ -1,0 +1,240 @@
+scene_id: scene_battlefield_01
+name: battlefield action and VFX pack
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_crater: backgrounds/close_crater.png
+  close_left: backgrounds/close_left.png
+  close_right: backgrounds/close_right.png
+  close_sky: backgrounds/close_sky.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/foreground_rocks.png
+  overlay:
+  - layers/background_smoke.png
+anchors:
+  hero_left:
+    x: 0.28
+    y: 0.84
+    scale: 0.86
+    facing: right
+  enemy_right:
+    x: 0.72
+    y: 0.84
+    scale: 0.9
+    facing: left
+  center_clash:
+    x: 0.5
+    y: 0.64
+    scale: 1.0
+  ground_center:
+    x: 0.5
+    y: 0.82
+    scale: 1.0
+  left_ground:
+    x: 0.3
+    y: 0.84
+    scale: 1.0
+  right_ground:
+    x: 0.7
+    y: 0.84
+    scale: 1.0
+  slash_mid:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  explosion_mid:
+    x: 0.5
+    y: 0.56
+    scale: 1.0
+  shield_left:
+    x: 0.31
+    y: 0.55
+    scale: 1.0
+  shield_right:
+    x: 0.69
+    y: 0.55
+    scale: 1.0
+  ui_top:
+    x: 0.5
+    y: 0.12
+    scale: 1.0
+  warning_center:
+    x: 0.5
+    y: 0.28
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+props:
+  explosion:
+    label: explosion burst
+    variants:
+      burst: props/explosion_burst.png
+      close: props/explosion_close.png
+    default_anchor: explosion_mid
+    pivot: center
+    variant_scales:
+      burst: 1.0
+      close: 0.95
+  slash:
+    label: slash arc
+    variants:
+      arc: props/slash_arc.png
+      close: props/slash_close.png
+    default_anchor: slash_mid
+    pivot: center
+    variant_scales:
+      arc: 1.0
+      close: 0.95
+  shield:
+    label: magic shield
+    variants:
+      bubble: props/shield_bubble.png
+      close: props/shield_close.png
+    default_anchor: shield_left
+    pivot: center
+    variant_scales:
+      bubble: 0.9
+      close: 0.95
+  impact:
+    label: impact flash
+    variants:
+      flash: props/impact_flash.png
+    default_anchor: center_clash
+    pivot: center
+    variant_scales:
+      flash: 0.9
+  dust:
+    label: dust cloud
+    variants:
+      cloud: props/dust_cloud.png
+    default_anchor: ground_center
+    pivot: center
+    variant_scales:
+      cloud: 1.0
+  ground_crack:
+    label: ground crack
+    variants:
+      crack: props/ground_crack.png
+    default_anchor: ground_center
+    pivot: center
+    variant_scales:
+      crack: 1.0
+  health_bar:
+    label: combat health bar
+    variants:
+      enemy: props/health_bar_enemy.png
+    default_anchor: ui_top
+    pivot: center
+    variant_scales:
+      enemy: 0.95
+  warning_banner:
+    label: combat warning banner
+    variants:
+      danger: props/warning_banner.png
+    default_anchor: warning_center
+    pivot: center
+    variant_scales:
+      danger: 0.8
+supported_actions:
+- stand
+- enter_battle
+- slash_attack
+- cast_shield
+- impact_clash
+- explosion_hit
+- ground_crack
+- dust_roll
+- enemy_health_show
+- warning_flash
+- knockback
+- inspect_close
+action_templates:
+  enter_battle:
+    duration: 1.0
+    actor_state_sequence:
+    - offscreen
+    - dash
+    - stand
+    target_anchor: hero_left
+  slash_attack:
+    duration: 0.8
+    prop: slash
+    prop_sequence:
+    - time: 0.0
+      variant: arc
+      anchor: slash_mid
+      motion: sweep_right
+  cast_shield:
+    duration: 1.0
+    prop: shield
+    prop_sequence:
+    - time: 0.0
+      variant: bubble
+      anchor: shield_left
+      motion: pulse
+  impact_clash:
+    duration: 0.7
+    prop: impact
+    prop_sequence:
+    - time: 0.0
+      variant: flash
+      anchor: center_clash
+      motion: pop_in
+  explosion_hit:
+    duration: 0.9
+    prop: explosion
+    prop_sequence:
+    - time: 0.0
+      variant: burst
+      anchor: explosion_mid
+      motion: scale_burst
+  ground_crack:
+    duration: 0.8
+    prop: ground_crack
+    prop_sequence:
+    - time: 0.0
+      variant: crack
+      anchor: ground_center
+      motion: reveal
+  dust_roll:
+    duration: 0.8
+    prop: dust
+    prop_sequence:
+    - time: 0.0
+      variant: cloud
+      anchor: ground_center
+      motion: slide_up
+  enemy_health_show:
+    duration: 0.8
+    prop: health_bar
+    prop_sequence:
+    - time: 0.0
+      variant: enemy
+      anchor: ui_top
+      motion: pop_in
+  warning_flash:
+    duration: 0.8
+    prop: warning_banner
+    prop_sequence:
+    - time: 0.0
+      variant: danger
+      anchor: warning_center
+      motion: shake
+  knockback:
+    duration: 0.8
+    actor_state_sequence:
+    - hit
+    - slide_back
+    - recover
+    from_anchor: center_clash
+    target_anchor: right_ground
