@@ -48,21 +48,24 @@
         "contact": "fridge_handle",
         "reveal_source": "eggs_milk",
         "show_pickup": "eggs_milk",
-        "reaction": "xiaoming"
+        "reaction": "xiaoming",
+        "result_insert": "breakfast"
       },
       "actions": {
         "approach_object": "approach_fridge",
         "contact": "fridge_handle_contact",
         "reveal_source": "fridge_inside_pov",
         "show_pickup": "food_to_hand_close",
-        "reaction": "food_reaction_close"
+        "reaction": "food_reaction_close",
+        "result_insert": "food_result_insert"
       },
       "dialogue": {
         "approach_object": "他走向冰箱，动作坚定得像去签人生和解书。",
         "contact": "他的手按住冰箱门把，命运发出咔哒一声。",
         "reveal_source": "冰箱内部，两个鸡蛋和一瓶牛奶正在等待被选中。",
         "show_pickup": "鸡蛋和牛奶被拿起，这不是飞行，是剪辑。",
-        "reaction": "小明：成年人的体面，今天只剩蛋白质了。"
+        "reaction": "小明：成年人的体面，今天只剩蛋白质了。",
+        "result_insert": "早餐已经稳稳到手，下一站是茶几。"
       },
       "blocking": {
         "primary_action": "grab",

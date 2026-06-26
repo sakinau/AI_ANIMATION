@@ -60,6 +60,12 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "front", "framing": "closeup", "lens": "telephoto", "move": "push_in", "motivation": "show_reaction"},
         },
+        {
+            "suffix": "06",
+            "purpose": "result_insert",
+            "duration": 3,
+            "camera": {"angle": "high_angle", "framing": "insert", "lens": "normal", "move": "cut", "motivation": "show_result"},
+        },
     ],
     "object_putdown_sequence": [
         {

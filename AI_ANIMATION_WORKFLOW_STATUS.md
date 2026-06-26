@@ -1152,7 +1152,7 @@ OK: cinematic shot coverage looks usable for projects/scene-interaction-test/sho
 Render:
 
 ```text
-1920x1080, 12 fps, about 77 seconds, 22 short shots
+1920x1080, 12 fps, about 80 seconds, 23 short shots
 ```
 
 Coverage now includes:
@@ -1163,6 +1163,7 @@ Coverage now includes:
 - fridge handle contact closeup;
 - fridge interior POV;
 - pickup closeup with hand proxy;
+- pickup result insert so the completed state is visible;
 - table contact/result insert coverage;
 - readable TV and event notice inserts;
 - phone pickup/screen/caller/receiver/split coverage;
@@ -1207,6 +1208,36 @@ QA notes from current still checks:
 - The activity notice is readable as an insert.
 - The phone/table contact shot is readable but still symbolic; a production phone/hand pack should replace the proxy.
 - The event-site and living-room shots still need stronger foreground/caption avoidance before production use.
+
+## 2026-06-26 Event-Level Shot Grammar Validation
+
+The cinematic validator now checks local shot grammar per event, not only whole-video statistics.
+
+Updated files:
+
+```text
+scripts/expand_cinematic_beats.py
+scripts/validate_cinematic_shots.py
+projects/scene-interaction-test/shots/breakfast_activity_events.json
+projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+src/CinematicInteractionTest.tsx
+```
+
+Workflow changes:
+
+- `object_pickup_sequence` now expands to six shots: approach, contact, source reveal, pickup, reaction, and result insert.
+- `validate_cinematic_shots.py` now rejects missing mandatory purposes for known shot patterns.
+- Multi-shot events must include shot-size contrast and angle contrast.
+- Phone calls and meetings must switch visible subjects.
+- Repeated identical `angle + framing + subject + move` setups longer than 8 seconds are rejected even if split into multiple shot IDs.
+- Physical interactions must include visible result coverage after contact/pickup.
+
+Current generated test:
+
+```text
+23 shots, 80s
+OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+```
 
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.

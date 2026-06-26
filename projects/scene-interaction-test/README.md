@@ -50,7 +50,7 @@ Output:
 output\scene-interaction-breakfast-activity-cinematic-test.mp4
 ```
 
-This version keeps the same rough story but expands it into 22 short shots. It tests:
+This version keeps the same rough story but expands it into 23 short shots. It tests:
 
 - high-angle establishing shot;
 - TV insert;
@@ -59,6 +59,7 @@ This version keeps the same rough story but expands it into 22 short shots. It t
 - fridge handle contact closeup;
 - fridge interior POV;
 - pickup closeup with a hand proxy;
+- pickup result insert so the audience sees the completed state;
 - table contact/result inserts;
 - readable TV and notice inserts;
 - phone pickup / phone screen / caller / receiver / split call coverage;
@@ -99,6 +100,19 @@ This keeps repeated shot types stable:
 - `result_insert` shots render prop result inserts.
 
 The current component still contains test-specific subject maps and temporary prop art. The next production version should resolve those from scene-pack anchors, prop states, foreground layers, and `action_templates` instead of hard-coded React branches.
+
+## Event-Level Validation
+
+`scripts/validate_cinematic_shots.py` now checks each event's local shot grammar, not only whole-video statistics.
+
+It rejects:
+
+- missing mandatory purposes for a selected shot pattern;
+- physical interactions without visible result coverage;
+- events with too few camera setups;
+- multi-shot events without shot-size or angle contrast;
+- phone calls and meetings without subject switching;
+- repeated identical camera setup longer than 8 seconds, even if split into multiple shot IDs.
 
 ## Asset Strategy
 

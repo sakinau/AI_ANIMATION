@@ -65,6 +65,8 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 ```
 
 - Do not animate a complex action in one master shot. A pickup action needs at least: establish, contact closeup, object insert, pickup/result insert, reaction.
+- Validate shot rhythm per event, not only per whole video. A multi-shot event must switch at least two shot sizes and two angles; phone calls and meetings must also switch subjects.
+- Require every shot pattern to include its mandatory purposes. For example, `object_pickup_sequence` must include approach/contact/source/pickup/reaction/result coverage.
 - Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
 - Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
@@ -107,6 +109,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Require each shot to have a `camera` block. Use motivated camera moves such as `establishing_pan`, `push_in`, `pull_back`, `truck_left`, `over_shoulder`, `insert_closeup`, `reaction_cut`, or `static_hold`.
 - Do not use one front-facing master shot for a whole sequence. In every 60 seconds, include at least 14 shots, at least 5 camera/framing/angle categories, and at least 3 distinct shot sizes: `wide`, `medium`, `closeup`, `insert`.
 - No single camera setup should carry more than 8 seconds of continuous story unless the user explicitly asks for a stage-play style.
+- No event should pass only because the whole sequence has enough variety. Validate every event's local shot grammar: required purposes, angle contrast, shot-size contrast, subject switching, and visible result state.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.
 - Every 6-8 second shot should contain at least 2 visible action beats: pose swap, expression swap, mouth loop, gesture, prop movement, UI pop, entrance/exit, or reaction hold.

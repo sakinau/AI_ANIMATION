@@ -97,6 +97,15 @@ For every 60 seconds:
 - Alternate shot sizes: wide -> medium -> closeup/insert -> reaction -> result is the default rhythm.
 - Prefer cut changes over continuous decorative zoom when the story emphasis changes.
 
+For every multi-shot event:
+
+- Use at least two shot sizes.
+- Use at least two camera angles.
+- Use the required purposes for the selected `shot_pattern`.
+- For phone calls and meetings, switch visible subjects instead of keeping one speaker or one master shot.
+- For physical interactions, include visible result coverage after contact or pickup.
+- Treat repeated `angle + framing + subject + move` longer than 8 seconds as a failed single-camera setup, even if split into multiple shot IDs.
+
 ## Pattern: Object Pickup
 
 Use for taking food from a fridge, grabbing a phone, picking up a weapon, opening a drawer, taking documents, or stealing an item.

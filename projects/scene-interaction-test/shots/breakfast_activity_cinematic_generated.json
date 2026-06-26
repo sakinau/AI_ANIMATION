@@ -231,6 +231,38 @@
       }
     },
     {
+      "shot_id": "G02_06",
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "result_insert",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "food_result_insert",
+      "dialogue": "早餐已经稳稳到手，下一站是茶几。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "insert",
+        "lens": "normal",
+        "move": "cut",
+        "motivation": "show_result",
+        "subject": "breakfast"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
       "shot_id": "G03_01",
       "event_id": "breakfast_table",
       "event_type": "put_down",
@@ -535,5 +567,5 @@
       }
     }
   ],
-  "runtime_seconds": 77.0
+  "runtime_seconds": 80.0
 }

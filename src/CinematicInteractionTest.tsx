@@ -384,19 +384,24 @@ const GenericReaction: React.FC<{shot: Shot; lean: number}> = ({shot, lean}) => 
 };
 
 const GenericResultInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame}) => {
-  if (shot.camera.subject === 'breakfast') {
+  if (shot.camera.subject === 'breakfast' || shot.camera.subject === 'eggs_milk') {
     return (
-      <Img
-        src={assets.breakfastClose}
-        style={{
-          position: 'absolute',
-          left: 520,
-          top: 210,
-          width: 850,
-          transform: `scale(${ease(frame, [0, 12], [0.92, 1])})`,
-          filter: 'drop-shadow(0 16px 18px rgba(0,0,0,.22))',
-        }}
-      />
+      <>
+        <Img
+          src={assets.breakfastClose}
+          style={{
+            position: 'absolute',
+            left: 520,
+            top: 210,
+            width: 850,
+            transform: `scale(${ease(frame, [0, 12], [0.92, 1])})`,
+            filter: 'drop-shadow(0 16px 18px rgba(0,0,0,.22))',
+          }}
+        />
+        {shot.camera.subject === 'eggs_milk' ? (
+          <HandProxy x={1140} y={360} scale={0.78} rotate={-16} />
+        ) : null}
+      </>
     );
   }
   return null;
