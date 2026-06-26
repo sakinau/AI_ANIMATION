@@ -80,6 +80,26 @@ projects/scene-interaction-test/shots/breakfast_activity_events.json
 
 The older hand-written `breakfast_activity_cinematic_test.json` remains as a reference snapshot, but the render path is now event-driven.
 
+## Generic Purpose Renderer
+
+`src/CinematicInteractionTest.tsx` now starts rendering each generated shot through a generic purpose layer before falling back to special action cases.
+
+The dispatch order is:
+
+```text
+shot purpose -> camera subject -> interaction/blocking fields -> action-specific fallback
+```
+
+This keeps repeated shot types stable:
+
+- `contact` shots render contact inserts;
+- `screen_insert` and `event_notice_insert` shots render readable information inserts;
+- `pickup_phone` and `dial_screen` shots render phone/table inserts;
+- `reaction_close`, `caller_close`, and `receiver_close` shots render character closeups;
+- `result_insert` shots render prop result inserts.
+
+The current component still contains test-specific subject maps and temporary prop art. The next production version should resolve those from scene-pack anchors, prop states, foreground layers, and `action_templates` instead of hard-coded React branches.
+
 ## Asset Strategy
 
 Formal scene packs used:

@@ -55,6 +55,8 @@ The main agent integrates results and owns the runnable project files.
 
 - Before writing final shot YAML, classify each beat as `object_pickup`, `put_down`, `screen_discovery`, `phone_call`, `dialogue_exchange`, `meeting`, `travel`, `impact`, or `reaction`.
 - Assign a `shot_pattern` to every beat. Use the pattern to expand one story beat into several short shots.
+- Treat the expanded shot list as the production contract. The renderer should execute by `purpose`, `camera.subject`, `blocking`, and `interaction` first, then fall back to action-specific overrides only for exceptional staging.
+- Do not let a single event render as one camera setup when it contains a physical interaction, screen discovery, phone call, entrance, meeting, or object transfer.
 - For repeatable production, write an event file first, then run the beat expander:
 
 ```powershell
@@ -67,6 +69,14 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
 - Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
 - Write audience-facing MP4s without debug overlays, parameter labels, file names, or shot test notes.
+
+## Renderer Execution Rules
+
+- Build renderers as cinematic executors, not one-off storyboard drawings.
+- First route a shot by `purpose`: `establish_space`, `contact`, `reveal_source`, `show_pickup`, `screen_insert`, `reaction_close`, `pickup_phone`, `dial_screen`, `caller_close`, `receiver_close`, `split_or_two_panel`, `location_establish`, `arrival`, `counterpart_reveal`, `two_shot_result`, or `result_insert`.
+- Then resolve the subject through `camera.subject` and scene-pack data: background variant, foreground layer, prop variant, anchor, character state, and occlusion rule.
+- Use action-specific branches only when a shot needs unique layout, such as a special POV, split-screen call, large crowd reveal, or custom VFX beat.
+- If the renderer cannot find an anchor or prop state, fail validation or use an explicit fallback insert. Do not silently return to a front-facing master shot.
 
 ## State Machine Rules
 

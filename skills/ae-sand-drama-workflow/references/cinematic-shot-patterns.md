@@ -36,6 +36,28 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 
 The event file is the creative control surface; the generated shot list is the execution contract.
 
+## Renderer Contract
+
+The renderer must treat each generated shot as a cinematic instruction, not as a suggestion to be merged back into a master shot.
+
+Execution order:
+
+1. Read `purpose`.
+2. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
+3. Resolve scene-pack background, foreground, prop state, and anchor data.
+4. Execute the matching template for that purpose.
+5. Use action-specific custom code only when the generic purpose template cannot express the shot.
+
+Required renderer behavior:
+
+- `contact` means show contact or near-contact in close framing.
+- `screen_insert` means the screen/sign/UI information must be readable.
+- `reaction_close` means the audience should see the character response, not another wide shot.
+- `result_insert` means the prop or state after the action must be visible.
+- `location_establish` means show geography or signage before cutting into closer shots.
+
+Never collapse an expanded shot group back into one front-facing master camera. If an asset is missing, select a declared fallback such as a crop insert, hand proxy, object-only insert, reaction icon, or text-safe UI insert.
+
 ## Required Shot Fields
 
 Add these fields to every shot:

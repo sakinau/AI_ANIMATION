@@ -1,6 +1,6 @@
 # AI Animation Workflow Status
 
-Updated: 2026-06-25
+Updated: 2026-06-26
 
 ## Goal
 
@@ -1174,6 +1174,39 @@ Remaining limitations:
 - Some closeups are synthetic crops or simplified panels because the scene pack does not yet include real kitchen/fridge/table/phone multi-angle art.
 - Next step: create production scene packs with explicit `insert_<target>` backgrounds and prop states, then make the renderer resolve them from `scene.yaml` instead of special-casing this test.
 - Next step after that: remove action-specific rendering switches by creating a generic interaction executor that resolves `purpose`, `blocking`, `interaction`, anchors, and prop states from scene packs.
+
+## 2026-06-26 Generic Purpose Renderer Pass
+
+The cinematic breakfast/activity test now has a first generic rendering layer inside:
+
+```text
+src/CinematicInteractionTest.tsx
+```
+
+The renderer no longer treats every repeated shot as a unique hand-written case. It first dispatches by:
+
+```text
+shot.purpose + camera.subject + interaction/blocking intent
+```
+
+Generic coverage currently handles:
+
+- screen and notice inserts;
+- phone/dial inserts;
+- fridge-handle, table, breakfast, and phone contact shots;
+- character reaction closeups;
+- result inserts.
+
+Only more specific shots remain as action-specific overrides, such as fridge interior POV, split-call staging, event over-shoulder reveal, and special establishing shots.
+
+This is the correct direction for solving the repeated-camera problem: story events should expand into a fixed cinematic pattern, and the runtime should execute known shot purposes instead of inventing coordinates for each shot. The next renderer upgrade should move the subject maps, anchors, and prop variants out of this test component and resolve them from formal scene packs.
+
+QA notes from current still checks:
+
+- The fridge-handle closeup now reads as actual contact instead of food flying through a wide shot.
+- The activity notice is readable as an insert.
+- The phone/table contact shot is readable but still symbolic; a production phone/hand pack should replace the proxy.
+- The event-site and living-room shots still need stronger foreground/caption avoidance before production use.
 
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.

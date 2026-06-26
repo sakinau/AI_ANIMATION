@@ -256,10 +256,192 @@ const EventExtras: React.FC = () => (
   </>
 );
 
+const subjectCharacter: Record<string, {src: string; flip?: boolean}> = {
+  xiaoming: {src: assets.xiaoming},
+  friend: {src: assets.friend, flip: true},
+};
+
+const NoticeInsert: React.FC = () => (
+  <>
+    <AbsoluteFill style={{background: '#f5e7ac'}} />
+    <div
+      style={{
+        position: 'absolute',
+        left: 360,
+        top: 125,
+        width: 1200,
+        height: 640,
+        border: '16px solid #1f1b18',
+        borderRadius: 28,
+        background: '#fff1c5',
+        fontFamily: 'Microsoft YaHei, sans-serif',
+        color: '#2a2118',
+        boxShadow: '0 22px 38px rgba(0,0,0,.25)',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          height: 112,
+          background: '#e84c42',
+          color: '#fff8e8',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 60,
+          fontWeight: 900,
+        }}
+      >
+        下午三点 活动现场见
+      </div>
+      <div style={{fontSize: 54, fontWeight: 900, padding: '72px 90px 28px'}}>
+        凭暗号领取双倍早餐券
+      </div>
+      <div style={{fontSize: 43, padding: '0 90px 24px'}}>暗号：早餐自由</div>
+      <div style={{fontSize: 36, padding: '0 90px', lineHeight: 1.45}}>
+        排队请保持理智，早餐不负责拯救世界。
+      </div>
+    </div>
+  </>
+);
+
+const GenericScreenInsert: React.FC<{shot: Shot}> = ({shot}) => {
+  const subject = shot.camera.subject;
+  if (subject === 'phone') {
+    return <Img src={assets.phoneCall} style={{position: 'absolute', left: 690, top: 150, width: 540}} />;
+  }
+  if (subject === 'event_notice') {
+    return <NoticeInsert />;
+  }
+  return (
+    <ScreenPanel>
+      {shot.action === 'activity_tv_insert' ? (
+        <>
+          <Img src={assets.activityBanner} style={{position: 'absolute', left: 120, top: 70, width: 820}} />
+          <div style={{position: 'absolute', left: 150, top: 365, fontSize: 48, fontWeight: 900}}>暗号：早餐自由</div>
+          <div style={{position: 'absolute', left: 150, top: 455, fontSize: 36}}>凭暗号领取双倍早餐券</div>
+        </>
+      ) : (
+        <>
+          <div style={{fontSize: 54, fontWeight: 900, padding: '90px 90px 20px'}}>今日活动预告</div>
+          <div style={{fontSize: 42, padding: '20px 90px'}}>下午三点</div>
+          <div style={{fontSize: 42, padding: '10px 90px'}}>城市广场限时试吃大会</div>
+          <div style={{position: 'absolute', right: 80, bottom: 70, fontSize: 82}}>!</div>
+        </>
+      )}
+    </ScreenPanel>
+  );
+};
+
+const GenericContactInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame}) => {
+  const subject = shot.camera.subject;
+  if (subject === 'fridge_handle') {
+    return (
+      <>
+        <AbsoluteFill style={{background: '#dbeef7'}} />
+        <div style={{position: 'absolute', left: 600, top: 80, width: 520, height: 820, border: '20px solid #1b2229', background: '#edfaff'}} />
+        <div style={{position: 'absolute', left: 1030, top: 415, width: 48, height: 210, borderRadius: 18, background: '#4f5c67'}} />
+        <HandProxy x={ease(frame, [0, 26], [210, 805])} y={450} scale={1.25} rotate={4} />
+      </>
+    );
+  }
+  if (subject === 'phone') {
+    return (
+      <>
+        <Img src={assets.phoneTable} style={{position: 'absolute', left: 820, top: 400, width: 250}} />
+        <HandProxy x={ease(frame, [0, 24], [1240, 925])} y={455} scale={0.9} rotate={-15} />
+      </>
+    );
+  }
+  if (subject === 'breakfast') {
+    return (
+      <>
+        <HandProxy x={ease(frame, [0, 24], [1250, 900])} y={260} scale={0.85} rotate={-20} />
+        <Img src={assets.breakfastClose} style={{position: 'absolute', left: 560, top: 230, width: 780}} />
+      </>
+    );
+  }
+  return null;
+};
+
+const GenericReaction: React.FC<{shot: Shot; lean: number}> = ({shot, lean}) => {
+  const subject = shot.camera.subject;
+  const character = subjectCharacter[subject] ?? subjectCharacter.xiaoming;
+  const isFriend = subject === 'friend';
+  return (
+    <>
+      <Character src={character.src} x={isFriend ? 720 : 710} y={isFriend ? 355 : 350} scale={isFriend ? 1.1 : 1.12} flip={character.flip} lean={isFriend ? -lean : lean} />
+      {isFriend ? (
+        <Img src={assets.bubbleRight} style={{position: 'absolute', left: 990, top: 235, width: 420}} />
+      ) : (
+        <Img src={assets.exclaim} style={{position: 'absolute', left: 970, top: 215, width: 190}} />
+      )}
+      {shot.action === 'food_reaction_close' ? (
+        <Img src={assets.breakfast} style={{position: 'absolute', left: 1010, top: 615, width: 320}} />
+      ) : null}
+    </>
+  );
+};
+
+const GenericResultInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame}) => {
+  if (shot.camera.subject === 'breakfast') {
+    return (
+      <Img
+        src={assets.breakfastClose}
+        style={{
+          position: 'absolute',
+          left: 520,
+          top: 210,
+          width: 850,
+          transform: `scale(${ease(frame, [0, 12], [0.92, 1])})`,
+          filter: 'drop-shadow(0 16px 18px rgba(0,0,0,.22))',
+        }}
+      />
+    );
+  }
+  return null;
+};
+
+const renderGenericByPurpose = (shot: Shot, frame: number, bg: string | undefined, lean: number) => {
+  if (shot.purpose === 'screen_insert' || shot.purpose === 'dial_screen' || shot.purpose === 'event_notice_insert') {
+    return (
+      <SceneFrame shot={shot} bg={shot.camera.subject === 'event_notice' ? undefined : bg}>
+        <GenericScreenInsert shot={shot} />
+      </SceneFrame>
+    );
+  }
+  if (shot.purpose === 'contact' || shot.purpose === 'pickup_phone') {
+    return (
+      <SceneFrame shot={shot} bg={shot.camera.subject === 'fridge_handle' ? undefined : bg}>
+        <GenericContactInsert shot={shot} frame={frame} />
+      </SceneFrame>
+    );
+  }
+  if (shot.purpose === 'reaction' || shot.purpose === 'reaction_close' || shot.purpose === 'receiver_close' || shot.purpose === 'caller_close') {
+    return (
+      <SceneFrame shot={shot} bg={bg}>
+        <GenericReaction shot={shot} lean={lean} />
+      </SceneFrame>
+    );
+  }
+  if (shot.purpose === 'result_insert') {
+    return (
+      <SceneFrame shot={shot} bg={bg}>
+        <GenericResultInsert shot={shot} frame={frame} />
+      </SceneFrame>
+    );
+  }
+  return null;
+};
+
 const renderShot = (shot: Shot, frame: number) => {
   const bgKey = `${shot.scene_pack}:${shot.background}`;
   const bg = backgrounds[bgKey];
   const lean = Math.sin(frame / 8) * 1.5;
+  const generic = renderGenericByPurpose(shot, frame, bg, lean);
+  if (generic) {
+    return generic;
+  }
 
   switch (shot.action) {
     case 'wake_establish':
