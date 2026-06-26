@@ -29,6 +29,7 @@ Every pack must include:
 
 - `scene.yaml` with `scene_id`, `format`, `backgrounds`, `layers`, `anchors`, `props`, and `supported_actions`.
 - At least one wide background.
+- Multi-framing support for important interactions: `wide`, `medium` or cropped action view, and `close_<target>` / `insert_<target>` backgrounds for doors, tables, screens, containers, signs, or key props.
 - Named character anchors in normalized coordinates (`x`, `y`, `scale`).
 - Named prop anchors for interactable objects.
 - Foreground layers when a character must appear behind furniture or architecture.
@@ -51,6 +52,17 @@ Every pack must include:
    - Run `scripts/validate_scene_pack.py <scene-pack>`.
    - Fix missing files, invalid anchors, or unsupported actions before handing the pack to animation.
 6. For animation handoff, reference anchors and actions in shot files instead of hardcoding positions.
+
+## Cinematic Coverage Requirements
+
+Scene packs are not just backgrounds. They must support shot language.
+
+- Provide close/insert assets for every important interaction target: table top, door handle, fridge shelf, TV screen, phone screen, signboard, weapon, food, drawer, chair, counter, or document.
+- Provide prop states for interactions: before/contact/after, such as `closed/open`, `table/hand/close`, `empty/filled`, `off/on`.
+- Provide hand-ready or contact-ready prop variants when possible. If not possible, mark the action template as requiring a hand proxy or object-only insert.
+- Provide at least one foreground occlusion layer for sitting, table, counter, or doorway shots.
+- Preview every important action from at least two framings: a spatial wide/medium and an insert/closeup.
+- If only a single flat wide image exists, mark the pack as `coverage: prototype` and do not use it for interaction-heavy production shots without cropped inserts.
 
 ## ComfyUI Integration
 

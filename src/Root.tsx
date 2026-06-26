@@ -21,6 +21,11 @@ import {
   INTERACTION_TEST_TOTAL_FRAMES,
   SceneInteractionTest,
 } from './SceneInteractionTest';
+import {
+  CINEMATIC_TEST_FPS,
+  CINEMATIC_TEST_TOTAL_FRAMES,
+  CinematicInteractionTest,
+} from './CinematicInteractionTest';
 import {MidnightRules} from './Story';
 
 export const FPS = 12;
@@ -68,6 +73,14 @@ export const Root: React.FC = () => (
       component={SceneInteractionTest}
       durationInFrames={INTERACTION_TEST_TOTAL_FRAMES}
       fps={INTERACTION_TEST_FPS}
+      width={1920}
+      height={1080}
+    />
+    <Composition
+      id="CinematicInteractionTest"
+      component={CinematicInteractionTest}
+      durationInFrames={CINEMATIC_TEST_TOTAL_FRAMES}
+      fps={CINEMATIC_TEST_FPS}
       width={1920}
       height={1080}
     />

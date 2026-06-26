@@ -16,11 +16,12 @@ Use this skill to turn a short-drama idea into a data-driven animation productio
 5. Create character state machine manifests: states, clips, allowed transitions, anchors, and runtime type.
 6. Create character manifests for Animate/Spine/Rive/Unity/AE precomp runtimes: body poses, expression swaps, mouth shapes, hand/prop layers, and loopable actions.
 7. Create state timelines per shot. AI outputs state changes and blocking parameters, not raw frame-by-frame animation.
-8. Create or update runtime handoff specs. When the target runtime is unavailable, simulate the runtime layer in Remotion using the same state machine manifest.
-9. Create or update a Remotion composition for quick rhythm preview.
-10. Create or update an AE JSX generator that builds editable shot precomps from the same shot data and the runtime export manifest.
-11. Run validation before rendering.
-12. Render still checks, then render a short MP4 test.
+8. Decompose each story beat through a cinematic shot pattern before rendering. Object interaction, screen discovery, dialogue, and meetings must become multiple short shots with motivated camera changes.
+9. Create or update runtime handoff specs. When the target runtime is unavailable, simulate the runtime layer in Remotion using the same state machine manifest.
+10. Create or update a Remotion composition for quick rhythm preview.
+11. Create or update an AE JSX generator that builds editable shot precomps from the same shot data and the runtime export manifest.
+12. Run validation before rendering.
+13. Render still checks, then render a short MP4 test.
 
 ## Agent Split
 
@@ -41,6 +42,7 @@ The main agent integrates results and owns the runnable project files.
 - Keep AI-generated or placeholder assets clearly labeled in the license manifest.
 - Keep all shot durations explicit.
 - Treat the animation runtime as an executor, not a creative platform. AI selects states and timing; the runtime plays approved clips.
+- Treat camera planning as an executor input, not decoration. The shot list must choose shot patterns and camera motivations before selecting transforms.
 - Prefer state timelines over one-off keyframes for character acting.
 - Keep character animation inside the Animate layer whenever possible: pose swaps, expression swaps, mouth loops, walk/idle/talk cycles, hand gestures, and prop holds.
 - Keep AE focused on scene assembly: backgrounds, foregrounds, imported Animate sequences, camera motion, VFX, subtitles, UI, color, and final packaging.
@@ -48,6 +50,16 @@ The main agent integrates results and owns the runnable project files.
 - Expose manual controls through predictable layer names or CTRL layers.
 - Use Remotion for fast preview and validation, Animate for character motion, AE for detailed editable polishing.
 - Let humans review story direction, asset choice, and pacing; scripts should catch missing fields, broken assets, invalid presets, unsafe subtitle layout, duration mismatches, missing camera blocks, asset-density gaps, and unmotivated VFX.
+
+## Cinematic Shot Decomposition
+
+- Before writing final shot YAML, classify each beat as `object_pickup`, `put_down`, `screen_discovery`, `phone_call`, `dialogue_exchange`, `meeting`, `travel`, `impact`, or `reaction`.
+- Assign a `shot_pattern` to every beat. Use the pattern to expand one story beat into several short shots.
+- Do not animate a complex action in one master shot. A pickup action needs at least: establish, contact closeup, object insert, pickup/result insert, reaction.
+- Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
+- Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
+- Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
+- Write audience-facing MP4s without debug overlays, parameter labels, file names, or shot test notes.
 
 ## State Machine Rules
 
@@ -76,7 +88,10 @@ The main agent integrates results and owns the runnable project files.
 ## Visual Quality Gates
 
 - Require each shot to have a `camera` block. Use motivated camera moves such as `establishing_pan`, `push_in`, `pull_back`, `truck_left`, `over_shoulder`, `insert_closeup`, `reaction_cut`, or `static_hold`.
-- Do not use one front-facing master shot for a whole sequence. In every 60 seconds, include at least 5 camera/framing changes and at least 3 distinct shot sizes: `wide`, `medium`, `closeup`, `insert`.
+- Do not use one front-facing master shot for a whole sequence. In every 60 seconds, include at least 14 shots, at least 5 camera/framing/angle categories, and at least 3 distinct shot sizes: `wide`, `medium`, `closeup`, `insert`.
+- No single camera setup should carry more than 8 seconds of continuous story unless the user explicitly asks for a stage-play style.
+- Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
+- Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.
 - Every 6-8 second shot should contain at least 2 visible action beats: pose swap, expression swap, mouth loop, gesture, prop movement, UI pop, entrance/exit, or reaction hold.
 - A 60-second sequence should include at least 8 action beats and at least 2 shots with internal focus changes, such as wide-to-medium, speaker-to-reaction, or prop insert.
 - Use camera movement to change emphasis, not as a constant decorative drift. Prefer deliberate multi-camera language: establishing shot, two-shot, over-shoulder, insert closeup, reaction closeup, and pull-back reveal.
@@ -94,5 +109,6 @@ Use Chrome or browser tooling for asset sourcing only after the asset pipeline e
 ## References
 
 Read `references/shot-schema.md` when creating or revising shot YAML.
+Read `references/cinematic-shot-patterns.md` when a beat contains physical action, object interaction, screen discovery, dialogue, phone calls, meetings, or any complaint about flat/single-camera staging.
 Read `references/animate-layer.md` when creating character manifests, JSFL/XFL plans, or Animate export tasks.
 Read `references/state-machine-runtime.md` when creating state machine manifests, runtime clips, or AI-controllable state timelines.

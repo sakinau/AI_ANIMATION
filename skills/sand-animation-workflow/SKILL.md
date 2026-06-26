@@ -26,19 +26,33 @@ Do not hand-tune face positions or movement curves inside a scene unless creatin
 2. Run `scripts/process_free_assets.py` to create transparent, trimmed, frame-split assets under `处理后`.
 3. Calibrate each character pose once in `project/asset-calibration.json`.
 4. Define all allowed motion, pose, and expression changes in `project/animation-presets.json`.
-5. Write or revise `project/story.json` using only calibrated `action` and `expression` values.
-6. Run `scripts/validate_workflow.py` before preview or render.
-7. Preview in Remotion. Fix data tables first; edit React only when the renderer lacks a reusable capability.
-8. Generate AE script with `scripts/generate-ae-script.mjs`; AE should consume the same story, calibration, and motion presets.
+5. Expand story beats into cinematic shot patterns before writing final shots. Do not keep object interaction, phone calls, screen discoveries, or meetings in a single master shot.
+6. Write or revise `project/story.json` using only calibrated `action`, `expression`, `shot_pattern`, and camera values.
+7. Run `scripts/validate_workflow.py` before preview or render.
+8. Preview in Remotion. Fix data tables first; edit React only when the renderer lacks a reusable capability.
+9. Generate AE script with `scripts/generate-ae-script.mjs`; AE should consume the same story, calibration, and motion presets.
 
 ## Quality Rules
 
 - Prefer pose replacement, face replacement, prop movement, camera movement, and effects sprites over free-form body translation.
+- Treat cuts, inserts, and reaction shots as the primary way to make simple assets feel animated. Camera motion alone is not enough.
+- For prop interaction, split the action into short shots: establish position, show contact, show object source, show pickup/result, show reaction.
+- For screen information, cut to a readable screen insert and then to a reaction. Do not leave important text inside a wide shot.
+- For dialogue, alternate caller/listener/reaction/two-shot instead of holding one frontal composition.
 - Avoid long horizontal slides except for deliberate `runPast` or transition shots.
 - Avoid repeated vertical bobbing for standing characters.
 - Change faces at a higher frequency than body poses; body pose changes should be sparse and readable.
 - Treat every new character as untrusted until all face anchors and pose dimensions are calibrated.
 - If an asset is not layered by limbs, do not promise limb-level acting; use pose sheets or switch to a layered/paid/AI-generated rig.
+- If no hand rig exists, use hand-proxy closeups or object-only insert shots. Do not represent pickup only by making the prop float to the character in a wide shot.
+
+## Cinematic Coverage Targets
+
+- A 60-second sample should usually contain 14-22 shots.
+- Include at least 5 camera categories: wide establish, medium action, close reaction, insert/object, POV/over-shoulder/high-angle/low-angle.
+- No single camera setup should last more than 8 seconds unless intentionally chosen for a stage-play gag.
+- Every interaction-heavy minute should include at least 4 insert shots and 3 reaction shots.
+- Audience-facing renders must not contain debug labels, parameter names, file names, or internal test notes.
 
 ## Validation
 

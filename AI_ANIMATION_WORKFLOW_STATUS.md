@@ -1106,6 +1106,61 @@ QA result:
 - Kitchen and bedroom packs are still missing; current test substitutes the living room pack.
 - Hand-grip animation is still represented by staging and prop movement rather than true limb/hand articulation.
 
+## 2026-06-26 Cinematic Shot-Language Upgrade
+
+Problem found by review:
+
+- The first interaction test still behaved like a single master camera with small movement.
+- The fridge pickup action was not a true interaction; food mostly appeared to fly toward the actor.
+- Camera changes existed as transforms, but not as film/animation shot language.
+
+Workflow change:
+
+- Added `skills/ae-sand-drama-workflow/references/cinematic-shot-patterns.md`.
+- Updated AE/sand-animation skills to require beat classification and shot-pattern expansion before rendering.
+- Updated scene-pack requirements so packs must provide interaction inserts and multi-framing support.
+- Added `scripts/validate_cinematic_shots.py` to reject low shot count, missing camera motivation, weak insert coverage, weak reaction coverage, and interaction events without close/contact/result coverage.
+
+New test:
+
+```text
+projects/scene-interaction-test/shots/breakfast_activity_cinematic_test.json
+src/CinematicInteractionTest.tsx
+scripts/render-cinematic-interaction-test.ps1
+output/scene-interaction-breakfast-activity-cinematic-test.mp4
+```
+
+Validation:
+
+```text
+OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_test.json
+```
+
+Render:
+
+```text
+1920x1080, 12 fps, about 77 seconds, 22 short shots
+```
+
+Coverage now includes:
+
+- high-angle establishing shot;
+- TV insert and reaction closeup;
+- side/truck approach to fridge;
+- fridge handle contact closeup;
+- fridge interior POV;
+- pickup closeup with hand proxy;
+- table contact/result insert coverage;
+- readable TV and event notice inserts;
+- phone pickup/screen/caller/receiver/split coverage;
+- event-site wide, over-shoulder reveal, notice insert, and two-shot reaction/result.
+
+Remaining limitations:
+
+- Hand proxy is still symbolic rather than a true rigged hand.
+- Some closeups are synthetic crops or simplified panels because the scene pack does not yet include real kitchen/fridge/table/phone multi-angle art.
+- Next step: create production scene packs with explicit `insert_<target>` backgrounds and prop states, then make the renderer resolve them from `scene.yaml` instead of special-casing this test.
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.
