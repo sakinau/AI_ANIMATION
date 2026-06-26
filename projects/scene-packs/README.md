@@ -49,6 +49,27 @@ Current coverage:
 - 13 anchors
 - 10 supported actions
 
+### `scene_city_street_01`
+
+Rainy modern city street scene for the real-world delivery opening.
+
+Best for:
+
+- courier receiving an order;
+- phone/order popup close-ups;
+- scooter staging and riding beats;
+- storefront pickup;
+- customer-door arrival;
+- portal/rift transition into the fantasy world;
+- rain and speed emphasis.
+
+Current coverage:
+
+- 5 backgrounds
+- 7 prop groups
+- 13 anchors
+- 10 supported actions
+
 ## Validation
 
 Validate a pack with:

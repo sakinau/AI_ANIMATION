@@ -1,0 +1,218 @@
+scene_id: scene_city_street_01
+name: 现实城市雨夜街头交互样板
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_phone: backgrounds/close_phone.png
+  close_store: backgrounds/close_store.png
+  close_customer_door: backgrounds/close_customer_door.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/awning_front.png
+  - layers/bus_stop_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.3
+    y: 0.84
+    scale: 0.86
+    facing: right
+  stand_right:
+    x: 0.66
+    y: 0.84
+    scale: 0.86
+    facing: left
+  store_counter:
+    x: 0.18
+    y: 0.67
+    scale: 1.0
+  store_door:
+    x: 0.13
+    y: 0.72
+    scale: 1.0
+  scooter_park:
+    x: 0.43
+    y: 0.82
+    scale: 0.9
+  scooter_ride:
+    x: 0.55
+    y: 0.83
+    scale: 0.92
+  phone_hand:
+    x: 0.44
+    y: 0.52
+    scale: 1.0
+  ui_center:
+    x: 0.5
+    y: 0.36
+    scale: 1.0
+  delivery_bag_anchor:
+    x: 0.31
+    y: 0.69
+    scale: 1.0
+  customer_door:
+    x: 0.78
+    y: 0.68
+    scale: 1.0
+  portal_center:
+    x: 0.78
+    y: 0.5
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+  rain_ground:
+    x: 0.5
+    y: 0.9
+    scale: 1.0
+props:
+  scooter:
+    label: 外卖电动车
+    variants:
+      park: props/scooter_park.png
+      ride: props/scooter_ride.png
+    default_anchor: scooter_park
+    pivot: center
+    variant_scales:
+      park: 0.95
+      ride: 1.0
+  delivery_bag:
+    label: 外卖箱
+    variants:
+      floor: props/delivery_bag_floor.png
+      hand: props/delivery_bag_hand.png
+    default_anchor: delivery_bag_anchor
+    pivot: center
+    variant_scales:
+      floor: 0.72
+      hand: 0.58
+  phone_order:
+    label: 手机订单
+    variants:
+      hand: props/phone_order_hand.png
+      close: props/phone_order_close.png
+    default_anchor: phone_hand
+    pivot: center
+    variant_scales:
+      hand: 0.75
+      close: 1.0
+  order_popup:
+    label: 订单弹窗
+    variants:
+      order: props/order_popup.png
+    default_anchor: ui_center
+    pivot: center
+    variant_scales:
+      order: 0.82
+  customer_door:
+    label: 客户门口
+    variants:
+      close: props/customer_door_close.png
+    default_anchor: customer_door
+    pivot: center
+    variant_scales:
+      close: 0.78
+  portal_rift:
+    label: 穿越裂缝
+    variants:
+      open: props/portal_rift_open.png
+    default_anchor: portal_center
+    pivot: center
+    variant_scales:
+      open: 1.0
+  rain_splash:
+    label: 雨水飞溅
+    variants:
+      loop: props/rain_splash.png
+    default_anchor: rain_ground
+    pivot: center
+    variant_scales:
+      loop: 1.25
+supported_actions:
+- stand
+- pick_up_delivery
+- check_order
+- show_order_popup
+- ride_scooter
+- arrive_customer_door
+- open_portal
+- enter_portal
+- rain_loop
+- inspect_close
+action_templates:
+  pick_up_delivery:
+    duration: 1.1
+    prop: delivery_bag
+    prop_sequence:
+    - time: 0.0
+      variant: floor
+      anchor: delivery_bag_anchor
+    - time: 0.65
+      variant: hand
+      anchor: actor.hand_r
+  check_order:
+    duration: 1.3
+    prop: phone_order
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: phone_hand
+    - time: 0.7
+      variant: close
+      anchor: close_insert_center
+  show_order_popup:
+    duration: 1.0
+    prop: order_popup
+    prop_sequence:
+    - time: 0.0
+      variant: order
+      anchor: ui_center
+      motion: pop_in
+  ride_scooter:
+    duration: 1.4
+    prop: scooter
+    prop_sequence:
+    - time: 0.0
+      variant: park
+      anchor: scooter_park
+    - time: 0.7
+      variant: ride
+      anchor: scooter_ride
+      motion: slide_right
+  arrive_customer_door:
+    duration: 1.2
+    background: close_customer_door
+    prop: customer_door
+    prop_sequence:
+    - time: 0.0
+      variant: close
+      anchor: close_insert_center
+  open_portal:
+    duration: 1.0
+    prop: portal_rift
+    prop_sequence:
+    - time: 0.0
+      variant: open
+      anchor: portal_center
+  enter_portal:
+    duration: 1.0
+    actor_state_sequence:
+    - ride
+    - accelerate
+    - vanish
+    target_anchor: portal_center
+  rain_loop:
+    duration: 0.8
+    prop: rain_splash
+    prop_sequence:
+    - time: 0.0
+      variant: loop
+      anchor: rain_ground

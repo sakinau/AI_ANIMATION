@@ -626,6 +626,65 @@ Checked 20 referenced assets and 13 anchors
 
 Asset strategy note: this pack is intentionally deterministic/PIL-generated rather than ComfyUI-generated. The goal is stable staging and action control first; final art can be replaced later while keeping the same anchors, prop IDs, and action templates.
 
+## 2026-06-26 City Street Scene Pack
+
+Added a third complete scene pack for the real-world opening of the delivery story:
+
+`	ext
+projects/scene-packs/scene_city_street_01/
+`
+
+Purpose: support the ordinary-world delivery beats before the portal transition: rainy street, storefront pickup, phone order, scooter ride, customer-door arrival, and portal/rift event.
+
+Generated deterministic assets with:
+
+`	ext
+scripts/create_city_street_scene_pack.py
+`
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_phone, close_store, close_customer_door
+- foreground layers: wning_front, us_stop_front
+- props: scooter, delivery_bag, phone_order, order_popup, customer_door, portal_rift, 
+ain_splash
+- anchors: 13 named staging points
+- supported actions: 10
+
+Key action templates:
+
+- pick_up_delivery
+- check_order
+- show_order_popup
+- 
+ide_scooter
+- rrive_customer_door
+- open_portal
+- enter_portal
+- 
+ain_loop
+
+Preview coverage:
+
+`	ext
+preview_wide.png
+preview_props.png
+preview_order_popup.png
+preview_ride_portal.png
+preview_phone_close.png
+preview_customer_door.png
+city_street_props_contact_sheet.png
+`
+
+Validation status:
+
+`	ext
+OK: scene_city_street_01 is valid
+Checked 17 referenced assets and 13 anchors
+`
+
+Workflow note: with scene_city_street_01, scene_fantasy_hall_01, and scene_demo_school_01, the project now has three reusable scene contexts: real-world delivery, fantasy climax, and general dialogue/school-style interaction testing.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
