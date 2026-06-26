@@ -28,6 +28,24 @@ def paste_center(canvas: Image.Image, asset: Image.Image, x: int, y: int, scale:
     canvas.alpha_composite(img, (int(x - w / 2), int(y - h / 2)))
 
 
+def paste_prop(scene_pack: Path, data: dict, canvas: Image.Image, prop_id: str, variant: str, anchor_id: str, scale: float = 1.0) -> None:
+    prop = data.get("props", {}).get(prop_id, {})
+    rel = prop.get("variants", {}).get(variant)
+    anchor = data.get("anchors", {}).get(anchor_id)
+    if not rel or not anchor:
+        return
+    variant_scale = float(prop.get("variant_scales", {}).get(variant, 1.0))
+    size = (int(data["format"]["width"]), int(data["format"]["height"]))
+    asset = Image.open(scene_pack / rel).convert("RGBA")
+    paste_center(
+        canvas,
+        asset,
+        int(anchor["x"] * size[0]),
+        int(anchor["y"] * size[1]),
+        float(anchor.get("scale", 1)) * scale * variant_scale,
+    )
+
+
 def draw_actor(draw: ImageDraw.ImageDraw, anchor: dict, label: str, color: str, width: int, height: int, font) -> None:
     x = int(anchor["x"] * width)
     y = int(anchor["y"] * height)
@@ -39,6 +57,11 @@ def draw_actor(draw: ImageDraw.ImageDraw, anchor: dict, label: str, color: str, 
     draw.rounded_rectangle((left, top, left + body_w, y), radius=18, fill=color, outline=(20, 20, 20), width=5)
     draw.ellipse((x - 42, top - 64, x + 42, top + 20), fill=(255, 235, 190), outline=(20, 20, 20), width=5)
     draw.text((left, y + 10), label, fill=(255, 255, 255), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+
+def draw_camera_frame(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], label: str, font) -> None:
+    draw.rounded_rectangle(box, radius=18, outline=(255, 230, 90), width=7)
+    draw.text((box[0] + 16, box[1] + 14), label, fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
 
 
 def render_preview(scene_pack: Path, name: str) -> Path:
@@ -69,14 +92,46 @@ def render_preview(scene_pack: Path, name: str) -> Path:
     if name in ("pick_phone", "all"):
         if "stand_left" in anchors:
             draw_actor(draw, anchors["stand_left"], "actor@stand_left", (90, 150, 230), *size, font)
-        phone = data["props"].get("phone", {}).get("variants", {}).get("table")
-        desk_anchor = anchors.get("desk_phone")
-        if phone and desk_anchor:
-            asset = Image.open(scene_pack / phone).convert("RGBA")
-            paste_center(canvas, asset, int(desk_anchor["x"] * size[0]), int(desk_anchor["y"] * size[1]), float(desk_anchor.get("scale", 1)))
+        paste_prop(scene_pack, data, canvas, "phone", "table", "desk_phone")
 
-    for rel in data.get("layers", {}).get("front_character", []):
-        canvas.alpha_composite(open_layer(scene_pack, rel, size))
+    if name in ("props", "all"):
+        for prop_id, variant, anchor_id, scale in (
+            ("phone", "table", "desk_phone", 1.0),
+            ("book", "closed", "desk_book", 1.0),
+            ("cup", "table", "desk_cup", 1.0),
+            ("paper_note", "table", "desk_note", 1.0),
+            ("key", "table", "desk_key", 1.0),
+            ("chalk", "table", "desk_chalk", 1.0),
+            ("delivery_bag", "floor", "floor_delivery_bag", 0.9),
+        ):
+            paste_prop(scene_pack, data, canvas, prop_id, variant, anchor_id, scale)
+        draw.text((60, 60), "prop anchors / interaction-ready", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name in ("read_note", "all"):
+        if "stand_left" in anchors:
+            draw_actor(draw, anchors["stand_left"], "reach/read", (90, 150, 230), *size, font)
+        paste_prop(scene_pack, data, canvas, "paper_note", "table", "desk_note")
+        draw_camera_frame(draw, (620, 205, 1280, 760), "cutaway: paper_note.close", small_font)
+
+    if name in ("handover", "all"):
+        if "stand_left" in anchors:
+            draw_actor(draw, anchors["stand_left"], "giver", (90, 150, 230), *size, font)
+        if "stand_right" in anchors:
+            draw_actor(draw, anchors["stand_right"], "receiver", (230, 120, 80), *size, font)
+        paste_prop(scene_pack, data, canvas, "paper_note", "hand", "handoff_mid", 0.85)
+        draw.text((760, 500), "handoff_mid", fill=(255, 245, 150), font=small_font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name in ("inspect_close", "all"):
+        close_bg = data.get("backgrounds", {}).get("close_desk")
+        if close_bg:
+            canvas = open_layer(scene_pack, close_bg, size)
+            draw = ImageDraw.Draw(canvas)
+        paste_prop(scene_pack, data, canvas, "phone", "close", "close_insert_center", 0.92)
+        draw.text((60, 60), "inspect_close: phone.close", fill=(255, 245, 150), font=font, stroke_width=3, stroke_fill=(0, 0, 0))
+
+    if name != "inspect_close":
+        for rel in data.get("layers", {}).get("front_character", []):
+            canvas.alpha_composite(open_layer(scene_pack, rel, size))
 
     previews = scene_pack / "previews"
     previews.mkdir(parents=True, exist_ok=True)
@@ -88,11 +143,11 @@ def render_preview(scene_pack: Path, name: str) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("scene_pack")
-    parser.add_argument("--preview", default="all", choices=["wide", "sit", "pick_phone", "all"])
+    parser.add_argument("--preview", default="all", choices=["wide", "sit", "pick_phone", "props", "read_note", "handover", "inspect_close", "all"])
     args = parser.parse_args()
 
     scene_pack = Path(args.scene_pack)
-    names = ["wide", "sit", "pick_phone"] if args.preview == "all" else [args.preview]
+    names = ["wide", "sit", "pick_phone", "props", "read_note", "handover", "inspect_close"] if args.preview == "all" else [args.preview]
     for name in names:
         print(render_preview(scene_pack, name))
 

@@ -62,28 +62,69 @@ anchors:
     x: 0.8
     y: 0.52
     scale: 1.0
+  desk_note:
+    x: 0.405
+    y: 0.555
+    scale: 1.0
+  desk_key:
+    x: 0.705
+    y: 0.565
+    scale: 1.0
+  desk_chalk:
+    x: 0.355
+    y: 0.58
+    scale: 1.0
+  floor_delivery_bag:
+    x: 0.245
+    y: 0.865
+    scale: 0.9
+  handoff_mid:
+    x: 0.48
+    y: 0.55
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
 props:
   phone:
     label: 手机
     variants:
       table: props/phone_table.png
       hand: props/phone_hand.png
+      close: props/phone_close.png
     default_anchor: desk_phone
     pivot: center
+    variant_scales:
+      table: 1.0
+      hand: 1.0
+      close: 1.0
   book:
     label: 书
     variants:
       closed: props/book_closed.png
       open: props/book_open.png
+      hand: props/book_hand.png
+      close: props/book_close.png
     default_anchor: desk_book
     pivot: center
+    variant_scales:
+      closed: 1.0
+      open: 1.0
+      hand: 0.62
+      close: 0.92
   cup:
     label: 杯子
     variants:
       table: props/cup_table.png
       hand: props/cup_hand.png
+      close: props/cup_close.png
     default_anchor: desk_cup
     pivot: center
+    variant_scales:
+      table: 1.0
+      hand: 1.0
+      close: 0.82
   cup_comfy:
     label: Comfy杯子
     variants:
@@ -102,6 +143,48 @@ props:
       table: props/phone_comfy_table.png
     pivot: center
     default_anchor: desk_phone
+  paper_note:
+    label: 纸条
+    variants:
+      table: props/paper_note_table.png
+      hand: props/paper_note_hand.png
+      close: props/paper_note_close.png
+    default_anchor: desk_note
+    pivot: center
+    variant_scales:
+      table: 0.58
+      hand: 0.58
+      close: 0.9
+  delivery_bag:
+    label: 外卖袋
+    variants:
+      floor: props/delivery_bag_floor.png
+      hand: props/delivery_bag_hand.png
+    default_anchor: floor_delivery_bag
+    pivot: center
+    variant_scales:
+      floor: 0.72
+      hand: 0.55
+  key:
+    label: 钥匙
+    variants:
+      table: props/key_table.png
+      hand: props/key_hand.png
+    default_anchor: desk_key
+    pivot: center
+    variant_scales:
+      table: 0.58
+      hand: 0.55
+  chalk:
+    label: 粉笔
+    variants:
+      table: props/chalk_table.png
+      hand: props/chalk_hand.png
+    default_anchor: desk_chalk
+    pivot: center
+    variant_scales:
+      table: 0.62
+      hand: 0.58
 supported_actions:
 - stand
 - sit
@@ -110,6 +193,12 @@ supported_actions:
 - hand_over
 - enter_from_door
 - inspect_close
+- read_note
+- open_book
+- drink
+- unlock_door
+- deliver_bag
+- show_closeup
 action_templates:
   sit:
     duration: 1.0
@@ -126,10 +215,11 @@ action_templates:
     - reach
     - grab
     - hold
+    default_prop: phone
     prop_sequence:
     - time: 0.0
       variant: table
-      anchor: desk_phone
+      anchor: '{prop.default_anchor}'
     - time: 0.7
       variant: hand
       anchor: actor.hand_r
@@ -142,3 +232,103 @@ action_templates:
     from_anchor: door_entry
     requires_front_layers:
     - door_frame_front
+  hand_over:
+    duration: 1.0
+    actor_state_sequence:
+    - hold
+    - extend
+    - release
+    from_anchor: actor.hand_r
+    to_anchor: handoff_mid
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 0.65
+      variant: hand
+      anchor: handoff_mid
+  inspect_close:
+    duration: 1.4
+    camera: cut_to_close_insert
+    prop_anchor: close_insert_center
+    preferred_variants:
+    - close
+    - open
+    - table
+  read_note:
+    duration: 1.6
+    actor_state_sequence:
+    - reach
+    - hold
+    - read
+    prop: paper_note
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: desk_note
+    - time: 0.55
+      variant: hand
+      anchor: actor.hand_r
+    - time: 1.0
+      variant: close
+      anchor: close_insert_center
+  open_book:
+    duration: 1.8
+    actor_state_sequence:
+    - reach
+    - open
+    - read
+    prop: book
+    prop_sequence:
+    - time: 0.0
+      variant: closed
+      anchor: desk_book
+    - time: 0.6
+      variant: hand
+      anchor: actor.hand_r
+    - time: 1.15
+      variant: close
+      anchor: close_insert_center
+  drink:
+    duration: 1.2
+    actor_state_sequence:
+    - reach
+    - lift
+    - sip
+    prop: cup
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: desk_cup
+    - time: 0.55
+      variant: hand
+      anchor: actor.hand_r
+  unlock_door:
+    duration: 1.4
+    actor_state_sequence:
+    - hold
+    - reach
+    - turn_key
+    prop: key
+    target_anchor: door_handle
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 0.9
+      variant: hand
+      anchor: door_handle
+  deliver_bag:
+    duration: 1.5
+    actor_state_sequence:
+    - carry
+    - lower
+    - release
+    prop: delivery_bag
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 1.0
+      variant: floor
+      anchor: floor_delivery_bag

@@ -424,6 +424,77 @@ Checked 19 referenced assets and 9 anchors
 Skill is valid
 ```
 
+## 2026-06-26 Scene Pack Asset Expansion
+
+Extended scene_demo_school_01 from a basic desk/phone test pack into a richer interaction test pack.
+
+New deterministic transparent PNG props were generated with scripts/create_school_demo_assets.py:
+
+`	ext
+projects/scene-packs/scene_demo_school_01/props/
+  phone_close.png
+  book_hand.png
+  book_close.png
+  cup_close.png
+  paper_note_table.png
+  paper_note_hand.png
+  paper_note_close.png
+  delivery_bag_floor.png
+  delivery_bag_hand.png
+  key_table.png
+  key_hand.png
+  chalk_table.png
+  chalk_hand.png
+`
+
+New props registered in scene.yaml:
+
+- paper_note: table, hand, close
+- delivery_bag: floor, hand
+- key: table, hand
+- chalk: table, hand
+- added close/hand variants for existing phone, book, and cup
+
+New anchors:
+
+- desk_note
+- desk_key
+- desk_chalk
+- loor_delivery_bag
+- handoff_mid
+- close_insert_center
+
+New or improved action templates:
+
+- 
+ead_note
+- open_book
+- drink
+- unlock_door
+- deliver_bag
+- hand_over
+- inspect_close
+
+Preview coverage now includes:
+
+`	ext
+preview_props.png
+preview_read_note.png
+preview_handover.png
+preview_inspect_close.png
+school_extra_props_contact_sheet.png
+`
+
+Validation status after expansion:
+
+`	ext
+OK: scene_demo_school_01 is valid
+Checked 32 referenced assets and 15 anchors
+Skill is valid
+`
+
+Implementation note: uild_preview.py now understands ariant_scales, so reusable prop PNGs can keep stable source dimensions while scene previews and animation handoff receive sane per-variant display scale hints.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.
