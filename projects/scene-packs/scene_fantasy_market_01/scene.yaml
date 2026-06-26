@@ -1,0 +1,263 @@
+scene_id: scene_fantasy_market_01
+name: fantasy market square interaction pack
+version: 0.1.0
+format:
+  width: 1920
+  height: 1080
+backgrounds:
+  wide: backgrounds/wide.png
+  medium: backgrounds/medium.png
+  close_left_stall: backgrounds/close_left_stall.png
+  close_right_stall: backgrounds/close_right_stall.png
+  close_notice: backgrounds/close_notice.png
+  close_fountain: backgrounds/close_fountain.png
+  close_signpost: backgrounds/close_signpost.png
+layers:
+  background:
+  - backgrounds/wide.png
+  behind_character: []
+  front_character:
+  - layers/left_stall_front.png
+  - layers/right_stall_front.png
+  - layers/fountain_front.png
+  overlay: []
+anchors:
+  stand_left:
+    x: 0.3
+    y: 0.84
+    scale: 0.84
+    facing: right
+  stand_center:
+    x: 0.5
+    y: 0.84
+    scale: 0.84
+    facing: front
+  stand_right:
+    x: 0.7
+    y: 0.84
+    scale: 0.84
+    facing: left
+  vendor_left:
+    x: 0.23
+    y: 0.75
+    scale: 0.74
+    facing: right
+  vendor_right:
+    x: 0.78
+    y: 0.75
+    scale: 0.74
+    facing: left
+  left_stall_counter:
+    x: 0.2
+    y: 0.62
+    scale: 1.0
+  right_stall_counter:
+    x: 0.78
+    y: 0.62
+    scale: 1.0
+  notice_board:
+    x: 0.4
+    y: 0.59
+    scale: 1.0
+  fountain_center:
+    x: 0.5
+    y: 0.62
+    scale: 1.0
+  signpost:
+    x: 0.61
+    y: 0.58
+    scale: 1.0
+  coin_handoff:
+    x: 0.31
+    y: 0.58
+    scale: 1.0
+  potion_handoff:
+    x: 0.7
+    y: 0.58
+    scale: 1.0
+  map_hand:
+    x: 0.5
+    y: 0.53
+    scale: 1.0
+  reaction_top:
+    x: 0.5
+    y: 0.24
+    scale: 1.0
+  close_insert_center:
+    x: 0.5
+    y: 0.5
+    scale: 1.0
+props:
+  coin_pouch:
+    label: coin pouch
+    variants:
+      table: props/coin_pouch_table.png
+      hand: props/coin_pouch_hand.png
+      close: props/coin_pouch_close.png
+    default_anchor: coin_handoff
+    pivot: center
+    variant_scales:
+      table: 0.62
+      hand: 0.56
+      close: 1.0
+  potion:
+    label: magic potion
+    variants:
+      table: props/potion_table.png
+      hand: props/potion_hand.png
+      close: props/potion_close.png
+    default_anchor: right_stall_counter
+    pivot: center
+    variant_scales:
+      table: 0.62
+      hand: 0.56
+      close: 0.95
+  apple_crate:
+    label: apple crate
+    variants:
+      table: props/apple_crate_table.png
+      hand: props/apple_crate_hand.png
+    default_anchor: left_stall_counter
+    pivot: center
+    variant_scales:
+      table: 0.78
+      hand: 0.58
+  notice:
+    label: quest notice
+    variants:
+      board: props/notice_board.png
+      hand: props/notice_hand.png
+      close: props/notice_close.png
+    default_anchor: notice_board
+    pivot: center
+    variant_scales:
+      board: 0.62
+      hand: 0.54
+      close: 0.95
+  map_scroll:
+    label: route map
+    variants:
+      hand: props/map_scroll_hand.png
+      close: props/map_scroll_close.png
+    default_anchor: map_hand
+    pivot: center
+    variant_scales:
+      hand: 0.58
+      close: 0.95
+  signpost:
+    label: direction signpost
+    variants:
+      front: props/signpost_front.png
+    default_anchor: signpost
+    pivot: center
+    variant_scales:
+      front: 0.86
+  reaction_mark:
+    label: crowd reaction
+    variants:
+      shock: props/reaction_shock.png
+    default_anchor: reaction_top
+    pivot: center
+    variant_scales:
+      shock: 0.72
+supported_actions:
+- stand
+- enter_market
+- trade_coin
+- buy_potion
+- buy_food
+- read_notice
+- take_notice
+- check_map
+- ask_directions
+- gather_at_fountain
+- crowd_reaction
+- inspect_close
+action_templates:
+  enter_market:
+    duration: 1.0
+    actor_state_sequence:
+    - offscreen
+    - walk
+    - stand
+    target_anchor: stand_center
+  trade_coin:
+    duration: 1.1
+    prop: coin_pouch
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: actor.hand_r
+    - time: 0.7
+      variant: table
+      anchor: left_stall_counter
+  buy_potion:
+    duration: 1.2
+    prop: potion
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: right_stall_counter
+    - time: 0.7
+      variant: hand
+      anchor: actor.hand_l
+  buy_food:
+    duration: 1.0
+    prop: apple_crate
+    prop_sequence:
+    - time: 0.0
+      variant: table
+      anchor: left_stall_counter
+    - time: 0.65
+      variant: hand
+      anchor: actor.hand_r
+  read_notice:
+    duration: 1.1
+    prop: notice
+    prop_sequence:
+    - time: 0.0
+      variant: board
+      anchor: notice_board
+    - time: 0.6
+      variant: close
+      anchor: close_insert_center
+  take_notice:
+    duration: 1.0
+    prop: notice
+    prop_sequence:
+    - time: 0.0
+      variant: board
+      anchor: notice_board
+    - time: 0.55
+      variant: hand
+      anchor: actor.hand_r
+  check_map:
+    duration: 1.1
+    prop: map_scroll
+    prop_sequence:
+    - time: 0.0
+      variant: hand
+      anchor: map_hand
+    - time: 0.6
+      variant: close
+      anchor: close_insert_center
+  ask_directions:
+    duration: 0.9
+    prop: signpost
+    prop_sequence:
+    - time: 0.0
+      variant: front
+      anchor: signpost
+  gather_at_fountain:
+    duration: 1.2
+    target_anchor: fountain_center
+    requires_front_layers:
+    - fountain_front
+  crowd_reaction:
+    duration: 0.7
+    prop: reaction_mark
+    prop_sequence:
+    - time: 0.0
+      variant: shock
+      anchor: reaction_top
+      motion: pop_in

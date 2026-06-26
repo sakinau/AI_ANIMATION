@@ -861,6 +861,66 @@ Checked 26 referenced assets and 15 anchors
 
 Workflow note: the current real-world delivery chain now has city_street -> takeout_shop -> customer_room. This makes it possible to stage a coherent delivery episode using named actions instead of isolated backgrounds.
 
+## 2026-06-26 Fantasy Market Scene Pack
+
+Added a seventh complete scene pack for fantasy town / public-square interaction beats:
+
+```text
+projects/scene-packs/scene_fantasy_market_01/
+```
+
+Purpose: expand the fantasy-world side beyond forest obstacles and the demon-king hall. This pack provides a reusable public location for asking directions, reading quests, trading items, buying supplies, and triggering crowd reactions.
+
+Generated deterministic assets with:
+
+```text
+scripts/create_fantasy_market_scene_pack.py
+```
+
+Scene pack contents:
+
+- backgrounds: wide, medium, close_left_stall, close_right_stall, close_notice, close_fountain, close_signpost
+- foreground layers: left_stall_front, right_stall_front, fountain_front
+- props: coin_pouch, potion, apple_crate, notice, map_scroll, signpost, reaction_mark
+- anchors: 15 named staging points
+- supported actions: 12
+
+Key action templates:
+
+- enter_market
+- trade_coin
+- buy_potion
+- buy_food
+- read_notice
+- take_notice
+- check_map
+- ask_directions
+- gather_at_fountain
+- crowd_reaction
+
+Preview coverage:
+
+```text
+preview_wide.png
+preview_props.png
+preview_trade_left.png
+preview_buy_potion.png
+preview_notice_reaction.png
+preview_fountain_map.png
+preview_notice_close.png
+preview_signpost_close.png
+fantasy_market_props_contact_sheet.png
+```
+
+Validation status:
+
+```text
+OK: scene_fantasy_market_01 is valid
+Checked 25 referenced assets and 15 anchors
+```
+
+Workflow note: the current fantasy route now has forest_path -> fantasy_market -> fantasy_hall. This gives the animation planner a mid-route public scene where exposition, comedy trading, and route decisions can happen without forcing everything into a throne room.
+
 ## Next Operations
 
 1. Build a reference-guided ComfyUI test.

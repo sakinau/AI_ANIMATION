@@ -130,6 +130,26 @@ Current coverage:
 - 15 anchors
 - 13 supported actions
 
+### `scene_fantasy_market_01`
+
+Fantasy village market / public square scene.
+
+Best for:
+
+- courier entering a public fantasy town space;
+- trading coins, buying food, and buying potions;
+- reading or taking quest notices;
+- checking a route map and asking directions;
+- fountain meeting beats and crowd reaction overlays;
+- stall, signpost, notice-board, and item close-up inserts.
+
+Current coverage:
+
+- 7 backgrounds
+- 7 prop groups
+- 15 anchors
+- 12 supported actions
+
 ## Validation
 
 Validate a pack with:
