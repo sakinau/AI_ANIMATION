@@ -16,7 +16,7 @@ Use this skill to turn a short-drama idea into a data-driven animation productio
 5. Create character state machine manifests: states, clips, allowed transitions, anchors, and runtime type.
 6. Create character manifests for Animate/Spine/Rive/Unity/AE precomp runtimes: body poses, expression swaps, mouth shapes, hand/prop layers, and loopable actions.
 7. Create state timelines per shot. AI outputs state changes and blocking parameters, not raw frame-by-frame animation.
-8. Decompose each story beat through a cinematic shot pattern before rendering. Object interaction, screen discovery, dialogue, and meetings must become multiple short shots with motivated camera changes.
+8. Decompose each story beat through a cinematic shot pattern before rendering. Object interaction, screen discovery, dialogue, and meetings must become multiple short shots with motivated camera changes. Prefer generating the shot list from event beats with `scripts/expand_cinematic_beats.py`, then validating with `scripts/validate_cinematic_shots.py`.
 9. Create or update runtime handoff specs. When the target runtime is unavailable, simulate the runtime layer in Remotion using the same state machine manifest.
 10. Create or update a Remotion composition for quick rhythm preview.
 11. Create or update an AE JSX generator that builds editable shot precomps from the same shot data and the runtime export manifest.
@@ -55,6 +55,13 @@ The main agent integrates results and owns the runnable project files.
 
 - Before writing final shot YAML, classify each beat as `object_pickup`, `put_down`, `screen_discovery`, `phone_call`, `dialogue_exchange`, `meeting`, `travel`, `impact`, or `reaction`.
 - Assign a `shot_pattern` to every beat. Use the pattern to expand one story beat into several short shots.
+- For repeatable production, write an event file first, then run the beat expander:
+
+```powershell
+python scripts\expand_cinematic_beats.py projects\<project-id>\shots\<sequence>_events.json --output projects\<project-id>\shots\<sequence>_generated.json
+python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence>_generated.json
+```
+
 - Do not animate a complex action in one master shot. A pickup action needs at least: establish, contact closeup, object insert, pickup/result insert, reaction.
 - Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.

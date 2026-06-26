@@ -14,6 +14,28 @@ shot_pattern: object_pickup_sequence
 
 The pattern decides camera variety, insert shots, action granularity, and edit rhythm. The renderer then executes short, simple shots.
 
+## Event-To-Shot Workflow
+
+Prefer this sequence for production:
+
+1. Write a compact event file, for example `shots/<sequence>_events.json`.
+2. For each event, set `event_type`, `shot_pattern`, `scene_pack`, `background`, phase-specific `actions`, `dialogue`, `subjects`, and optional `blocking` / `interaction`.
+3. Expand the event file:
+
+```powershell
+python scripts\expand_cinematic_beats.py projects\<project-id>\shots\<sequence>_events.json --output projects\<project-id>\shots\<sequence>_generated.json
+```
+
+4. Validate the generated shot list:
+
+```powershell
+python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence>_generated.json
+```
+
+5. Render Remotion/AE from the generated shot list, not from a hand-written one-off long shot list.
+
+The event file is the creative control surface; the generated shot list is the execution contract.
+
 ## Required Shot Fields
 
 Add these fields to every shot:

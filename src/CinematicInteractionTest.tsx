@@ -9,7 +9,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
-import sequence from '../projects/scene-interaction-test/shots/breakfast_activity_cinematic_test.json';
+import sequence from '../projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json';
 
 type Shot = (typeof sequence.shots)[number];
 

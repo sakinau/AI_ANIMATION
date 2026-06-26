@@ -1,0 +1,201 @@
+{
+  "project_id": "scene-interaction-test",
+  "sequence_id": "breakfast_activity_cinematic_generated",
+  "title": "小明的早餐活动：事件生成分镜测试",
+  "fps": 12,
+  "format": {
+    "width": 1920,
+    "height": 1080
+  },
+  "goal": "用事件输入自动展开电影化镜头表，验证分镜不依赖手写长表。",
+  "source_events": "breakfast_activity_events.json",
+  "events": [
+    {
+      "event_id": "wake_context",
+      "event_type": "establish",
+      "shot_pattern": "establish_to_reaction",
+      "shot_prefix": "G01_",
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "backgrounds": {
+        "screen_insert": "close_tv"
+      },
+      "subjects": {
+        "establish_space": "room",
+        "screen_insert": "tv",
+        "reaction_close": "xiaoming"
+      },
+      "actions": {
+        "establish_space": "wake_establish",
+        "screen_insert": "tv_idle_insert",
+        "reaction_close": "wake_reaction"
+      },
+      "dialogue": {
+        "establish_space": "早上七点，小明被客厅里一声电视待机音吵醒。",
+        "screen_insert": "电视：本市下午三点将召开限时试吃大会。",
+        "reaction_close": "小明：冰箱在召唤我，电视在命令我。"
+      }
+    },
+    {
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "shot_prefix": "G02_",
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "subjects": {
+        "approach_object": "xiaoming",
+        "contact": "fridge_handle",
+        "reveal_source": "eggs_milk",
+        "show_pickup": "eggs_milk",
+        "reaction": "xiaoming"
+      },
+      "actions": {
+        "approach_object": "approach_fridge",
+        "contact": "fridge_handle_contact",
+        "reveal_source": "fridge_inside_pov",
+        "show_pickup": "food_to_hand_close",
+        "reaction": "food_reaction_close"
+      },
+      "dialogue": {
+        "approach_object": "他走向冰箱，动作坚定得像去签人生和解书。",
+        "contact": "他的手按住冰箱门把，命运发出咔哒一声。",
+        "reveal_source": "冰箱内部，两个鸡蛋和一瓶牛奶正在等待被选中。",
+        "show_pickup": "鸡蛋和牛奶被拿起，这不是飞行，是剪辑。",
+        "reaction": "小明：成年人的体面，今天只剩蛋白质了。"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "event_id": "breakfast_table",
+      "event_type": "put_down",
+      "shot_pattern": "object_putdown_sequence",
+      "shot_prefix": "G03_",
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_table",
+      "subjects": {
+        "contact": "breakfast",
+        "result_insert": "breakfast"
+      },
+      "actions": {
+        "contact": "place_breakfast_overhead",
+        "result_insert": "place_breakfast_result"
+      },
+      "dialogue": {
+        "contact": "镜头俯拍茶几，早餐被小心放下。",
+        "result_insert": "鸡蛋和牛奶占据画面中心，像一场朴素的登场仪式。"
+      },
+      "blocking": {
+        "primary_action": "place",
+        "screen_direction": "inward",
+        "start_anchor": "xiaoming_hand_r",
+        "end_anchor": "table_center"
+      },
+      "interaction": {
+        "contact_frame": 14,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "breakfast_plate",
+        "result_state": "prop_on_table"
+      }
+    },
+    {
+      "event_id": "watch_tv",
+      "event_type": "screen_discovery",
+      "shot_pattern": "watch_screen_discovery",
+      "shot_prefix": "G04_",
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "backgrounds": {
+        "screen_insert": "close_tv"
+      },
+      "subjects": {
+        "actor_context": "xiaoming",
+        "screen_insert": "tv",
+        "reaction_close": "xiaoming"
+      },
+      "actions": {
+        "actor_context": "eat_medium",
+        "screen_insert": "activity_tv_insert",
+        "reaction_close": "activity_reaction"
+      },
+      "dialogue": {
+        "actor_context": "小明坐下吃早餐，眼神却被电视粘住。",
+        "screen_insert": "电视：活动暗号，早餐自由。",
+        "reaction_close": "小明：免费这两个字，听起来像主线任务。"
+      }
+    },
+    {
+      "event_id": "phone_call",
+      "event_type": "phone_call",
+      "shot_pattern": "phone_call",
+      "shot_prefix": "G05_",
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "subjects": {
+        "pickup_phone": "phone",
+        "dial_screen": "phone",
+        "caller_close": "xiaoming",
+        "receiver_close": "friend",
+        "split_result": "both"
+      },
+      "scene_packs": {
+        "split_result": "scene_overlay_vfx_01"
+      },
+      "backgrounds": {
+        "pickup_phone": "close_table",
+        "split_result": "speed_stage"
+      },
+      "actions": {
+        "pickup_phone": "phone_pickup_insert",
+        "dial_screen": "phone_screen_insert",
+        "caller_close": "caller_close",
+        "receiver_close": "receiver_close",
+        "split_result": "phone_split_dialogue"
+      },
+      "dialogue": {
+        "pickup_phone": "他抓起手机，速度像发现了最后一张优惠券。",
+        "dial_screen": "手机屏幕上，朋友阿强的头像开始震动。",
+        "caller_close": "小明：下午三点，城市广场，带胃不要带脑子。",
+        "receiver_close": "阿强：懂了，我负责排队，你负责假装偶遇。",
+        "split_result": "两个人隔着电话，同时确认了这个不太聪明但很坚定的计划。"
+      }
+    },
+    {
+      "event_id": "event_meeting",
+      "event_type": "meeting",
+      "shot_pattern": "meeting_at_location",
+      "shot_prefix": "G06_",
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "subjects": {
+        "location_establish": "event_site",
+        "counterpart_reveal": "friend",
+        "event_notice_insert": "event_notice",
+        "reaction_pair_result": "both"
+      },
+      "actions": {
+        "location_establish": "event_wide",
+        "counterpart_reveal": "over_shoulder_meet",
+        "event_notice_insert": "event_notice_insert",
+        "reaction_pair_result": "event_two_shot"
+      },
+      "dialogue": {
+        "location_establish": "下午，城市广场热闹得像限时副本入口。",
+        "counterpart_reveal": "小明一抬头，阿强已经站在公告牌前。",
+        "event_notice_insert": "公告牌写着：凭暗号领取双倍早餐券。",
+        "reaction_pair_result": "小明：你看，吃早餐也能吃出史诗感。"
+      }
+    }
+  ]
+}

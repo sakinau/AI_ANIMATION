@@ -1,0 +1,539 @@
+{
+  "project_id": "scene-interaction-test",
+  "sequence_id": "breakfast_activity_cinematic_generated",
+  "title": "小明的早餐活动：事件生成分镜测试",
+  "fps": 12,
+  "format": {
+    "width": 1920,
+    "height": 1080
+  },
+  "goal": "用事件输入自动展开电影化镜头表，验证分镜不依赖手写长表。",
+  "source_events": "breakfast_activity_events.json",
+  "shots": [
+    {
+      "shot_id": "G01_01",
+      "event_id": "wake_context",
+      "event_type": "establish",
+      "shot_pattern": "establish_to_reaction",
+      "purpose": "establish_space",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "wake_establish",
+      "dialogue": "早上七点，小明被客厅里一声电视待机音吵醒。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "wide",
+        "lens": "wide",
+        "move": "push_in",
+        "motivation": "establish_space",
+        "subject": "room"
+      }
+    },
+    {
+      "shot_id": "G01_02",
+      "event_id": "wake_context",
+      "event_type": "screen_discovery",
+      "shot_pattern": "establish_to_reaction",
+      "purpose": "screen_insert",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_tv",
+      "action": "tv_idle_insert",
+      "dialogue": "电视：本市下午三点将召开限时试吃大会。",
+      "camera": {
+        "angle": "insert",
+        "framing": "insert",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "reveal_object",
+        "subject": "tv"
+      }
+    },
+    {
+      "shot_id": "G01_03",
+      "event_id": "wake_context",
+      "event_type": "reaction",
+      "shot_pattern": "establish_to_reaction",
+      "purpose": "reaction_close",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "wake_reaction",
+      "dialogue": "小明：冰箱在召唤我，电视在命令我。",
+      "camera": {
+        "angle": "front",
+        "framing": "closeup",
+        "lens": "telephoto",
+        "move": "push_in",
+        "motivation": "show_reaction",
+        "subject": "xiaoming"
+      }
+    },
+    {
+      "shot_id": "G02_01",
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "approach_object",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "approach_fridge",
+      "dialogue": "他走向冰箱，动作坚定得像去签人生和解书。",
+      "camera": {
+        "angle": "side",
+        "framing": "medium",
+        "lens": "normal",
+        "move": "truck",
+        "motivation": "establish_space",
+        "subject": "xiaoming"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "shot_id": "G02_02",
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "contact",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "fridge_handle_contact",
+      "dialogue": "他的手按住冰箱门把，命运发出咔哒一声。",
+      "camera": {
+        "angle": "insert",
+        "framing": "extreme_closeup",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "show_contact",
+        "subject": "fridge_handle"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "shot_id": "G02_03",
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "reveal_source",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "fridge_inside_pov",
+      "dialogue": "冰箱内部，两个鸡蛋和一瓶牛奶正在等待被选中。",
+      "camera": {
+        "angle": "pov",
+        "framing": "insert",
+        "lens": "wide",
+        "move": "pull_back",
+        "motivation": "reveal_object",
+        "subject": "eggs_milk"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "shot_id": "G02_04",
+      "event_id": "fridge_pickup",
+      "event_type": "object_pickup",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "show_pickup",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "food_to_hand_close",
+      "dialogue": "鸡蛋和牛奶被拿起，这不是飞行，是剪辑。",
+      "camera": {
+        "angle": "insert",
+        "framing": "extreme_closeup",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "show_contact",
+        "subject": "eggs_milk"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "shot_id": "G02_05",
+      "event_id": "fridge_pickup",
+      "event_type": "reaction",
+      "shot_pattern": "object_pickup_sequence",
+      "purpose": "reaction",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "food_reaction_close",
+      "dialogue": "小明：成年人的体面，今天只剩蛋白质了。",
+      "camera": {
+        "angle": "front",
+        "framing": "closeup",
+        "lens": "telephoto",
+        "move": "push_in",
+        "motivation": "show_reaction",
+        "subject": "xiaoming"
+      },
+      "blocking": {
+        "primary_action": "grab",
+        "screen_direction": "left_to_right",
+        "start_anchor": "fridge_handle",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 18,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "fridge_shelf_eggs_milk",
+        "result_state": "prop_in_hand"
+      }
+    },
+    {
+      "shot_id": "G03_01",
+      "event_id": "breakfast_table",
+      "event_type": "put_down",
+      "shot_pattern": "object_putdown_sequence",
+      "purpose": "contact",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_table",
+      "action": "place_breakfast_overhead",
+      "dialogue": "镜头俯拍茶几，早餐被小心放下。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "insert",
+        "lens": "normal",
+        "move": "push_in",
+        "motivation": "show_contact",
+        "subject": "breakfast"
+      },
+      "blocking": {
+        "primary_action": "place",
+        "screen_direction": "inward",
+        "start_anchor": "xiaoming_hand_r",
+        "end_anchor": "table_center"
+      },
+      "interaction": {
+        "contact_frame": 14,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "breakfast_plate",
+        "result_state": "prop_on_table"
+      }
+    },
+    {
+      "shot_id": "G03_02",
+      "event_id": "breakfast_table",
+      "event_type": "put_down",
+      "shot_pattern": "object_putdown_sequence",
+      "purpose": "result_insert",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_table",
+      "action": "place_breakfast_result",
+      "dialogue": "鸡蛋和牛奶占据画面中心，像一场朴素的登场仪式。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "insert",
+        "lens": "normal",
+        "move": "cut",
+        "motivation": "show_result",
+        "subject": "breakfast"
+      },
+      "blocking": {
+        "primary_action": "place",
+        "screen_direction": "inward",
+        "start_anchor": "xiaoming_hand_r",
+        "end_anchor": "table_center"
+      },
+      "interaction": {
+        "contact_frame": 14,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "breakfast_plate",
+        "result_state": "prop_on_table"
+      }
+    },
+    {
+      "shot_id": "G04_01",
+      "event_id": "watch_tv",
+      "event_type": "screen_discovery",
+      "shot_pattern": "watch_screen_discovery",
+      "purpose": "actor_context",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "eat_medium",
+      "dialogue": "小明坐下吃早餐，眼神却被电视粘住。",
+      "camera": {
+        "angle": "eye_level",
+        "framing": "medium",
+        "lens": "normal",
+        "move": "cut",
+        "motivation": "establish_space",
+        "subject": "xiaoming"
+      }
+    },
+    {
+      "shot_id": "G04_02",
+      "event_id": "watch_tv",
+      "event_type": "screen_discovery",
+      "shot_pattern": "watch_screen_discovery",
+      "purpose": "screen_insert",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_tv",
+      "action": "activity_tv_insert",
+      "dialogue": "电视：活动暗号，早餐自由。",
+      "camera": {
+        "angle": "pov",
+        "framing": "insert",
+        "lens": "telephoto",
+        "move": "push_in",
+        "motivation": "reveal_object",
+        "subject": "tv"
+      }
+    },
+    {
+      "shot_id": "G04_03",
+      "event_id": "watch_tv",
+      "event_type": "screen_discovery",
+      "shot_pattern": "watch_screen_discovery",
+      "purpose": "reaction_close",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "activity_reaction",
+      "dialogue": "小明：免费这两个字，听起来像主线任务。",
+      "camera": {
+        "angle": "low_angle",
+        "framing": "closeup",
+        "lens": "telephoto",
+        "move": "push_in",
+        "motivation": "show_reaction",
+        "subject": "xiaoming"
+      }
+    },
+    {
+      "shot_id": "G05_01",
+      "event_id": "phone_call",
+      "event_type": "object_pickup",
+      "shot_pattern": "phone_call",
+      "purpose": "pickup_phone",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_table",
+      "action": "phone_pickup_insert",
+      "dialogue": "他抓起手机，速度像发现了最后一张优惠券。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "insert",
+        "lens": "normal",
+        "move": "cut",
+        "motivation": "show_contact",
+        "subject": "phone"
+      }
+    },
+    {
+      "shot_id": "G05_02",
+      "event_id": "phone_call",
+      "event_type": "phone_call",
+      "shot_pattern": "phone_call",
+      "purpose": "dial_screen",
+      "duration": 3,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "phone_screen_insert",
+      "dialogue": "手机屏幕上，朋友阿强的头像开始震动。",
+      "camera": {
+        "angle": "insert",
+        "framing": "insert",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "reveal_object",
+        "subject": "phone"
+      }
+    },
+    {
+      "shot_id": "G05_03",
+      "event_id": "phone_call",
+      "event_type": "phone_call",
+      "shot_pattern": "phone_call",
+      "purpose": "caller_close",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "caller_close",
+      "dialogue": "小明：下午三点，城市广场，带胃不要带脑子。",
+      "camera": {
+        "angle": "front",
+        "framing": "closeup",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "show_reaction",
+        "subject": "xiaoming"
+      }
+    },
+    {
+      "shot_id": "G05_04",
+      "event_id": "phone_call",
+      "event_type": "phone_call",
+      "shot_pattern": "phone_call",
+      "purpose": "receiver_close",
+      "duration": 4,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "action": "receiver_close",
+      "dialogue": "阿强：懂了，我负责排队，你负责假装偶遇。",
+      "camera": {
+        "angle": "front",
+        "framing": "closeup",
+        "lens": "telephoto",
+        "move": "cut",
+        "motivation": "show_reaction",
+        "subject": "friend"
+      }
+    },
+    {
+      "shot_id": "G05_05",
+      "event_id": "phone_call",
+      "event_type": "phone_call",
+      "shot_pattern": "phone_call",
+      "purpose": "split_result",
+      "duration": 5,
+      "scene_pack": "scene_overlay_vfx_01",
+      "background": "speed_stage",
+      "action": "phone_split_dialogue",
+      "dialogue": "两个人隔着电话，同时确认了这个不太聪明但很坚定的计划。",
+      "camera": {
+        "angle": "front",
+        "framing": "medium",
+        "lens": "normal",
+        "move": "cut",
+        "motivation": "show_result",
+        "subject": "both"
+      }
+    },
+    {
+      "shot_id": "G06_01",
+      "event_id": "event_meeting",
+      "event_type": "meeting",
+      "shot_pattern": "meeting_at_location",
+      "purpose": "location_establish",
+      "duration": 4,
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "action": "event_wide",
+      "dialogue": "下午，城市广场热闹得像限时副本入口。",
+      "camera": {
+        "angle": "high_angle",
+        "framing": "wide",
+        "lens": "wide",
+        "move": "pan",
+        "motivation": "establish_space",
+        "subject": "event_site"
+      }
+    },
+    {
+      "shot_id": "G06_02",
+      "event_id": "event_meeting",
+      "event_type": "meeting",
+      "shot_pattern": "meeting_at_location",
+      "purpose": "counterpart_reveal",
+      "duration": 4,
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "action": "over_shoulder_meet",
+      "dialogue": "小明一抬头，阿强已经站在公告牌前。",
+      "camera": {
+        "angle": "over_shoulder",
+        "framing": "medium",
+        "lens": "normal",
+        "move": "truck",
+        "motivation": "reveal_object",
+        "subject": "friend"
+      }
+    },
+    {
+      "shot_id": "G06_03",
+      "event_id": "event_meeting",
+      "event_type": "screen_discovery",
+      "shot_pattern": "meeting_at_location",
+      "purpose": "event_notice_insert",
+      "duration": 3,
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "action": "event_notice_insert",
+      "dialogue": "公告牌写着：凭暗号领取双倍早餐券。",
+      "camera": {
+        "angle": "insert",
+        "framing": "insert",
+        "lens": "telephoto",
+        "move": "push_in",
+        "motivation": "reveal_object",
+        "subject": "event_notice"
+      }
+    },
+    {
+      "shot_id": "G06_04",
+      "event_id": "event_meeting",
+      "event_type": "meeting",
+      "shot_pattern": "meeting_at_location",
+      "purpose": "reaction_pair_result",
+      "duration": 4,
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "action": "event_two_shot",
+      "dialogue": "小明：你看，吃早餐也能吃出史诗感。",
+      "camera": {
+        "angle": "eye_level",
+        "framing": "medium",
+        "lens": "normal",
+        "move": "pull_back",
+        "motivation": "show_reaction",
+        "subject": "both"
+      }
+    }
+  ],
+  "runtime_seconds": 77.0
+}

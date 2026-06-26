@@ -1120,20 +1120,33 @@ Workflow change:
 - Updated AE/sand-animation skills to require beat classification and shot-pattern expansion before rendering.
 - Updated scene-pack requirements so packs must provide interaction inserts and multi-framing support.
 - Added `scripts/validate_cinematic_shots.py` to reject low shot count, missing camera motivation, weak insert coverage, weak reaction coverage, and interaction events without close/contact/result coverage.
+- Added `scripts/expand_cinematic_beats.py` so compact event files can be expanded into full shot lists through fixed cinematic templates.
 
 New test:
 
 ```text
+projects/scene-interaction-test/shots/breakfast_activity_events.json
+projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
 projects/scene-interaction-test/shots/breakfast_activity_cinematic_test.json
 src/CinematicInteractionTest.tsx
 scripts/render-cinematic-interaction-test.ps1
 output/scene-interaction-breakfast-activity-cinematic-test.mp4
 ```
 
+Current render source:
+
+```text
+breakfast_activity_events.json
+  -> scripts/expand_cinematic_beats.py
+  -> breakfast_activity_cinematic_generated.json
+  -> CinematicInteractionTest
+  -> output/scene-interaction-breakfast-activity-cinematic-test.mp4
+```
+
 Validation:
 
 ```text
-OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_test.json
+OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
 ```
 
 Render:
@@ -1160,6 +1173,7 @@ Remaining limitations:
 - Hand proxy is still symbolic rather than a true rigged hand.
 - Some closeups are synthetic crops or simplified panels because the scene pack does not yet include real kitchen/fridge/table/phone multi-angle art.
 - Next step: create production scene packs with explicit `insert_<target>` backgrounds and prop states, then make the renderer resolve them from `scene.yaml` instead of special-casing this test.
+- Next step after that: remove action-specific rendering switches by creating a generic interaction executor that resolves `purpose`, `blocking`, `interaction`, anchors, and prop states from scene packs.
 
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.

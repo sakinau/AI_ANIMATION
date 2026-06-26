@@ -39,7 +39,8 @@ output\scene-interaction-breakfast-activity-test.mp4
 Second-pass test:
 
 ```powershell
-python scripts\validate_cinematic_shots.py projects\scene-interaction-test\shots\breakfast_activity_cinematic_test.json
+python scripts\expand_cinematic_beats.py projects\scene-interaction-test\shots\breakfast_activity_events.json --output projects\scene-interaction-test\shots\breakfast_activity_cinematic_generated.json
+python scripts\validate_cinematic_shots.py projects\scene-interaction-test\shots\breakfast_activity_cinematic_generated.json
 powershell -ExecutionPolicy Bypass -File scripts\render-cinematic-interaction-test.ps1
 ```
 
@@ -64,6 +65,20 @@ This version keeps the same rough story but expands it into 22 short shots. It t
 - event-site wide, over-shoulder reveal, notice insert, and two-shot result.
 
 The important workflow change is that object interaction is no longer represented only by a prop flying in a wide shot. The action is split into before/contact/source/pickup/reaction/result coverage.
+
+The active `CinematicInteractionTest` composition now imports:
+
+```text
+projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+```
+
+That file is generated from:
+
+```text
+projects/scene-interaction-test/shots/breakfast_activity_events.json
+```
+
+The older hand-written `breakfast_activity_cinematic_test.json` remains as a reference snapshot, but the render path is now event-driven.
 
 ## Asset Strategy
 
