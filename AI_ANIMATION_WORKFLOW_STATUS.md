@@ -1043,6 +1043,69 @@ Workflow note: this pack is the common "motion accent" layer for the animation e
 
 ## Next Operations
 
+## 2026-06-26 Scene Interaction Test
+
+Added a 66-second 1080p horizontal Remotion test for everyday object interaction.
+
+Test project:
+
+```text
+projects/scene-interaction-test
+```
+
+Rendered output:
+
+```text
+output/scene-interaction-breakfast-activity-test.mp4
+```
+
+Composition:
+
+```text
+SceneInteractionTest
+```
+
+Source files:
+
+- `projects/scene-interaction-test/shots/breakfast_activity_test.json`
+- `src/SceneInteractionTest.tsx`
+- `scripts/create_scene_interaction_test_assets.py`
+- `scripts/render-scene-interaction-test.ps1`
+
+Tested beats:
+
+- wake up in a living room substitute scene;
+- walk to a temporary fridge prop;
+- open the fridge and take out two eggs plus milk;
+- place breakfast on the table with a close-up;
+- sit down, eat, and watch a TV event popup;
+- call a friend;
+- use split dialogue / phone reaction staging;
+- time skip with overlay VFX;
+- meet at an outdoor event site.
+
+Scene packs used:
+
+- `scene_customer_room_01`
+- `scene_fantasy_market_01`
+- `scene_overlay_vfx_01`
+
+Temporary assets generated for this test:
+
+- fridge closed/open;
+- breakfast plate / close-up;
+- phone call UI;
+- activity banner;
+- Xiaoming and friend placeholder actors.
+
+QA result:
+
+- Render succeeded at 1920x1080, 12 fps, about 66 seconds.
+- The object-interaction beats are readable.
+- The event-site shot is crowded and should become a test case for layer-priority rules and automatic caption/foreground avoidance.
+- Kitchen and bedroom packs are still missing; current test substitutes the living room pack.
+- Hand-grip animation is still represented by staging and prop movement rather than true limb/hand articulation.
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

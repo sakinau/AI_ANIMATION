@@ -1,0 +1,120 @@
+{
+  "project_id": "scene-interaction-test",
+  "sequence_id": "breakfast_activity_test",
+  "title": "小明的早餐活动测试",
+  "runtime_seconds": 66,
+  "fps": 12,
+  "format": {
+    "width": 1920,
+    "height": 1080
+  },
+  "asset_strategy": {
+    "goal": "测试现有场景包在生活动作、道具交互、电视信息、电话对话、活动现场转场中的可用性。",
+    "substitutions": [
+      "没有正式厨房/卧室场景包，起床和拿早餐暂用 customer_room 客厅场景加测试冰箱道具。",
+      "鸡蛋和牛奶暂用测试专用透明 PNG，不进入正式素材库。",
+      "活动现场暂用 fantasy_market 公共广场场景，模拟下午活动会场。"
+    ]
+  },
+  "shots": [
+    {
+      "shot_id": "B01",
+      "duration": 6,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "camera": "morning_push",
+      "beat": "早上，小明被电视待机声吵醒，从沙发边坐起来。",
+      "dialogue": "小明：今天怎么感觉冰箱在召唤我？",
+      "action": "wake_up",
+      "test_focus": "人物从低位到站立，测试客厅宽景和沙发遮挡。"
+    },
+    {
+      "shot_id": "B02",
+      "duration": 7,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "camera": "pan_to_fridge",
+      "beat": "他走到冰箱前，打开门，拿出两颗鸡蛋和一瓶牛奶。",
+      "dialogue": "小明：两颗鸡蛋，一瓶牛奶，成年人最后的体面。",
+      "action": "open_fridge_take_food",
+      "test_focus": "测试临时冰箱、早餐道具和人物靠近物体的交互。"
+    },
+    {
+      "shot_id": "B03",
+      "duration": 7,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_table",
+      "camera": "table_insert",
+      "beat": "早餐被放到茶几上，鸡蛋和牛奶给一个近景。",
+      "dialogue": "旁白：这顿饭朴素，但镜头必须隆重。",
+      "action": "place_breakfast_close",
+      "test_focus": "测试茶几近景、道具放置和前景遮挡。"
+    },
+    {
+      "shot_id": "B04",
+      "duration": 8,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "camera": "sofa_tv",
+      "beat": "小明坐下吃早餐，一边看电视。",
+      "dialogue": "电视：本日下午三点，城市广场将召开限时试吃大会。",
+      "action": "eat_watch_tv",
+      "test_focus": "测试坐姿、桌面食物、电视 UI 弹窗。"
+    },
+    {
+      "shot_id": "B05",
+      "duration": 7,
+      "scene_pack": "scene_customer_room_01",
+      "background": "close_tv",
+      "camera": "tv_close",
+      "beat": "电视画面放大，活动信息弹出来。",
+      "dialogue": "电视：暗号是——早餐自由！",
+      "action": "activity_tv_insert",
+      "test_focus": "测试电视近景、活动横幅、信息弹窗。"
+    },
+    {
+      "shot_id": "B06",
+      "duration": 8,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "camera": "phone_push",
+      "beat": "小明立刻拿起手机给朋友打电话。",
+      "dialogue": "小明：阿强，下午三点，城市广场，带胃不要带脑子。",
+      "action": "call_friend",
+      "test_focus": "测试手机近景、对话气泡和反应图标。"
+    },
+    {
+      "shot_id": "B07",
+      "duration": 8,
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide",
+      "camera": "dialogue_split",
+      "beat": "朋友在电话里回应，两人约好下午现场见。",
+      "dialogue": "朋友：懂了，我负责排队，你负责假装偶遇。",
+      "action": "phone_dialogue",
+      "test_focus": "测试左右气泡、双人远程对话和节奏停顿。"
+    },
+    {
+      "shot_id": "B08",
+      "duration": 6,
+      "scene_pack": "scene_overlay_vfx_01",
+      "background": "speed_stage",
+      "camera": "transition",
+      "beat": "时间快速推进到下午。",
+      "dialogue": "旁白：一顿早餐的时间，命运已经排好了队。",
+      "action": "time_skip",
+      "test_focus": "测试速度线、白闪转场和跨场景衔接。"
+    },
+    {
+      "shot_id": "B09",
+      "duration": 9,
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide",
+      "camera": "event_establish",
+      "beat": "下午，小明和朋友在活动现场见面。",
+      "dialogue": "小明：你看，现场比我想象中还像异世界任务大厅。",
+      "action": "meet_at_event",
+      "test_focus": "测试公共广场活动现场、双人站位、活动公告和反应特效。"
+    }
+  ]
+}

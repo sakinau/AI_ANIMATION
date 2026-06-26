@@ -16,6 +16,11 @@ import {
   STATE_MACHINE_TOTAL_FRAMES,
   StateMachineWukongTest,
 } from './StateMachineWukongTest';
+import {
+  INTERACTION_TEST_FPS,
+  INTERACTION_TEST_TOTAL_FRAMES,
+  SceneInteractionTest,
+} from './SceneInteractionTest';
 import {MidnightRules} from './Story';
 
 export const FPS = 12;
@@ -55,6 +60,14 @@ export const Root: React.FC = () => (
       component={StateMachineWukongTest}
       durationInFrames={STATE_MACHINE_TOTAL_FRAMES}
       fps={STATE_MACHINE_FPS}
+      width={1920}
+      height={1080}
+    />
+    <Composition
+      id="SceneInteractionTest"
+      component={SceneInteractionTest}
+      durationInFrames={INTERACTION_TEST_TOTAL_FRAMES}
+      fps={INTERACTION_TEST_FPS}
       width={1920}
       height={1080}
     />
