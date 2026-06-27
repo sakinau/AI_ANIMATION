@@ -4,6 +4,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import yaml
+
 
 INTERACTION_TYPES = {
     "object_pickup",
@@ -45,10 +47,40 @@ MIN_EVENT_CAMERA_SETUPS = {
     "meeting_at_location": 4,
 }
 
+TEMPORARY_SUBJECT_TYPES = {"temporary_prop", "temporary_anchor", "temporary_set", "fallback_ui"}
+ACTOR_SUBJECT_TYPES = {"actor", "actor_group", "actor_anchor"}
+ANCHOR_REGISTRY_TYPES = TEMPORARY_SUBJECT_TYPES | {"actor_anchor"}
+
 
 def load_sequence(path: Path) -> dict:
     with path.open("r", encoding="utf-8-sig") as fh:
         return json.load(fh)
+
+
+def find_scene_packs_root(shot_json: Path) -> Path:
+    candidates = [
+        Path.cwd() / "projects" / "scene-packs",
+        shot_json.resolve().parents[2] / "scene-packs" if len(shot_json.resolve().parents) > 2 else Path(""),
+    ]
+    for candidate in candidates:
+        if candidate and candidate.exists():
+            return candidate
+    return Path.cwd() / "projects" / "scene-packs"
+
+
+def load_scene_pack(scene_packs_root: Path, scene_pack_id: str, cache: dict[str, dict | None]) -> dict | None:
+    if not scene_pack_id:
+        return None
+    if scene_pack_id in cache:
+        return cache[scene_pack_id]
+    scene_yaml = scene_packs_root / scene_pack_id / "scene.yaml"
+    if not scene_yaml.exists():
+        cache[scene_pack_id] = None
+        return None
+    with scene_yaml.open("r", encoding="utf-8-sig") as fh:
+        data = yaml.safe_load(fh) or {}
+    cache[scene_pack_id] = data
+    return data
 
 
 def camera_field(shot: dict, key: str) -> str:
@@ -87,11 +119,106 @@ def camera_setup(shot: dict) -> tuple[str, str, str, str]:
     )
 
 
+def registry_subject_errors(subject: str, binding: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
+    errors: list[str] = []
+    subject_type = str(binding.get("type", "") or "")
+    if not subject_type:
+        errors.append(f"subject_registry.{subject}: missing type.")
+        return errors
+    if subject_type in ACTOR_SUBJECT_TYPES or subject_type in TEMPORARY_SUBJECT_TYPES:
+        if subject_type in TEMPORARY_SUBJECT_TYPES and not binding.get("fallback"):
+            errors.append(f"subject_registry.{subject}: temporary subject must declare fallback.")
+        return errors
+
+    scene_pack_id = str(binding.get("scene_pack", "") or "")
+    if not scene_pack_id:
+        errors.append(f"subject_registry.{subject}: {subject_type} subject must declare scene_pack.")
+        return errors
+    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+    if scene is None:
+        errors.append(f"subject_registry.{subject}: scene_pack not found: {scene_pack_id}.")
+        return errors
+
+    background = binding.get("background")
+    if background and background not in (scene.get("backgrounds") or {}):
+        errors.append(f"subject_registry.{subject}: background {background} not found in {scene_pack_id}.")
+
+    anchor = binding.get("anchor")
+    if anchor and anchor not in (scene.get("anchors") or {}):
+        errors.append(f"subject_registry.{subject}: anchor {anchor} not found in {scene_pack_id}.")
+
+    prop = binding.get("prop")
+    if prop:
+        props = scene.get("props") or {}
+        if prop not in props:
+            errors.append(f"subject_registry.{subject}: prop {prop} not found in {scene_pack_id}.")
+        else:
+            variant = binding.get("variant")
+            variants = (props.get(prop) or {}).get("variants") or {}
+            if variant and variant not in variants:
+                errors.append(f"subject_registry.{subject}: variant {variant} for prop {prop} not found in {scene_pack_id}.")
+    return errors
+
+
+def shot_subject_errors(shot: dict, registry: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    subject = camera_field(shot, "subject")
+    scene_pack_id = str(shot.get("scene_pack", "") or "")
+    errors: list[str] = []
+    if not subject:
+        return errors
+    if subject in registry:
+        return errors
+
+    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+    if scene is None:
+        errors.append(f"{shot_id}: scene_pack not found: {scene_pack_id}.")
+        return errors
+
+    known = set(scene.get("anchors") or {}) | set(scene.get("props") or {}) | set(scene.get("backgrounds") or {})
+    if subject not in known:
+        errors.append(f"{shot_id}: camera.subject '{subject}' is not in subject_registry or scene_pack {scene_pack_id}.")
+    return errors
+
+
+def interaction_anchor_errors(shot: dict, registry: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    scene_pack_id = str(shot.get("scene_pack", "") or "")
+    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+    scene_anchors = set((scene or {}).get("anchors") or {})
+    errors: list[str] = []
+
+    def check_anchor(anchor: str, label: str) -> None:
+        if not anchor or "." in anchor:
+            return
+        if anchor in scene_anchors:
+            return
+        binding = registry.get(anchor)
+        if binding and str(binding.get("type", "") or "") in ANCHOR_REGISTRY_TYPES:
+            return
+        errors.append(f"{shot_id}: {label} anchor '{anchor}' is not in scene_pack {scene_pack_id} or temporary subject_registry.")
+
+    blocking = shot.get("blocking") or {}
+    interaction = shot.get("interaction") or {}
+    if isinstance(blocking, dict):
+        check_anchor(str(blocking.get("start_anchor", "") or ""), "blocking.start_anchor")
+        check_anchor(str(blocking.get("end_anchor", "") or ""), "blocking.end_anchor")
+    if isinstance(interaction, dict):
+        check_anchor(str(interaction.get("prop_anchor", "") or ""), "interaction.prop_anchor")
+    return errors
+
+
 def validate(path: Path) -> list[str]:
     data = load_sequence(path)
     shots = data.get("shots", [])
     errors: list[str] = []
     warnings: list[str] = []
+    registry = data.get("subject_registry", {})
+    if not isinstance(registry, dict):
+        registry = {}
+        errors.append("subject_registry must be an object when present.")
+    scene_packs_root = find_scene_packs_root(path)
+    scene_cache: dict[str, dict | None] = {}
 
     if not shots:
         return ["No shots found."]
@@ -143,6 +270,14 @@ def validate(path: Path) -> list[str]:
     for shot in shots:
         shot_id = shot.get("shot_id", "<unknown>")
         duration = float(shot.get("duration", 0) or 0)
+        scene_pack_id = str(shot.get("scene_pack", "") or "")
+        scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+        if scene is None:
+            errors.append(f"{shot_id}: scene_pack not found: {scene_pack_id}.")
+        else:
+            background = str(shot.get("background", "") or "")
+            if background and background not in (scene.get("backgrounds") or {}):
+                errors.append(f"{shot_id}: background '{background}' not found in scene_pack {scene_pack_id}.")
         if duration > 8:
             errors.append(f"{shot_id}: duration {duration:g}s exceeds 8s single-camera limit.")
         camera = shot.get("camera")
@@ -154,6 +289,16 @@ def validate(path: Path) -> list[str]:
                 errors.append(f"{shot_id}: missing camera.{key}.")
         if not shot.get("shot_pattern"):
             errors.append(f"{shot_id}: missing shot_pattern.")
+        errors.extend(shot_subject_errors(shot, registry, scene_packs_root, scene_cache))
+        errors.extend(interaction_anchor_errors(shot, registry, scene_packs_root, scene_cache))
+
+    used_subjects = {camera_field(shot, "subject") for shot in shots if camera_field(shot, "subject")}
+    for subject in sorted(used_subjects & set(registry)):
+        binding = registry.get(subject) or {}
+        if isinstance(binding, dict):
+            errors.extend(registry_subject_errors(subject, binding, scene_packs_root, scene_cache))
+        else:
+            errors.append(f"subject_registry.{subject}: binding must be an object.")
 
     by_event: dict[str, list[dict]] = defaultdict(list)
     for shot in shots:

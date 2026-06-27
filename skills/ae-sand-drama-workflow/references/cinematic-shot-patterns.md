@@ -20,19 +20,20 @@ Prefer this sequence for production:
 
 1. Write a compact event file, for example `shots/<sequence>_events.json`.
 2. For each event, set `event_type`, `shot_pattern`, `scene_pack`, `background`, phase-specific `actions`, `dialogue`, `subjects`, and optional `blocking` / `interaction`.
-3. Expand the event file:
+3. Add or update `subject_registry` so every subject and anchor used by the shots can be resolved.
+4. Expand the event file:
 
 ```powershell
 python scripts\expand_cinematic_beats.py projects\<project-id>\shots\<sequence>_events.json --output projects\<project-id>\shots\<sequence>_generated.json
 ```
 
-4. Validate the generated shot list:
+5. Validate the generated shot list:
 
 ```powershell
 python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence>_generated.json
 ```
 
-5. Render Remotion/AE from the generated shot list, not from a hand-written one-off long shot list.
+6. Render Remotion/AE from the generated shot list, not from a hand-written one-off long shot list.
 
 The event file is the creative control surface; the generated shot list is the execution contract.
 
@@ -57,6 +58,29 @@ Required renderer behavior:
 - `location_establish` means show geography or signage before cutting into closer shots.
 
 Never collapse an expanded shot group back into one front-facing master camera. If an asset is missing, select a declared fallback such as a crop insert, hand proxy, object-only insert, reaction icon, or text-safe UI insert.
+
+## Subject Registry
+
+The event file should include a top-level `subject_registry`. This makes spatial references auditable before rendering:
+
+```json
+{
+  "subject_registry": {
+    "xiaoming": {"type": "actor"},
+    "xiaoming_hand_r": {"type": "actor_anchor", "actor": "xiaoming", "anchor": "hand_r"},
+    "phone": {"type": "prop", "scene_pack": "scene_customer_room_01", "prop": "phone", "anchor": "table_phone"},
+    "tv": {"type": "scene_anchor", "scene_pack": "scene_customer_room_01", "anchor": "tv_center", "background": "close_tv"},
+    "fridge_handle": {"type": "temporary_prop", "fallback": "test-only fridge handle insert"}
+  }
+}
+```
+
+Validation rules:
+
+- `camera.subject` must exist in `subject_registry` or in the shot's `scene_pack` as a background, prop, or anchor.
+- `scene_pack`, `background`, `prop`, `variant`, and `anchor` references must exist in `scene.yaml`.
+- Non-dotted `blocking.start_anchor`, `blocking.end_anchor`, and `interaction.prop_anchor` must exist in `scene.yaml` or be declared as `actor_anchor` / `temporary_anchor`.
+- Temporary subjects must include a `fallback` note so missing production assets stay visible.
 
 ## Required Shot Fields
 

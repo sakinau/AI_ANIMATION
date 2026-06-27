@@ -57,6 +57,7 @@ The main agent integrates results and owns the runnable project files.
 - Assign a `shot_pattern` to every beat. Use the pattern to expand one story beat into several short shots.
 - Treat the expanded shot list as the production contract. The renderer should execute by `purpose`, `camera.subject`, `blocking`, and `interaction` first, then fall back to action-specific overrides only for exceptional staging.
 - Do not let a single event render as one camera setup when it contains a physical interaction, screen discovery, phone call, entrance, meeting, or object transfer.
+- Define a `subject_registry` in event-driven sequences. Every `camera.subject`, non-dotted blocking anchor, and non-dotted interaction prop anchor must resolve to a character, actor anchor, scene-pack background/prop/anchor, or explicit temporary fallback.
 - For repeatable production, write an event file first, then run the beat expander:
 
 ```powershell
@@ -79,6 +80,15 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Then resolve the subject through `camera.subject` and scene-pack data: background variant, foreground layer, prop variant, anchor, character state, and occlusion rule.
 - Use action-specific branches only when a shot needs unique layout, such as a special POV, split-screen call, large crowd reveal, or custom VFX beat.
 - If the renderer cannot find an anchor or prop state, fail validation or use an explicit fallback insert. Do not silently return to a front-facing master shot.
+
+## Subject And Anchor Binding
+
+- Treat `camera.subject` as a bound production entity, not descriptive prose.
+- Add every recurring subject to `subject_registry` with one of these types: `actor`, `actor_group`, `actor_anchor`, `scene`, `scene_anchor`, `prop`, `temporary_prop`, `temporary_anchor`, `temporary_set`, or `fallback_ui`.
+- For `scene`, `scene_anchor`, and `prop`, provide `scene_pack` and the relevant `background`, `anchor`, `prop`, and optional `variant`.
+- For `actor_anchor`, provide `actor` and `anchor`, such as `hand_r`.
+- For temporary entries, provide a `fallback` note explaining why the subject is not yet in a scene pack.
+- Run `scripts\validate_cinematic_shots.py` after expansion. It checks scene-pack existence, background keys, prop keys, anchor keys, subject registration, and temporary fallback declarations.
 
 ## State Machine Rules
 
@@ -121,6 +131,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Prefer parallax, character pose swaps, facial expression swaps, prop movement, UI animation, and camera motion over random bobbing. Idle motion should be <= 2 px and optional.
 - Require asset density before rendering: every shot should have a background, at least one foreground/midground prop or UI element, visible character/subject layers, and an explicit fallback if a required asset is missing.
 - If the asset library is too thin for a shot, mark the missing assets in the manifest and simplify the staging. Do not hide missing material with arbitrary smoke, flashes, or shaking.
+- Reject unbound subjects. A shot cannot use `camera.subject: fridge_handle` or `interaction.prop_anchor: fridge_shelf` unless that name exists in the scene pack or `subject_registry`.
 
 ## When To Use Browser/Chrome
 

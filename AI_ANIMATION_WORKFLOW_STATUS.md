@@ -1239,6 +1239,54 @@ Current generated test:
 OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
 ```
 
+## 2026-06-27 Subject Registry And Scene-Pack Binding
+
+Added the next stability layer: cinematic shots must bind their visible subjects and interaction anchors to production entities.
+
+Updated workflow:
+
+```text
+event file
+  -> subject_registry
+  -> expand_cinematic_beats.py
+  -> generated shot list
+  -> validate_cinematic_shots.py checks scene-pack bindings
+```
+
+New `subject_registry` coverage in:
+
+```text
+projects/scene-interaction-test/shots/breakfast_activity_events.json
+projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+```
+
+Subjects now declare one of:
+
+- actor;
+- actor_group;
+- actor_anchor;
+- scene;
+- scene_anchor;
+- prop;
+- temporary_prop;
+- temporary_anchor;
+- temporary_set / fallback_ui.
+
+The validator now checks:
+
+- referenced `scene_pack` folders and `scene.yaml` files exist;
+- shot backgrounds exist in the target scene pack;
+- registered prop, variant, background, and anchor references exist in `scene.yaml`;
+- every `camera.subject` is registered or exists as a scene-pack prop/background/anchor;
+- blocking and interaction anchors resolve to a scene-pack anchor, actor anchor, or temporary anchor;
+- temporary subjects include a visible fallback note.
+
+Why this matters:
+
+- It prevents the planner from inventing untracked spatial names like `fridge_handle` or `dragon_claw` without declaring whether they are real assets or placeholders.
+- It is the bridge from abstract shot language to AE/Animate execution because subjects can be resolved into actual layers, props, anchors, and handoff controls.
+- It makes missing production assets explicit instead of hiding them behind one-off renderer code.
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

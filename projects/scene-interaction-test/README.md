@@ -114,6 +114,25 @@ It rejects:
 - phone calls and meetings without subject switching;
 - repeated identical camera setup longer than 8 seconds, even if split into multiple shot IDs.
 
+## Subject Registry Validation
+
+The event source now includes a top-level `subject_registry`.
+
+It binds subjects such as:
+
+- `xiaoming`, `friend`, and `both` to actor entities;
+- `xiaoming_hand_r` to an actor hand anchor;
+- `phone`, `tv`, and `event_notice` to formal scene-pack props or anchors;
+- `fridge_handle`, `eggs_milk`, and `breakfast` to explicit temporary test fallbacks.
+
+The generated shot list carries this registry forward. `scripts/validate_cinematic_shots.py` now checks:
+
+- every shot background exists in its `scene_pack`;
+- every registered scene-pack prop, variant, background, and anchor exists in `scene.yaml`;
+- every `camera.subject` is either registered or exists in the shot's scene pack;
+- non-dotted blocking/interaction anchors are registered or exist in the scene pack;
+- temporary subjects include a fallback note.
+
 ## Asset Strategy
 
 Formal scene packs used:

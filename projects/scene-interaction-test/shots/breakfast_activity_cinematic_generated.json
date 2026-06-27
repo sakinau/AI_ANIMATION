@@ -9,6 +9,75 @@
   },
   "goal": "用事件输入自动展开电影化镜头表，验证分镜不依赖手写长表。",
   "source_events": "breakfast_activity_events.json",
+  "subject_registry": {
+    "room": {
+      "type": "scene",
+      "scene_pack": "scene_customer_room_01",
+      "background": "wide"
+    },
+    "tv": {
+      "type": "scene_anchor",
+      "scene_pack": "scene_customer_room_01",
+      "anchor": "tv_center",
+      "background": "close_tv"
+    },
+    "xiaoming": {
+      "type": "actor"
+    },
+    "xiaoming_hand_r": {
+      "type": "actor_anchor",
+      "actor": "xiaoming",
+      "anchor": "hand_r"
+    },
+    "friend": {
+      "type": "actor"
+    },
+    "both": {
+      "type": "actor_group",
+      "members": [
+        "xiaoming",
+        "friend"
+      ]
+    },
+    "phone": {
+      "type": "prop",
+      "scene_pack": "scene_customer_room_01",
+      "prop": "phone",
+      "anchor": "table_phone"
+    },
+    "event_site": {
+      "type": "scene",
+      "scene_pack": "scene_fantasy_market_01",
+      "background": "wide"
+    },
+    "event_notice": {
+      "type": "prop",
+      "scene_pack": "scene_fantasy_market_01",
+      "prop": "notice",
+      "anchor": "notice_board",
+      "variant": "close"
+    },
+    "fridge_handle": {
+      "type": "temporary_prop",
+      "fallback": "test-only fridge handle insert"
+    },
+    "eggs_milk": {
+      "type": "temporary_prop",
+      "fallback": "test-only breakfast/fridge insert"
+    },
+    "breakfast": {
+      "type": "temporary_prop",
+      "fallback": "test-only breakfast plate"
+    },
+    "fridge_shelf_eggs_milk": {
+      "type": "temporary_anchor",
+      "fallback": "test-only fridge shelf anchor"
+    },
+    "breakfast_plate": {
+      "type": "temporary_anchor",
+      "fallback": "test-only breakfast plate anchor"
+    }
+  },
   "shots": [
     {
       "shot_id": "G01_01",
