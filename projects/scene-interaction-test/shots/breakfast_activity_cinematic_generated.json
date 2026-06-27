@@ -78,6 +78,123 @@
       "fallback": "test-only breakfast plate anchor"
     }
   },
+  "action_registry": {
+    "wake_establish": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.wake_establish",
+      "reason": "test-only living-room wake establishing shot"
+    },
+    "tv_idle_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.tv_idle_insert",
+      "reason": "test-only TV information insert"
+    },
+    "wake_reaction": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.wake_reaction",
+      "reason": "test-only character reaction closeup"
+    },
+    "approach_fridge": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.approach_fridge",
+      "reason": "test-only fridge approach staging"
+    },
+    "fridge_handle_contact": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.fridge_handle_contact",
+      "reason": "test-only fridge handle contact insert"
+    },
+    "fridge_inside_pov": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.fridge_inside_pov",
+      "reason": "test-only fridge interior POV"
+    },
+    "food_to_hand_close": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.food_to_hand_close",
+      "reason": "test-only pickup contact insert"
+    },
+    "food_reaction_close": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.food_reaction_close",
+      "reason": "test-only food reaction closeup"
+    },
+    "food_result_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.food_result_insert",
+      "reason": "test-only pickup result insert"
+    },
+    "place_breakfast_overhead": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.place_breakfast_overhead",
+      "reason": "test-only breakfast placement contact insert"
+    },
+    "place_breakfast_result": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.place_breakfast_result",
+      "reason": "test-only breakfast placement result insert"
+    },
+    "eat_medium": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.eat_medium",
+      "reason": "test-only actor eating context shot"
+    },
+    "activity_tv_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.activity_tv_insert",
+      "reason": "test-only activity TV screen insert"
+    },
+    "activity_reaction": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.activity_reaction",
+      "reason": "test-only activity reaction closeup"
+    },
+    "phone_pickup_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.phone_pickup_insert",
+      "reason": "test-only phone pickup insert"
+    },
+    "phone_screen_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.phone_screen_insert",
+      "reason": "test-only phone screen insert"
+    },
+    "caller_close": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.caller_close",
+      "reason": "test-only caller closeup"
+    },
+    "receiver_close": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.receiver_close",
+      "reason": "test-only receiver closeup"
+    },
+    "phone_split_dialogue": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.phone_split_dialogue",
+      "reason": "test-only split call dialogue layout"
+    },
+    "event_wide": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.event_wide",
+      "reason": "test-only event-site establishing shot"
+    },
+    "over_shoulder_meet": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.over_shoulder_meet",
+      "reason": "test-only over-shoulder meeting reveal"
+    },
+    "event_notice_insert": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.event_notice_insert",
+      "reason": "test-only event notice insert"
+    },
+    "event_two_shot": {
+      "type": "render_action",
+      "handler": "CinematicInteractionTest.event_two_shot",
+      "reason": "test-only event two-shot result"
+    }
+  },
   "shots": [
     {
       "shot_id": "G01_01",
@@ -238,7 +355,7 @@
       "scene_pack": "scene_customer_room_01",
       "background": "wide",
       "action": "fridge_inside_pov",
-      "dialogue": "冰箱内部，两个鸡蛋和一瓶牛奶正在等待被选中。",
+      "dialogue": "冰箱内部，两颗鸡蛋和一瓶牛奶正在等待被选中。",
       "camera": {
         "angle": "pov",
         "framing": "insert",
@@ -349,7 +466,7 @@
       "scene_pack": "scene_customer_room_01",
       "background": "wide",
       "action": "food_result_insert",
-      "dialogue": "早餐已经稳稳到手，下一站是茶几。",
+      "dialogue": "早餐已经稳定到手，下一站是茶几。",
       "camera": {
         "angle": "high_angle",
         "framing": "insert",

@@ -50,6 +50,7 @@ MIN_EVENT_CAMERA_SETUPS = {
 TEMPORARY_SUBJECT_TYPES = {"temporary_prop", "temporary_anchor", "temporary_set", "fallback_ui"}
 ACTOR_SUBJECT_TYPES = {"actor", "actor_group", "actor_anchor"}
 ANCHOR_REGISTRY_TYPES = TEMPORARY_SUBJECT_TYPES | {"actor_anchor"}
+ACTION_REGISTRY_TYPES = {"scene_action", "render_action", "temporary_action", "runtime_action"}
 SCENE_CHANGE_TRANSITIONS = {"scene_cut", "time_cut", "graphic_match", "split_screen_bridge"}
 INSERT_PURPOSES = {"screen_insert", "event_notice_insert", "dial_screen", "pickup_phone", "contact", "reveal_source", "show_pickup", "result_insert"}
 REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_close", "reaction_pair_result"}
@@ -218,6 +219,59 @@ def interaction_anchor_errors(shot: dict, registry: dict, scene_packs_root: Path
     return errors
 
 
+def action_errors(shot: dict, action_registry: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    action = str(shot.get("action", "") or "")
+    if not action:
+        return [f"{shot_id}: missing action."]
+
+    scene_pack_id = str(shot.get("scene_pack", "") or "")
+    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+    scene_actions = set()
+    if scene:
+        scene_actions |= set(scene.get("supported_actions") or [])
+        scene_actions |= set((scene.get("action_templates") or {}).keys())
+    if action in scene_actions and action not in action_registry:
+        return []
+
+    binding = action_registry.get(action)
+    if not binding:
+        return [f"{shot_id}: action '{action}' is not in action_registry or scene_pack {scene_pack_id} actions."]
+    if not isinstance(binding, dict):
+        return [f"action_registry.{action}: binding must be an object."]
+
+    action_type = str(binding.get("type", "") or "")
+    errors: list[str] = []
+    if action_type not in ACTION_REGISTRY_TYPES:
+        errors.append(f"action_registry.{action}: unknown type '{action_type}'.")
+        return errors
+
+    if action_type == "scene_action":
+        bound_scene_pack = str(binding.get("scene_pack", "") or scene_pack_id)
+        bound_action = str(binding.get("action", "") or action)
+        bound_scene = load_scene_pack(scene_packs_root, bound_scene_pack, scene_cache)
+        if bound_scene is None:
+            errors.append(f"action_registry.{action}: scene_pack not found: {bound_scene_pack}.")
+        else:
+            allowed = set(bound_scene.get("supported_actions") or []) | set((bound_scene.get("action_templates") or {}).keys())
+            if bound_action not in allowed:
+                errors.append(f"action_registry.{action}: scene action '{bound_action}' not found in {bound_scene_pack}.")
+    elif action_type == "render_action":
+        if not binding.get("handler"):
+            errors.append(f"action_registry.{action}: render_action must declare handler.")
+        if not binding.get("reason"):
+            errors.append(f"action_registry.{action}: render_action must declare reason.")
+    elif action_type == "runtime_action":
+        if not binding.get("runtime"):
+            errors.append(f"action_registry.{action}: runtime_action must declare runtime.")
+        if not binding.get("clip") and not binding.get("state"):
+            errors.append(f"action_registry.{action}: runtime_action must declare clip or state.")
+    elif action_type == "temporary_action":
+        if not binding.get("fallback"):
+            errors.append(f"action_registry.{action}: temporary_action must declare fallback.")
+    return errors
+
+
 def edit_errors(shots: list[dict]) -> list[str]:
     errors: list[str] = []
     for index, shot in enumerate(shots):
@@ -269,6 +323,10 @@ def validate(path: Path) -> list[str]:
     if not isinstance(registry, dict):
         registry = {}
         errors.append("subject_registry must be an object when present.")
+    action_registry = data.get("action_registry", {})
+    if not isinstance(action_registry, dict):
+        action_registry = {}
+        errors.append("action_registry must be an object when present.")
     scene_packs_root = find_scene_packs_root(path)
     scene_cache: dict[str, dict | None] = {}
 
@@ -345,6 +403,7 @@ def validate(path: Path) -> list[str]:
             errors.append(f"{shot_id}: missing shot_pattern.")
         errors.extend(shot_subject_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(interaction_anchor_errors(shot, registry, scene_packs_root, scene_cache))
+        errors.extend(action_errors(shot, action_registry, scene_packs_root, scene_cache))
 
     used_subjects = {camera_field(shot, "subject") for shot in shots if camera_field(shot, "subject")}
     for subject in sorted(used_subjects & set(registry)):

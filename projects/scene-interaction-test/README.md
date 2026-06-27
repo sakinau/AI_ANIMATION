@@ -151,6 +151,23 @@ This makes cuts auditable. The validator rejects:
 - scene-pack jumps without `scene_cut`, `time_cut`, `graphic_match`, or `split_screen_bridge`;
 - background changes inside one scene pack without an insert/context/result/reaction/POV/action-match reason.
 
+## Action Registry Validation
+
+The event source also includes `action_registry`.
+
+For this test, actions are currently declared as `render_action` because they are implemented by `src/CinematicInteractionTest.tsx` rather than by formal scene-pack action templates.
+
+`scripts/validate_cinematic_shots.py` rejects:
+
+- `shot.action` values that are neither registered nor present in the shot's scene pack;
+- unknown action registry types;
+- `render_action` entries without a handler or reason;
+- `scene_action` entries that do not exist in `supported_actions` / `action_templates`;
+- `runtime_action` entries without a runtime and clip/state;
+- `temporary_action` entries without a fallback.
+
+The production direction is to replace preview-only `render_action` entries with scene-pack actions or Animate/AE runtime actions as rigs and templates mature.
+
 ## Asset Strategy
 
 Formal scene packs used:

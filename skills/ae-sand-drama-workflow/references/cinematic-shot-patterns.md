@@ -21,19 +21,20 @@ Prefer this sequence for production:
 1. Write a compact event file, for example `shots/<sequence>_events.json`.
 2. For each event, set `event_type`, `shot_pattern`, `scene_pack`, `background`, phase-specific `actions`, `dialogue`, `subjects`, and optional `blocking` / `interaction`.
 3. Add or update `subject_registry` so every subject and anchor used by the shots can be resolved.
-4. Expand the event file:
+4. Add or update `action_registry` so every shot action can be executed by a scene pack, renderer, runtime clip/state, or fallback.
+5. Expand the event file:
 
 ```powershell
 python scripts\expand_cinematic_beats.py projects\<project-id>\shots\<sequence>_events.json --output projects\<project-id>\shots\<sequence>_generated.json
 ```
 
-5. Validate the generated shot list:
+6. Validate the generated shot list:
 
 ```powershell
 python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence>_generated.json
 ```
 
-6. Render Remotion/AE from the generated shot list, not from a hand-written one-off long shot list.
+7. Render Remotion/AE from the generated shot list, not from a hand-written one-off long shot list.
 
 The event file is the creative control surface; the generated shot list is the execution contract.
 
@@ -116,6 +117,30 @@ Validation rules:
 - `scene_pack`, `background`, `prop`, `variant`, and `anchor` references must exist in `scene.yaml`.
 - Non-dotted `blocking.start_anchor`, `blocking.end_anchor`, and `interaction.prop_anchor` must exist in `scene.yaml` or be declared as `actor_anchor` / `temporary_anchor`.
 - Temporary subjects must include a `fallback` note so missing production assets stay visible.
+
+## Action Registry
+
+The event file should include `action_registry` whenever actions are not direct scene-pack actions:
+
+```json
+{
+  "action_registry": {
+    "pick_remote": {"type": "scene_action", "scene_pack": "scene_customer_room_01", "action": "pick_remote"},
+    "caller_close": {"type": "render_action", "handler": "CinematicInteractionTest.caller_close", "reason": "test-only caller closeup"},
+    "hero_talk_loop": {"type": "runtime_action", "runtime": "Animate", "clip": "talk_loop"},
+    "rough_magic_pose": {"type": "temporary_action", "fallback": "placeholder pose until Animate rig exists"}
+  }
+}
+```
+
+Validation rules:
+
+- `shot.action` must exist in the shot's scene pack or `action_registry`.
+- `scene_action` must point to a valid `supported_actions` or `action_templates` entry.
+- `render_action` must declare a handler and reason.
+- `runtime_action` must declare a runtime and clip or state.
+- `temporary_action` must declare a fallback.
+- Production shots should move toward `scene_action` or `runtime_action`; `render_action` and `temporary_action` are acceptable for previews and tests.
 
 ## Required Shot Fields
 

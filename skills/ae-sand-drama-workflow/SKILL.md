@@ -58,6 +58,7 @@ The main agent integrates results and owns the runnable project files.
 - Treat the expanded shot list as the production contract. The renderer should execute by `purpose`, `camera.subject`, `blocking`, and `interaction` first, then fall back to action-specific overrides only for exceptional staging.
 - Do not let a single event render as one camera setup when it contains a physical interaction, screen discovery, phone call, entrance, meeting, or object transfer.
 - Define a `subject_registry` in event-driven sequences. Every `camera.subject`, non-dotted blocking anchor, and non-dotted interaction prop anchor must resolve to a character, actor anchor, scene-pack background/prop/anchor, or explicit temporary fallback.
+- Define an `action_registry` in event-driven sequences. Every `shot.action` must resolve to a scene-pack action template, renderer handler, runtime clip/state, or explicit temporary fallback.
 - Define an `edit` block for every generated shot. It must explain `transition`, `continuity`, and `reason`, so cuts are motivated rather than arbitrary.
 - For repeatable production, write an event file first, then run the beat expander:
 
@@ -99,6 +100,17 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - For `actor_anchor`, provide `actor` and `anchor`, such as `hand_r`.
 - For temporary entries, provide a `fallback` note explaining why the subject is not yet in a scene pack.
 - Run `scripts\validate_cinematic_shots.py` after expansion. It checks scene-pack existence, background keys, prop keys, anchor keys, subject registration, and temporary fallback declarations.
+
+## Action Binding
+
+- Treat `shot.action` as executable production data, not prose.
+- Add every non-scene-pack action to `action_registry`.
+- Use `scene_action` when the action maps to a scene pack's `supported_actions` or `action_templates`.
+- Use `render_action` only for test/demo-specific renderer handlers, and include `handler` plus `reason`.
+- Use `runtime_action` for Animate/Spine/Rive/Unity/AE-precomp clips or states, and include `runtime` plus `clip` or `state`.
+- Use `temporary_action` for unresolved staging and include `fallback`.
+- Prefer replacing `render_action` and `temporary_action` with `scene_action` or `runtime_action` before production rendering.
+- Validation rejects unbound actions, unknown action types, missing renderer handlers, missing runtime clip/state, and missing temporary fallbacks.
 
 ## State Machine Rules
 
@@ -143,6 +155,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Require asset density before rendering: every shot should have a background, at least one foreground/midground prop or UI element, visible character/subject layers, and an explicit fallback if a required asset is missing.
 - If the asset library is too thin for a shot, mark the missing assets in the manifest and simplify the staging. Do not hide missing material with arbitrary smoke, flashes, or shaking.
 - Reject unbound subjects. A shot cannot use `camera.subject: fridge_handle` or `interaction.prop_anchor: fridge_shelf` unless that name exists in the scene pack or `subject_registry`.
+- Reject unbound actions. A shot cannot use `action: open_fridge` unless it exists in the scene pack, `action_registry`, or runtime action manifest.
 
 ## When To Use Browser/Chrome
 

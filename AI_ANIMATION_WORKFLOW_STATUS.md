@@ -1327,6 +1327,41 @@ Positive: OK: cinematic shot coverage looks usable for projects/scene-interactio
 Negative: changing G06_01 from time_cut to cut is rejected as an unmotivated scene-pack jump
 ```
 
+## 2026-06-27 Action Registry And Executable Action Binding
+
+Added an action-binding layer so `shot.action` is treated as executable production data, not descriptive text.
+
+New top-level field:
+
+```text
+action_registry
+```
+
+Supported action binding types:
+
+- `scene_action`: maps to a scene pack's `supported_actions` or `action_templates`.
+- `render_action`: maps to a preview renderer handler and requires `handler` plus `reason`.
+- `runtime_action`: maps to Animate/Spine/Rive/Unity/AE-precomp clips or states and requires `runtime` plus `clip` or `state`.
+- `temporary_action`: marks unresolved staging and requires `fallback`.
+
+Current test status:
+
+- The breakfast/activity cinematic test declares its current actions as `render_action`.
+- This is accurate because those actions are implemented in `src/CinematicInteractionTest.tsx` rather than formal scene pack action templates.
+- The validator now rejects any `shot.action` that is neither registered nor found in the shot's scene pack.
+
+Validation:
+
+```text
+Positive: OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+Negative: removing wake_establish from action_registry is rejected as an unbound action
+```
+
+Production implication:
+
+- Future scene packs and Animate/AE runtime manifests should gradually replace preview-only `render_action` entries with `scene_action` or `runtime_action`.
+- This closes the gap between "the script says a character does something" and "the animation system has an executable action for it."
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

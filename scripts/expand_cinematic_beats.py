@@ -249,6 +249,7 @@ def expand_sequence(data: dict) -> dict:
         "goal": data.get("goal", "Generated cinematic shot list from event beats."),
         "source_events": data.get("source_events", ""),
         "subject_registry": deepcopy(data.get("subject_registry", {})),
+        "action_registry": deepcopy(data.get("action_registry", {})),
         "shots": [],
     }
     for index, event in enumerate(data.get("events", []), start=1):
