@@ -1287,6 +1287,46 @@ Why this matters:
 - It is the bridge from abstract shot language to AE/Animate execution because subjects can be resolved into actual layers, props, anchors, and handoff controls.
 - It makes missing production assets explicit instead of hiding them behind one-off renderer code.
 
+## 2026-06-27 Edit Continuity Validation
+
+Added an edit-continuity layer so cuts are validated as part of the shot contract.
+
+`scripts/expand_cinematic_beats.py` now emits:
+
+```text
+edit.transition
+edit.continuity
+edit.reason
+```
+
+for every generated shot.
+
+Examples:
+
+- `insert_cut` for readable screens, signs, phones, and object details;
+- `action_match_cut` for hand/contact transitions;
+- `pov_cut` for source/object reveal;
+- `reaction_cut` for information-to-reaction returns;
+- `speaker_cut` and `reverse_cut` for phone/dialogue coverage;
+- `result_cut` for completed action states;
+- `split_screen_bridge` for designed two-sided layouts;
+- `time_cut` for jumping to a new location or time.
+
+`scripts/validate_cinematic_shots.py` now rejects:
+
+- shots missing edit blocks;
+- insert/contact/result purposes with wrong edit transitions;
+- reaction/speaker purposes with wrong edit transitions;
+- scene-pack changes without `scene_cut`, `time_cut`, `graphic_match`, or `split_screen_bridge`;
+- background changes inside a scene pack without an insert/context/result/reaction/POV/action-match reason.
+
+Validation:
+
+```text
+Positive: OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+Negative: changing G06_01 from time_cut to cut is rejected as an unmotivated scene-pack jump
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

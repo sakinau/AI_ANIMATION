@@ -44,10 +44,11 @@ The renderer must treat each generated shot as a cinematic instruction, not as a
 Execution order:
 
 1. Read `purpose`.
-2. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
-3. Resolve scene-pack background, foreground, prop state, and anchor data.
-4. Execute the matching template for that purpose.
-5. Use action-specific custom code only when the generic purpose template cannot express the shot.
+2. Read `edit.transition`, `edit.continuity`, and `edit.reason`.
+3. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
+4. Resolve scene-pack background, foreground, prop state, and anchor data.
+5. Execute the matching template for that purpose.
+6. Use action-specific custom code only when the generic purpose template cannot express the shot.
 
 Required renderer behavior:
 
@@ -58,6 +59,40 @@ Required renderer behavior:
 - `location_establish` means show geography or signage before cutting into closer shots.
 
 Never collapse an expanded shot group back into one front-facing master camera. If an asset is missing, select a declared fallback such as a crop insert, hand proxy, object-only insert, reaction icon, or text-safe UI insert.
+
+## Edit Continuity
+
+Each generated shot must include:
+
+```json
+{
+  "edit": {
+    "transition": "insert_cut",
+    "continuity": "look_to_screen",
+    "reason": "make screen information readable"
+  }
+}
+```
+
+Recommended transitions:
+
+- `scene_start`: first shot of a sequence or location.
+- `context_cut`: cut to establish actor context before a discovery.
+- `insert_cut`: cut into readable prop, screen, sign, UI, or object detail.
+- `action_match_cut`: cut on an action path, usually hand/object contact.
+- `pov_cut`: cut from character/contact to what the character sees.
+- `reaction_cut`: cut from information/object/action to character reaction.
+- `speaker_cut` / `reverse_cut`: dialogue and phone-call speaker changes.
+- `result_cut`: show the post-action state.
+- `split_screen_bridge`: bridge two speakers or places through a designed layout.
+- `scene_cut` / `time_cut`: explicit location or time jump.
+
+Validation target:
+
+- Scene-pack changes require `scene_cut`, `time_cut`, `graphic_match`, or `split_screen_bridge`.
+- Insert/contact/result purposes require insert/action/pov/result transitions.
+- Reaction and speaker purposes require reaction/speaker/reverse/result transitions.
+- Background changes inside one scene pack must be motivated by insert, context, result, reaction, POV, or action-match editing.
 
 ## Subject Registry
 
@@ -107,6 +142,10 @@ interaction:
   actor_anchor: xiaoming.hand_r
   prop_anchor: fridge_shelf_eggs
   result_state: prop_in_hand
+edit:
+  transition: action_match_cut
+  continuity: hand_to_contact
+  reason: cut from approach to the exact contact point
 ```
 
 ## Coverage Rules

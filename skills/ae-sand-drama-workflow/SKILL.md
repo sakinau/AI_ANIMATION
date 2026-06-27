@@ -58,6 +58,7 @@ The main agent integrates results and owns the runnable project files.
 - Treat the expanded shot list as the production contract. The renderer should execute by `purpose`, `camera.subject`, `blocking`, and `interaction` first, then fall back to action-specific overrides only for exceptional staging.
 - Do not let a single event render as one camera setup when it contains a physical interaction, screen discovery, phone call, entrance, meeting, or object transfer.
 - Define a `subject_registry` in event-driven sequences. Every `camera.subject`, non-dotted blocking anchor, and non-dotted interaction prop anchor must resolve to a character, actor anchor, scene-pack background/prop/anchor, or explicit temporary fallback.
+- Define an `edit` block for every generated shot. It must explain `transition`, `continuity`, and `reason`, so cuts are motivated rather than arbitrary.
 - For repeatable production, write an event file first, then run the beat expander:
 
 ```powershell
@@ -80,6 +81,15 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Then resolve the subject through `camera.subject` and scene-pack data: background variant, foreground layer, prop variant, anchor, character state, and occlusion rule.
 - Use action-specific branches only when a shot needs unique layout, such as a special POV, split-screen call, large crowd reveal, or custom VFX beat.
 - If the renderer cannot find an anchor or prop state, fail validation or use an explicit fallback insert. Do not silently return to a front-facing master shot.
+
+## Edit Continuity Rules
+
+- Treat cuts as production data. Every shot needs `edit.transition`, `edit.continuity`, and `edit.reason`.
+- Use explicit transition types such as `scene_start`, `context_cut`, `insert_cut`, `action_match_cut`, `pov_cut`, `reaction_cut`, `speaker_cut`, `reverse_cut`, `result_cut`, `split_screen_bridge`, `scene_cut`, or `time_cut`.
+- Scene-pack changes require `scene_cut`, `time_cut`, `graphic_match`, or `split_screen_bridge`.
+- Insert/contact/result shots must use insert/action/pov/result transitions.
+- Reaction and speaker shots must use reaction/speaker/reverse/result transitions.
+- When returning from an insert to a character reaction, use `reaction_cut` and explain the story reason.
 
 ## Subject And Anchor Binding
 
@@ -120,6 +130,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Do not use one front-facing master shot for a whole sequence. In every 60 seconds, include at least 14 shots, at least 5 camera/framing/angle categories, and at least 3 distinct shot sizes: `wide`, `medium`, `closeup`, `insert`.
 - No single camera setup should carry more than 8 seconds of continuous story unless the user explicitly asks for a stage-play style.
 - No event should pass only because the whole sequence has enough variety. Validate every event's local shot grammar: required purposes, angle contrast, shot-size contrast, subject switching, and visible result state.
+- Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.
 - Every 6-8 second shot should contain at least 2 visible action beats: pose swap, expression swap, mouth loop, gesture, prop movement, UI pop, entrance/exit, or reaction hold.

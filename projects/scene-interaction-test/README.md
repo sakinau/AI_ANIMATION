@@ -133,6 +133,24 @@ The generated shot list carries this registry forward. `scripts/validate_cinemat
 - non-dotted blocking/interaction anchors are registered or exist in the scene pack;
 - temporary subjects include a fallback note.
 
+## Edit Continuity Validation
+
+The generated cinematic shot list now includes an `edit` block on every shot:
+
+```text
+edit.transition
+edit.continuity
+edit.reason
+```
+
+This makes cuts auditable. The validator rejects:
+
+- missing edit blocks;
+- insert/contact/result shots without insert/action/pov/result transitions;
+- reaction or speaker shots without reaction/speaker/reverse/result transitions;
+- scene-pack jumps without `scene_cut`, `time_cut`, `graphic_match`, or `split_screen_bridge`;
+- background changes inside one scene pack without an insert/context/result/reaction/POV/action-match reason.
+
 ## Asset Strategy
 
 Formal scene packs used:

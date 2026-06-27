@@ -50,6 +50,9 @@ MIN_EVENT_CAMERA_SETUPS = {
 TEMPORARY_SUBJECT_TYPES = {"temporary_prop", "temporary_anchor", "temporary_set", "fallback_ui"}
 ACTOR_SUBJECT_TYPES = {"actor", "actor_group", "actor_anchor"}
 ANCHOR_REGISTRY_TYPES = TEMPORARY_SUBJECT_TYPES | {"actor_anchor"}
+SCENE_CHANGE_TRANSITIONS = {"scene_cut", "time_cut", "graphic_match", "split_screen_bridge"}
+INSERT_PURPOSES = {"screen_insert", "event_notice_insert", "dial_screen", "pickup_phone", "contact", "reveal_source", "show_pickup", "result_insert"}
+REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_close", "reaction_pair_result"}
 
 
 def load_sequence(path: Path) -> dict:
@@ -117,6 +120,13 @@ def camera_setup(shot: dict) -> tuple[str, str, str, str]:
         camera_field(shot, "subject") or str(shot.get("subject", "") or ""),
         camera_field(shot, "move") or camera_field(shot, "preset"),
     )
+
+
+def edit_field(shot: dict, key: str) -> str:
+    edit = shot.get("edit", {})
+    if isinstance(edit, dict):
+        return str(edit.get(key, "") or "")
+    return ""
 
 
 def registry_subject_errors(subject: str, binding: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
@@ -208,6 +218,48 @@ def interaction_anchor_errors(shot: dict, registry: dict, scene_packs_root: Path
     return errors
 
 
+def edit_errors(shots: list[dict]) -> list[str]:
+    errors: list[str] = []
+    for index, shot in enumerate(shots):
+        shot_id = shot.get("shot_id", "<unknown>")
+        edit = shot.get("edit")
+        if not isinstance(edit, dict):
+            errors.append(f"{shot_id}: missing edit block with transition/continuity/reason.")
+            continue
+        for key in ("transition", "continuity", "reason"):
+            if not edit.get(key):
+                errors.append(f"{shot_id}: missing edit.{key}.")
+
+        purpose = str(shot.get("purpose", "") or "")
+        transition = edit_field(shot, "transition")
+        if purpose in INSERT_PURPOSES and transition not in {"insert_cut", "action_match_cut", "pov_cut", "result_cut"}:
+            errors.append(f"{shot_id}: insert/contact purpose '{purpose}' needs insert/action/pov/result edit transition, got '{transition}'.")
+        if purpose in REACTION_PURPOSES and transition not in {"reaction_cut", "speaker_cut", "reverse_cut", "result_cut"}:
+            errors.append(f"{shot_id}: reaction/speaker purpose '{purpose}' needs reaction/speaker/reverse/result edit transition, got '{transition}'.")
+
+        if index == 0:
+            if transition not in {"scene_start", "context_cut", "time_cut"}:
+                errors.append(f"{shot_id}: first shot should start with scene_start/context_cut/time_cut, got '{transition}'.")
+            continue
+
+        previous = shots[index - 1]
+        previous_scene = str(previous.get("scene_pack", "") or "")
+        current_scene = str(shot.get("scene_pack", "") or "")
+        previous_event = str(previous.get("event_id", "") or "")
+        current_event = str(shot.get("event_id", "") or "")
+        previous_background = str(previous.get("background", "") or "")
+        current_background = str(shot.get("background", "") or "")
+
+        if previous_scene != current_scene and transition not in SCENE_CHANGE_TRANSITIONS:
+            errors.append(f"{shot_id}: scene_pack changes from {previous_scene} to {current_scene} but edit.transition is '{transition}'.")
+        if previous_event != current_event and previous_scene != current_scene and transition not in SCENE_CHANGE_TRANSITIONS:
+            errors.append(f"{shot_id}: new event changes scene without scene/time/bridge transition.")
+        if previous_background != current_background and previous_scene == current_scene:
+            if transition not in {"insert_cut", "pov_cut", "action_match_cut", "context_cut", "result_cut", "reaction_cut", "scene_start", "time_cut"}:
+                errors.append(f"{shot_id}: background changes within {current_scene} without insert/context/result edit transition.")
+    return errors
+
+
 def validate(path: Path) -> list[str]:
     data = load_sequence(path)
     shots = data.get("shots", [])
@@ -222,6 +274,8 @@ def validate(path: Path) -> list[str]:
 
     if not shots:
         return ["No shots found."]
+
+    errors.extend(edit_errors(shots))
 
     runtime = float(data.get("runtime_seconds") or sum(float(s.get("duration", 0)) for s in shots))
     expected_min = max(1, round(runtime / 60 * 14))

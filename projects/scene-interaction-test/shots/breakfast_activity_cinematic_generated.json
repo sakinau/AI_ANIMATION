@@ -97,6 +97,11 @@
         "move": "push_in",
         "motivation": "establish_space",
         "subject": "room"
+      },
+      "edit": {
+        "transition": "scene_start",
+        "continuity": "establish_context",
+        "reason": "orient audience before information insert"
       }
     },
     {
@@ -117,6 +122,11 @@
         "move": "cut",
         "motivation": "reveal_object",
         "subject": "tv"
+      },
+      "edit": {
+        "transition": "insert_cut",
+        "continuity": "look_to_object",
+        "reason": "make the discovered screen readable"
       }
     },
     {
@@ -137,6 +147,11 @@
         "move": "push_in",
         "motivation": "show_reaction",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "reaction_cut",
+        "continuity": "object_to_reaction",
+        "reason": "show why the information matters"
       }
     },
     {
@@ -157,6 +172,11 @@
         "move": "truck",
         "motivation": "establish_space",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "action_start",
+        "continuity": "screen_direction",
+        "reason": "establish actor route to the object"
       },
       "blocking": {
         "primary_action": "grab",
@@ -190,6 +210,11 @@
         "motivation": "show_contact",
         "subject": "fridge_handle"
       },
+      "edit": {
+        "transition": "action_match_cut",
+        "continuity": "hand_to_contact",
+        "reason": "cut from approach to the exact contact point"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -221,6 +246,11 @@
         "move": "pull_back",
         "motivation": "reveal_object",
         "subject": "eggs_milk"
+      },
+      "edit": {
+        "transition": "pov_cut",
+        "continuity": "contact_to_source",
+        "reason": "show what is inside or behind the contacted object"
       },
       "blocking": {
         "primary_action": "grab",
@@ -254,6 +284,11 @@
         "motivation": "show_contact",
         "subject": "eggs_milk"
       },
+      "edit": {
+        "transition": "action_match_cut",
+        "continuity": "source_to_hand",
+        "reason": "compress the detailed pickup into a clear contact insert"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -285,6 +320,11 @@
         "move": "push_in",
         "motivation": "show_reaction",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "reaction_cut",
+        "continuity": "object_to_reaction",
+        "reason": "show the character response after pickup"
       },
       "blocking": {
         "primary_action": "grab",
@@ -318,6 +358,11 @@
         "motivation": "show_result",
         "subject": "breakfast"
       },
+      "edit": {
+        "transition": "result_cut",
+        "continuity": "reaction_to_result",
+        "reason": "confirm the post-action object state"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -349,6 +394,11 @@
         "move": "push_in",
         "motivation": "show_contact",
         "subject": "breakfast"
+      },
+      "edit": {
+        "transition": "action_match_cut",
+        "continuity": "hand_to_surface",
+        "reason": "show contact with the destination surface"
       },
       "blocking": {
         "primary_action": "place",
@@ -382,6 +432,11 @@
         "motivation": "show_result",
         "subject": "breakfast"
       },
+      "edit": {
+        "transition": "result_cut",
+        "continuity": "contact_to_result",
+        "reason": "show the completed placed state"
+      },
       "blocking": {
         "primary_action": "place",
         "screen_direction": "inward",
@@ -413,6 +468,11 @@
         "move": "cut",
         "motivation": "establish_space",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "context_cut",
+        "continuity": "actor_context",
+        "reason": "show what the actor is doing before discovery"
       }
     },
     {
@@ -433,6 +493,11 @@
         "move": "push_in",
         "motivation": "reveal_object",
         "subject": "tv"
+      },
+      "edit": {
+        "transition": "insert_cut",
+        "continuity": "look_to_screen",
+        "reason": "make screen information readable"
       }
     },
     {
@@ -453,6 +518,11 @@
         "move": "push_in",
         "motivation": "show_reaction",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "reaction_cut",
+        "continuity": "screen_to_reaction",
+        "reason": "show the decision beat after screen discovery"
       }
     },
     {
@@ -473,6 +543,11 @@
         "move": "cut",
         "motivation": "show_contact",
         "subject": "phone"
+      },
+      "edit": {
+        "transition": "action_match_cut",
+        "continuity": "hand_to_phone",
+        "reason": "show how the call begins"
       }
     },
     {
@@ -493,6 +568,11 @@
         "move": "cut",
         "motivation": "reveal_object",
         "subject": "phone"
+      },
+      "edit": {
+        "transition": "insert_cut",
+        "continuity": "phone_to_screen",
+        "reason": "show the dialing state before dialogue"
       }
     },
     {
@@ -513,6 +593,11 @@
         "move": "cut",
         "motivation": "show_reaction",
         "subject": "xiaoming"
+      },
+      "edit": {
+        "transition": "speaker_cut",
+        "continuity": "screen_to_caller",
+        "reason": "move from call setup to caller line"
       }
     },
     {
@@ -533,6 +618,11 @@
         "move": "cut",
         "motivation": "show_reaction",
         "subject": "friend"
+      },
+      "edit": {
+        "transition": "reverse_cut",
+        "continuity": "caller_to_receiver",
+        "reason": "cut to response speaker"
       }
     },
     {
@@ -553,6 +643,11 @@
         "move": "cut",
         "motivation": "show_result",
         "subject": "both"
+      },
+      "edit": {
+        "transition": "split_screen_bridge",
+        "continuity": "two_sided_call",
+        "reason": "summarize the shared decision"
       }
     },
     {
@@ -573,6 +668,11 @@
         "move": "pan",
         "motivation": "establish_space",
         "subject": "event_site"
+      },
+      "edit": {
+        "transition": "time_cut",
+        "continuity": "new_location",
+        "reason": "jump to the meeting location after the call"
       }
     },
     {
@@ -593,6 +693,11 @@
         "move": "truck",
         "motivation": "reveal_object",
         "subject": "friend"
+      },
+      "edit": {
+        "transition": "reveal_cut",
+        "continuity": "arrival_to_counterpart",
+        "reason": "reveal the other character from the first character's side"
       }
     },
     {
@@ -613,6 +718,11 @@
         "move": "push_in",
         "motivation": "reveal_object",
         "subject": "event_notice"
+      },
+      "edit": {
+        "transition": "insert_cut",
+        "continuity": "counterpart_to_notice",
+        "reason": "show the sign that motivates the meeting"
       }
     },
     {
@@ -633,6 +743,11 @@
         "move": "pull_back",
         "motivation": "show_reaction",
         "subject": "both"
+      },
+      "edit": {
+        "transition": "result_cut",
+        "continuity": "notice_to_pair",
+        "reason": "return to the pair and complete the beat"
       }
     }
   ],
