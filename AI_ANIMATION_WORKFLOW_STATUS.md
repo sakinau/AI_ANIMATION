@@ -1362,6 +1362,40 @@ Production implication:
 - Future scene packs and Animate/AE runtime manifests should gradually replace preview-only `render_action` entries with `scene_action` or `runtime_action`.
 - This closes the gap between "the script says a character does something" and "the animation system has an executable action for it."
 
+## 2026-06-29 Directing Blocks And Shot Phase Grammar
+
+Added a director-facing `directing` layer to generated cinematic shots.
+
+Each generated shot now carries:
+
+- `directing.action_phase`: setup, approach, contact, source reveal, transfer, information, speaker, reaction, reveal, or result.
+- `directing.focus`: what the audience should look at.
+- `directing.composition`: how the subject should dominate the frame.
+- `directing.emphasis`: why the shot exists.
+
+Why this matters:
+
+- Camera fields alone can still produce mechanical multi-camera output.
+- `directing` turns each shot into an auditable story job: establish, contact, reveal, react, or confirm result.
+- This gives future Remotion/AE/Animate executors a stable field to decide crop, prop priority, readable UI, reaction closeups, and result inserts.
+
+Validator additions:
+
+- Missing `directing` blocks fail validation.
+- A shot purpose must match its expected `action_phase`.
+- Information inserts must declare readable screen/sign/notice focus.
+- Physical action inserts must declare hand/object/contact/transfer focus.
+- Reaction and result shots must declare reaction/result focus.
+- Shot purposes inside each pattern must appear in cinematic order.
+
+Validation:
+
+```text
+Positive: OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+Negative: removing a directing block is rejected
+Negative: reversing contact and approach order is rejected
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

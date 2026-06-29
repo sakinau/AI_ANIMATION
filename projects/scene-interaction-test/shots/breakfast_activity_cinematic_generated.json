@@ -219,6 +219,12 @@
         "transition": "scene_start",
         "continuity": "establish_context",
         "reason": "orient audience before information insert"
+      },
+      "directing": {
+        "action_phase": "setup",
+        "focus": "space_before_subject",
+        "composition": "geography_first",
+        "emphasis": "orient the audience before the gag or action"
       }
     },
     {
@@ -244,6 +250,12 @@
         "transition": "insert_cut",
         "continuity": "look_to_object",
         "reason": "make the discovered screen readable"
+      },
+      "directing": {
+        "action_phase": "information",
+        "focus": "readable_screen",
+        "composition": "object_fills_frame",
+        "emphasis": "make the discovered information readable"
       }
     },
     {
@@ -269,6 +281,12 @@
         "transition": "reaction_cut",
         "continuity": "object_to_reaction",
         "reason": "show why the information matters"
+      },
+      "directing": {
+        "action_phase": "reaction",
+        "focus": "face_or_body_reaction",
+        "composition": "character_close_priority",
+        "emphasis": "show why the previous information matters"
       }
     },
     {
@@ -294,6 +312,12 @@
         "transition": "action_start",
         "continuity": "screen_direction",
         "reason": "establish actor route to the object"
+      },
+      "directing": {
+        "action_phase": "approach",
+        "focus": "actor_route_to_object",
+        "composition": "screen_direction_visible",
+        "emphasis": "show the path before contact"
       },
       "blocking": {
         "primary_action": "grab",
@@ -332,6 +356,12 @@
         "continuity": "hand_to_contact",
         "reason": "cut from approach to the exact contact point"
       },
+      "directing": {
+        "action_phase": "contact",
+        "focus": "hand_or_object_contact",
+        "composition": "contact_point_priority",
+        "emphasis": "sell the physical touch or placement"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -368,6 +398,12 @@
         "transition": "pov_cut",
         "continuity": "contact_to_source",
         "reason": "show what is inside or behind the contacted object"
+      },
+      "directing": {
+        "action_phase": "source_reveal",
+        "focus": "object_source",
+        "composition": "pov_or_insert_reveal",
+        "emphasis": "show what is being chosen or discovered"
       },
       "blocking": {
         "primary_action": "grab",
@@ -406,6 +442,12 @@
         "continuity": "source_to_hand",
         "reason": "compress the detailed pickup into a clear contact insert"
       },
+      "directing": {
+        "action_phase": "transfer",
+        "focus": "object_transfer",
+        "composition": "object_and_hand_priority",
+        "emphasis": "make the pickup feel intentional, not floating"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -442,6 +484,12 @@
         "transition": "reaction_cut",
         "continuity": "object_to_reaction",
         "reason": "show the character response after pickup"
+      },
+      "directing": {
+        "action_phase": "reaction",
+        "focus": "face_or_body_reaction",
+        "composition": "character_close_priority",
+        "emphasis": "punctuate the action with character attitude"
       },
       "blocking": {
         "primary_action": "grab",
@@ -480,6 +528,12 @@
         "continuity": "reaction_to_result",
         "reason": "confirm the post-action object state"
       },
+      "directing": {
+        "action_phase": "result",
+        "focus": "post_action_object_state",
+        "composition": "result_state_centered",
+        "emphasis": "confirm where the object ended up"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -516,6 +570,12 @@
         "transition": "action_match_cut",
         "continuity": "hand_to_surface",
         "reason": "show contact with the destination surface"
+      },
+      "directing": {
+        "action_phase": "contact",
+        "focus": "hand_or_object_contact",
+        "composition": "contact_point_priority",
+        "emphasis": "sell the physical touch or placement"
       },
       "blocking": {
         "primary_action": "place",
@@ -554,6 +614,12 @@
         "continuity": "contact_to_result",
         "reason": "show the completed placed state"
       },
+      "directing": {
+        "action_phase": "result",
+        "focus": "post_action_object_state",
+        "composition": "result_state_centered",
+        "emphasis": "confirm where the object ended up"
+      },
       "blocking": {
         "primary_action": "place",
         "screen_direction": "inward",
@@ -590,6 +656,12 @@
         "transition": "context_cut",
         "continuity": "actor_context",
         "reason": "show what the actor is doing before discovery"
+      },
+      "directing": {
+        "action_phase": "setup",
+        "focus": "actor_previous_activity",
+        "composition": "actor_with_relevant_prop",
+        "emphasis": "show what the actor is doing before the discovery"
       }
     },
     {
@@ -615,6 +687,12 @@
         "transition": "insert_cut",
         "continuity": "look_to_screen",
         "reason": "make screen information readable"
+      },
+      "directing": {
+        "action_phase": "information",
+        "focus": "readable_screen",
+        "composition": "object_fills_frame",
+        "emphasis": "make the discovered information readable"
       }
     },
     {
@@ -640,6 +718,12 @@
         "transition": "reaction_cut",
         "continuity": "screen_to_reaction",
         "reason": "show the decision beat after screen discovery"
+      },
+      "directing": {
+        "action_phase": "reaction",
+        "focus": "face_or_body_reaction",
+        "composition": "character_close_priority",
+        "emphasis": "show why the previous information matters"
       }
     },
     {
@@ -665,6 +749,12 @@
         "transition": "action_match_cut",
         "continuity": "hand_to_phone",
         "reason": "show how the call begins"
+      },
+      "directing": {
+        "action_phase": "contact",
+        "focus": "phone_contact",
+        "composition": "hand_and_phone_insert",
+        "emphasis": "show how the call begins"
       }
     },
     {
@@ -690,6 +780,12 @@
         "transition": "insert_cut",
         "continuity": "phone_to_screen",
         "reason": "show the dialing state before dialogue"
+      },
+      "directing": {
+        "action_phase": "information",
+        "focus": "phone_screen_state",
+        "composition": "screen_fills_frame",
+        "emphasis": "show the call state before dialogue"
       }
     },
     {
@@ -715,6 +811,12 @@
         "transition": "speaker_cut",
         "continuity": "screen_to_caller",
         "reason": "move from call setup to caller line"
+      },
+      "directing": {
+        "action_phase": "speaker",
+        "focus": "caller_performance",
+        "composition": "speaker_close_priority",
+        "emphasis": "make the caller's line readable as performance"
       }
     },
     {
@@ -740,6 +842,12 @@
         "transition": "reverse_cut",
         "continuity": "caller_to_receiver",
         "reason": "cut to response speaker"
+      },
+      "directing": {
+        "action_phase": "reverse_speaker",
+        "focus": "receiver_performance",
+        "composition": "reverse_close_priority",
+        "emphasis": "cut to the answer instead of holding one side"
       }
     },
     {
@@ -765,6 +873,12 @@
         "transition": "split_screen_bridge",
         "continuity": "two_sided_call",
         "reason": "summarize the shared decision"
+      },
+      "directing": {
+        "action_phase": "shared_result",
+        "focus": "two_sided_decision",
+        "composition": "split_or_two_panel_balance",
+        "emphasis": "summarize the shared decision"
       }
     },
     {
@@ -790,6 +904,12 @@
         "transition": "time_cut",
         "continuity": "new_location",
         "reason": "jump to the meeting location after the call"
+      },
+      "directing": {
+        "action_phase": "setup",
+        "focus": "new_location_geography",
+        "composition": "wide_geography_with_signage",
+        "emphasis": "orient the audience after a time or location jump"
       }
     },
     {
@@ -815,6 +935,12 @@
         "transition": "reveal_cut",
         "continuity": "arrival_to_counterpart",
         "reason": "reveal the other character from the first character's side"
+      },
+      "directing": {
+        "action_phase": "reveal",
+        "focus": "second_character_entrance",
+        "composition": "over_shoulder_or_side_reveal",
+        "emphasis": "reveal the other character from a motivated viewpoint"
       }
     },
     {
@@ -840,6 +966,12 @@
         "transition": "insert_cut",
         "continuity": "counterpart_to_notice",
         "reason": "show the sign that motivates the meeting"
+      },
+      "directing": {
+        "action_phase": "information",
+        "focus": "readable_notice",
+        "composition": "sign_or_notice_fills_frame",
+        "emphasis": "show the detail that motivates the next reaction"
       }
     },
     {
@@ -865,6 +997,12 @@
         "transition": "result_cut",
         "continuity": "notice_to_pair",
         "reason": "return to the pair and complete the beat"
+      },
+      "directing": {
+        "action_phase": "shared_reaction",
+        "focus": "pair_result",
+        "composition": "two_shot_result",
+        "emphasis": "return to the characters and complete the beat"
       }
     }
   ],

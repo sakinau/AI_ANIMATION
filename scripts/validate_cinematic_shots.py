@@ -38,6 +38,37 @@ PATTERN_REQUIRED_PURPOSES = {
     "meeting_at_location": {"location_establish", "counterpart_reveal", "event_notice_insert", "reaction_pair_result"},
 }
 
+PATTERN_PURPOSE_ORDER = {
+    "establish_to_reaction": ["establish_space", "screen_insert", "reaction_close"],
+    "object_pickup_sequence": ["approach_object", "contact", "reveal_source", "show_pickup", "reaction", "result_insert"],
+    "object_putdown_sequence": ["contact", "result_insert"],
+    "watch_screen_discovery": ["actor_context", "screen_insert", "reaction_close"],
+    "phone_call": ["pickup_phone", "dial_screen", "caller_close", "receiver_close", "split_result"],
+    "meeting_at_location": ["location_establish", "counterpart_reveal", "event_notice_insert", "reaction_pair_result"],
+}
+
+PURPOSE_ACTION_PHASES = {
+    "establish_space": {"setup"},
+    "screen_insert": {"information"},
+    "reaction_close": {"reaction"},
+    "approach_object": {"approach"},
+    "contact": {"contact"},
+    "reveal_source": {"source_reveal", "information"},
+    "show_pickup": {"transfer"},
+    "reaction": {"reaction"},
+    "result_insert": {"result"},
+    "actor_context": {"setup"},
+    "pickup_phone": {"contact"},
+    "dial_screen": {"information"},
+    "caller_close": {"speaker"},
+    "receiver_close": {"reverse_speaker", "speaker"},
+    "split_result": {"shared_result"},
+    "location_establish": {"setup"},
+    "counterpart_reveal": {"reveal"},
+    "event_notice_insert": {"information"},
+    "reaction_pair_result": {"shared_reaction", "reaction"},
+}
+
 MIN_EVENT_CAMERA_SETUPS = {
     "establish_to_reaction": 3,
     "object_pickup_sequence": 5,
@@ -54,6 +85,7 @@ ACTION_REGISTRY_TYPES = {"scene_action", "render_action", "temporary_action", "r
 SCENE_CHANGE_TRANSITIONS = {"scene_cut", "time_cut", "graphic_match", "split_screen_bridge"}
 INSERT_PURPOSES = {"screen_insert", "event_notice_insert", "dial_screen", "pickup_phone", "contact", "reveal_source", "show_pickup", "result_insert"}
 REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_close", "reaction_pair_result"}
+DIRECTING_REQUIRED_FIELDS = {"action_phase", "focus", "composition", "emphasis"}
 
 
 def load_sequence(path: Path) -> dict:
@@ -128,6 +160,45 @@ def edit_field(shot: dict, key: str) -> str:
     if isinstance(edit, dict):
         return str(edit.get(key, "") or "")
     return ""
+
+
+def directing_errors(shot: dict) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    directing = shot.get("directing")
+    if not isinstance(directing, dict):
+        return [f"{shot_id}: missing directing block with action_phase/focus/composition/emphasis."]
+
+    errors: list[str] = []
+    for key in sorted(DIRECTING_REQUIRED_FIELDS):
+        if not directing.get(key):
+            errors.append(f"{shot_id}: missing directing.{key}.")
+
+    purpose = str(shot.get("purpose", "") or "")
+    action_phase = str(directing.get("action_phase", "") or "")
+    allowed = PURPOSE_ACTION_PHASES.get(purpose)
+    if allowed and action_phase and action_phase not in allowed:
+        errors.append(f"{shot_id}: purpose '{purpose}' expects directing.action_phase in {sorted(allowed)}, got '{action_phase}'.")
+
+    framing = camera_field(shot, "framing")
+    composition = str(directing.get("composition", "") or "")
+    focus = str(directing.get("focus", "") or "")
+    if purpose in INSERT_PURPOSES and framing not in {"insert", "closeup", "extreme_closeup"}:
+        errors.append(f"{shot_id}: insert/contact purpose '{purpose}' should use close or insert framing, got '{framing}'.")
+    if purpose in {"screen_insert", "dial_screen", "event_notice_insert"}:
+        readable_terms = ("readable", "screen", "notice", "sign")
+        if not any(term in focus or term in composition for term in readable_terms):
+            errors.append(f"{shot_id}: information insert needs readable screen/sign focus in directing.")
+    if purpose in {"contact", "pickup_phone", "show_pickup"}:
+        contact_terms = ("contact", "hand", "object", "phone", "transfer")
+        if not any(term in focus or term in composition for term in contact_terms):
+            errors.append(f"{shot_id}: physical action insert needs hand/object/contact focus in directing.")
+    if purpose in {"reaction", "reaction_close", "reaction_pair_result"} and "reaction" not in focus and "reaction" not in action_phase:
+        errors.append(f"{shot_id}: reaction purpose needs reaction focus in directing.")
+    if purpose in {"caller_close", "receiver_close"} and "performance" not in focus and "speaker" not in action_phase:
+        errors.append(f"{shot_id}: speaker closeup needs performance or speaker focus in directing.")
+    if purpose in {"result_insert", "split_result", "reaction_pair_result"} and "result" not in focus and "result" not in action_phase:
+        errors.append(f"{shot_id}: result purpose needs result focus in directing.")
+    return errors
 
 
 def registry_subject_errors(subject: str, binding: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
@@ -401,6 +472,7 @@ def validate(path: Path) -> list[str]:
                 errors.append(f"{shot_id}: missing camera.{key}.")
         if not shot.get("shot_pattern"):
             errors.append(f"{shot_id}: missing shot_pattern.")
+        errors.extend(directing_errors(shot))
         errors.extend(shot_subject_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(interaction_anchor_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(action_errors(shot, action_registry, scene_packs_root, scene_cache))
@@ -427,6 +499,12 @@ def validate(path: Path) -> list[str]:
             missing = sorted(required_purposes - purposes)
             if missing:
                 errors.append(f"{event_id}: {shot_pattern} missing required purposes: {', '.join(missing)}.")
+        required_order = PATTERN_PURPOSE_ORDER.get(shot_pattern)
+        if required_order:
+            purpose_sequence = [str(s.get("purpose", "") or "") for s in event_shots]
+            order_positions = [required_order.index(p) for p in purpose_sequence if p in required_order]
+            if order_positions != sorted(order_positions):
+                errors.append(f"{event_id}: {shot_pattern} purpose order is not cinematic: {' -> '.join(purpose_sequence)}.")
 
         if len(event_shots) >= 3:
             signatures = {camera_signature(s) for s in event_shots}

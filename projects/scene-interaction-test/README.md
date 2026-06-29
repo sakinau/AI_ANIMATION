@@ -168,6 +168,19 @@ For this test, actions are currently declared as `render_action` because they ar
 
 The production direction is to replace preview-only `render_action` entries with scene-pack actions or Animate/AE runtime actions as rigs and templates mature.
 
+## Directing Validation
+
+Generated shots now include a `directing` block:
+
+- `action_phase`: setup, approach, contact, transfer, information, speaker, reaction, reveal, or result;
+- `focus`: the exact object, person, screen, contact point, or result state the audience should look at;
+- `composition`: how the subject should dominate the frame;
+- `emphasis`: why this shot exists in the beat.
+
+`scripts/validate_cinematic_shots.py` rejects missing directing blocks, mismatched action phases, unreadable information inserts, physical action inserts without hand/object/contact focus, reaction shots without reaction focus, and result shots without result focus.
+
+This makes the test stricter than "many shots with many camera moves"; each shot must also declare its story job.
+
 ## Asset Strategy
 
 Formal scene packs used:

@@ -60,6 +60,7 @@ The main agent integrates results and owns the runnable project files.
 - Define a `subject_registry` in event-driven sequences. Every `camera.subject`, non-dotted blocking anchor, and non-dotted interaction prop anchor must resolve to a character, actor anchor, scene-pack background/prop/anchor, or explicit temporary fallback.
 - Define an `action_registry` in event-driven sequences. Every `shot.action` must resolve to a scene-pack action template, renderer handler, runtime clip/state, or explicit temporary fallback.
 - Define an `edit` block for every generated shot. It must explain `transition`, `continuity`, and `reason`, so cuts are motivated rather than arbitrary.
+- Define or generate a `directing` block for every shot. It must explain `action_phase`, `focus`, `composition`, and `emphasis`, so the renderer knows what the audience should look at and why the shot exists.
 - For repeatable production, write an event file first, then run the beat expander:
 
 ```powershell
@@ -72,6 +73,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Require every shot pattern to include its mandatory purposes. For example, `object_pickup_sequence` must include approach/contact/source/pickup/reaction/result coverage.
 - Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
+- Every shot needs `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`. Use these fields to separate setup, approach, contact, information, speaker, reaction, reveal, transfer, and result phases.
 - Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
 - Write audience-facing MP4s without debug overlays, parameter labels, file names, or shot test notes.
 
@@ -91,6 +93,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Insert/contact/result shots must use insert/action/pov/result transitions.
 - Reaction and speaker shots must use reaction/speaker/reverse/result transitions.
 - When returning from an insert to a character reaction, use `reaction_cut` and explain the story reason.
+- Preserve pattern order. Do not shuffle contact before approach, reaction before information, or result before contact unless a deliberate flashback pattern exists and the validator has been extended for it.
 
 ## Subject And Anchor Binding
 
@@ -142,6 +145,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Do not use one front-facing master shot for a whole sequence. In every 60 seconds, include at least 14 shots, at least 5 camera/framing/angle categories, and at least 3 distinct shot sizes: `wide`, `medium`, `closeup`, `insert`.
 - No single camera setup should carry more than 8 seconds of continuous story unless the user explicitly asks for a stage-play style.
 - No event should pass only because the whole sequence has enough variety. Validate every event's local shot grammar: required purposes, angle contrast, shot-size contrast, subject switching, and visible result state.
+- No shot should pass with camera fields alone. Validate the shot's directing purpose: what phase it is in, what object or character gets attention, how it is composed, and what story emphasis it serves.
 - Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.

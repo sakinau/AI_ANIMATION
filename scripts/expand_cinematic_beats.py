@@ -194,6 +194,124 @@ PATTERNS: dict[str, list[dict]] = {
 }
 
 
+PURPOSE_DIRECTING: dict[str, dict] = {
+    "establish_space": {
+        "action_phase": "setup",
+        "focus": "space_before_subject",
+        "composition": "geography_first",
+        "emphasis": "orient the audience before the gag or action",
+    },
+    "screen_insert": {
+        "action_phase": "information",
+        "focus": "readable_screen",
+        "composition": "object_fills_frame",
+        "emphasis": "make the discovered information readable",
+    },
+    "reaction_close": {
+        "action_phase": "reaction",
+        "focus": "face_or_body_reaction",
+        "composition": "character_close_priority",
+        "emphasis": "show why the previous information matters",
+    },
+    "approach_object": {
+        "action_phase": "approach",
+        "focus": "actor_route_to_object",
+        "composition": "screen_direction_visible",
+        "emphasis": "show the path before contact",
+    },
+    "contact": {
+        "action_phase": "contact",
+        "focus": "hand_or_object_contact",
+        "composition": "contact_point_priority",
+        "emphasis": "sell the physical touch or placement",
+    },
+    "reveal_source": {
+        "action_phase": "source_reveal",
+        "focus": "object_source",
+        "composition": "pov_or_insert_reveal",
+        "emphasis": "show what is being chosen or discovered",
+    },
+    "show_pickup": {
+        "action_phase": "transfer",
+        "focus": "object_transfer",
+        "composition": "object_and_hand_priority",
+        "emphasis": "make the pickup feel intentional, not floating",
+    },
+    "reaction": {
+        "action_phase": "reaction",
+        "focus": "face_or_body_reaction",
+        "composition": "character_close_priority",
+        "emphasis": "punctuate the action with character attitude",
+    },
+    "result_insert": {
+        "action_phase": "result",
+        "focus": "post_action_object_state",
+        "composition": "result_state_centered",
+        "emphasis": "confirm where the object ended up",
+    },
+    "actor_context": {
+        "action_phase": "setup",
+        "focus": "actor_previous_activity",
+        "composition": "actor_with_relevant_prop",
+        "emphasis": "show what the actor is doing before the discovery",
+    },
+    "pickup_phone": {
+        "action_phase": "contact",
+        "focus": "phone_contact",
+        "composition": "hand_and_phone_insert",
+        "emphasis": "show how the call begins",
+    },
+    "dial_screen": {
+        "action_phase": "information",
+        "focus": "phone_screen_state",
+        "composition": "screen_fills_frame",
+        "emphasis": "show the call state before dialogue",
+    },
+    "caller_close": {
+        "action_phase": "speaker",
+        "focus": "caller_performance",
+        "composition": "speaker_close_priority",
+        "emphasis": "make the caller's line readable as performance",
+    },
+    "receiver_close": {
+        "action_phase": "reverse_speaker",
+        "focus": "receiver_performance",
+        "composition": "reverse_close_priority",
+        "emphasis": "cut to the answer instead of holding one side",
+    },
+    "split_result": {
+        "action_phase": "shared_result",
+        "focus": "two_sided_decision",
+        "composition": "split_or_two_panel_balance",
+        "emphasis": "summarize the shared decision",
+    },
+    "location_establish": {
+        "action_phase": "setup",
+        "focus": "new_location_geography",
+        "composition": "wide_geography_with_signage",
+        "emphasis": "orient the audience after a time or location jump",
+    },
+    "counterpart_reveal": {
+        "action_phase": "reveal",
+        "focus": "second_character_entrance",
+        "composition": "over_shoulder_or_side_reveal",
+        "emphasis": "reveal the other character from a motivated viewpoint",
+    },
+    "event_notice_insert": {
+        "action_phase": "information",
+        "focus": "readable_notice",
+        "composition": "sign_or_notice_fills_frame",
+        "emphasis": "show the detail that motivates the next reaction",
+    },
+    "reaction_pair_result": {
+        "action_phase": "shared_reaction",
+        "focus": "pair_result",
+        "composition": "two_shot_result",
+        "emphasis": "return to the characters and complete the beat",
+    },
+}
+
+
 def read_json(path: Path) -> dict:
     with path.open("r", encoding="utf-8-sig") as fh:
         return json.load(fh)
@@ -204,6 +322,13 @@ def phase_value(event: dict, key: str, purpose: str, default=None):
     if isinstance(values, dict):
         return values.get(purpose, default)
     return default
+
+
+def phase_directing(event: dict, phase: dict, purpose: str) -> dict:
+    directing = deepcopy(PURPOSE_DIRECTING.get(purpose, {}))
+    directing.update(deepcopy(phase.get("directing", {})))
+    directing.update(deepcopy(phase_value(event, "directing", purpose, {})))
+    return directing
 
 
 def expand_event(event: dict, event_index: int) -> list[dict]:
@@ -227,6 +352,7 @@ def expand_event(event: dict, event_index: int) -> list[dict]:
             "dialogue": phase_value(event, "dialogue", purpose, event.get("dialogue", "")),
             "camera": deepcopy(phase["camera"]),
             "edit": deepcopy(phase.get("edit", {})),
+            "directing": phase_directing(event, phase, purpose),
         }
         subject = phase_value(event, "subjects", purpose, event.get("subject"))
         if subject:

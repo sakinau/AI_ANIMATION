@@ -46,10 +46,11 @@ Execution order:
 
 1. Read `purpose`.
 2. Read `edit.transition`, `edit.continuity`, and `edit.reason`.
-3. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
-4. Resolve scene-pack background, foreground, prop state, and anchor data.
-5. Execute the matching template for that purpose.
-6. Use action-specific custom code only when the generic purpose template cannot express the shot.
+3. Read `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`.
+4. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
+5. Resolve scene-pack background, foreground, prop state, and anchor data.
+6. Execute the matching template for that purpose.
+7. Use action-specific custom code only when the generic purpose template cannot express the shot.
 
 Required renderer behavior:
 
@@ -94,6 +95,44 @@ Validation target:
 - Insert/contact/result purposes require insert/action/pov/result transitions.
 - Reaction and speaker purposes require reaction/speaker/reverse/result transitions.
 - Background changes inside one scene pack must be motivated by insert, context, result, reaction, POV, or action-match editing.
+- Purpose order must follow the selected shot pattern. For example, object pickup should proceed approach -> contact -> source reveal -> pickup transfer -> reaction -> result.
+
+## Directing Block
+
+Every generated shot must include a `directing` block. This is the director-facing contract that prevents the renderer from treating all shots as interchangeable camera transforms:
+
+```json
+{
+  "directing": {
+    "action_phase": "contact",
+    "focus": "hand_or_object_contact",
+    "composition": "contact_point_priority",
+    "emphasis": "sell the physical touch or placement"
+  }
+}
+```
+
+Use `action_phase` to describe where the shot sits inside the beat:
+
+- `setup`: establish space or previous activity.
+- `approach`: actor moves toward the object or target.
+- `contact`: physical touch, button press, pickup start, or placement moment.
+- `source_reveal`: show what is inside, behind, or about to be taken.
+- `transfer`: object moves from source to hand or hand to destination.
+- `information`: readable screen, notice, phone UI, sign, or popup.
+- `speaker` / `reverse_speaker`: dialogue performance and reverse cut.
+- `reaction` / `shared_reaction`: character response after information or action.
+- `reveal`: introduce a counterpart, location detail, or hidden subject.
+- `result` / `shared_result`: confirm the new object, location, or decision state.
+
+Validation target:
+
+- Missing `directing` fails validation.
+- `action_phase` must match the shot purpose.
+- Information inserts must have readable screen/sign/notice focus.
+- Physical action inserts must name hand/object/contact/transfer focus.
+- Reaction shots must name reaction focus.
+- Result shots must name result focus.
 
 ## Subject Registry
 
@@ -150,6 +189,11 @@ Add these fields to every shot:
 event_id: breakfast_pickup
 event_type: object_pickup
 shot_pattern: object_pickup_sequence
+directing:
+  action_phase: contact
+  focus: hand_or_object_contact
+  composition: contact_point_priority
+  emphasis: sell the physical touch before the result
 camera:
   angle: eye_level | high_angle | low_angle | pov | over_shoulder | side | front | insert
   framing: wide | full | medium | closeup | extreme_closeup | insert
