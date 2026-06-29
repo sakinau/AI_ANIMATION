@@ -86,6 +86,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Build renderers as cinematic executors, not one-off storyboard drawings.
 - First route a shot by `purpose`: `establish_space`, `contact`, `reveal_source`, `show_pickup`, `screen_insert`, `reaction_close`, `pickup_phone`, `dial_screen`, `caller_close`, `receiver_close`, `split_or_two_panel`, `location_establish`, `arrival`, `counterpart_reveal`, `two_shot_result`, or `result_insert`.
 - Then resolve the subject through `camera.subject` and scene-pack data: background variant, foreground layer, prop variant, anchor, character state, and occlusion rule.
+- Execute `motion_plan` on every shot. Map scale/offset/easing to the camera or shot precomp transform, split background and foreground movement when `parallax` is `subtle` or `layered`, and keep the caption/UI layer outside the camera transform unless the shot explicitly calls for screen-space motion.
 - Use action-specific branches only when a shot needs unique layout, such as a special POV, split-screen call, large crowd reveal, or custom VFX beat.
 - If the renderer cannot find an anchor or prop state, fail validation or use an explicit fallback insert. Do not silently return to a front-facing master shot.
 

@@ -1468,6 +1468,29 @@ Negative: removing a motion_plan block is rejected
 Negative: changing a push_in motion plan to static no-motion values is rejected
 ```
 
+## 2026-06-29 Motion Plan Renderer Execution
+
+Connected the generated `motion_plan` contract to the Remotion cinematic test renderer.
+
+Implementation:
+
+- `src/CinematicInteractionTest.tsx` now reads `shot.motion_plan` for every shot.
+- Scale, offset, and easing are executed from the shot data instead of hard-coded renderer presets.
+- Background and foreground layers move at different factors for `subtle` and `layered` parallax.
+- Caption/subtitle rendering stays outside the camera transform.
+- Crop safety is added during offset moves to avoid black frame edges.
+- Reused `NoticeInsert` for event notice shots and restored readable Chinese text in in-world TV/notice inserts.
+
+Validation:
+
+```text
+python scripts\validate_cinematic_shots.py projects\scene-interaction-test\shots\breakfast_activity_cinematic_generated.json
+OK: cinematic shot coverage looks usable for projects\scene-interaction-test\shots\breakfast_activity_cinematic_generated.json
+
+powershell -ExecutionPolicy Bypass -File scripts\render-cinematic-interaction-test.ps1
+Rendered output\scene-interaction-breakfast-activity-cinematic-test.mp4 successfully.
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

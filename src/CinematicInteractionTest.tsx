@@ -12,6 +12,14 @@ import {
 import sequence from '../projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json';
 
 type Shot = (typeof sequence.shots)[number];
+type MotionPlan = {
+  start_scale?: number;
+  end_scale?: number;
+  start_offset?: number[];
+  end_offset?: number[];
+  easing?: string;
+  parallax?: string;
+};
 
 export const CINEMATIC_TEST_FPS = 12;
 export const CINEMATIC_TEST_TOTAL_FRAMES = sequence.shots.reduce(
@@ -33,6 +41,66 @@ const ease = (
 
 const root = (path: string) => staticFile(`scene-interaction-test/${path}`);
 const pack = (path: string) => root(`scene-packs/${path}`);
+
+const motionEasing = (name?: string) => {
+  switch (name) {
+    case 'ease_in':
+      return Easing.in(Easing.ease);
+    case 'ease_out':
+      return Easing.out(Easing.ease);
+    case 'ease_in_out':
+      return Easing.inOut(Easing.ease);
+    case 'linear_soft':
+      return Easing.bezier(0.33, 0, 0.67, 1);
+    case 'hold':
+      return Easing.linear;
+    default:
+      return Easing.bezier(0.22, 1, 0.36, 1);
+  }
+};
+
+const offsetPair = (value?: number[]) =>
+  Array.isArray(value) && value.length === 2 ? [Number(value[0]) || 0, Number(value[1]) || 0] : [0, 0];
+
+const fallbackMotionPlan = (shot: Shot): MotionPlan => {
+  const move = shot.camera.move;
+  if (move === 'push_in') {
+    return {start_scale: 1, end_scale: 1.08, start_offset: [0, 0], end_offset: [0, -18], easing: 'ease_out', parallax: 'subtle'};
+  }
+  if (move === 'pull_back') {
+    return {start_scale: 1.08, end_scale: 1, start_offset: [0, -16], end_offset: [0, 0], easing: 'ease_in_out', parallax: 'subtle'};
+  }
+  if (move === 'pan') {
+    return {start_scale: 1.05, end_scale: 1.05, start_offset: [-80, 0], end_offset: [80, 0], easing: 'ease_in_out', parallax: 'layered'};
+  }
+  if (move === 'truck') {
+    return {start_scale: 1.03, end_scale: 1.03, start_offset: [-70, 0], end_offset: [70, 0], easing: 'linear_soft', parallax: 'layered'};
+  }
+  return {start_scale: 1, end_scale: 1, start_offset: [0, 0], end_offset: [0, 0], easing: 'hold', parallax: 'none'};
+};
+
+const cameraTransformFromPlan = (shot: Shot, frame: number, duration: number, layer: 'background' | 'foreground') => {
+  const plan = (shot.motion_plan ?? fallbackMotionPlan(shot)) as MotionPlan;
+  const easing = motionEasing(plan.easing);
+  const [startX, startY] = offsetPair(plan.start_offset);
+  const [endX, endY] = offsetPair(plan.end_offset);
+  const rawX = ease(frame, [0, duration], [startX, endX], easing);
+  const rawY = ease(frame, [0, duration], [startY, endY], easing);
+  const rawScale = ease(frame, [0, duration], [plan.start_scale ?? 1, plan.end_scale ?? 1], easing);
+  const parallaxFactor =
+    layer === 'background'
+      ? plan.parallax === 'layered'
+        ? 0.55
+        : plan.parallax === 'subtle'
+          ? 0.75
+          : 1
+      : 1;
+  const x = rawX * parallaxFactor;
+  const y = rawY * parallaxFactor;
+  const safetyScale = 1 + (Math.abs(x) / 960 + Math.abs(y) / 540) * 0.95;
+  const scale = Math.max(rawScale, safetyScale);
+  return `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+};
 
 const backgrounds: Record<string, string> = {
   'scene_customer_room_01:wide': pack('scene_customer_room_01/backgrounds/wide.png'),
@@ -191,27 +259,35 @@ const SceneFrame: React.FC<{shot: Shot; children: React.ReactNode; bg?: string}>
 }) => {
   const frame = useCurrentFrame();
   const duration = shot.duration * CINEMATIC_TEST_FPS;
-  const move = shot.camera.move;
-  const t = ease(frame, [0, duration], [0, 1], Easing.inOut(Easing.ease));
-  const transform =
-    move === 'push_in'
-      ? `scale(${1 + 0.08 * t})`
-      : move === 'pull_back'
-        ? `scale(${1.08 - 0.08 * t})`
-        : move === 'pan'
-          ? `translateX(${-70 + 140 * t}px) scale(1.05)`
-          : move === 'truck'
-            ? `translateX(${45 * Math.sin(t * Math.PI)}px) scale(1.04)`
-            : 'scale(1)';
+  const backgroundTransform = cameraTransformFromPlan(shot, frame, duration, 'background');
+  const foregroundTransform = cameraTransformFromPlan(shot, frame, duration, 'foreground');
   return (
     <AbsoluteFill style={{background: '#111', overflow: 'hidden'}}>
-      <div style={{position: 'absolute', inset: 0, transform}}>
-        {bg ? (
+      {bg ? (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: backgroundTransform,
+            transformOrigin: '50% 50%',
+            willChange: 'transform',
+          }}
+        >
           <Img
             src={bg}
             style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}}
           />
-        ) : null}
+        </div>
+      ) : null}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          transform: foregroundTransform,
+          transformOrigin: '50% 50%',
+          willChange: 'transform',
+        }}
+      >
         {children}
       </div>
       <Caption shot={shot} frame={frame} />
@@ -645,47 +721,7 @@ const renderShot = (shot: Shot, frame: number) => {
     case 'event_notice_insert':
       return (
         <SceneFrame shot={shot}>
-          <AbsoluteFill style={{background: '#f5e7ac'}} />
-          <div
-            style={{
-              position: 'absolute',
-              left: 360,
-              top: 125,
-              width: 1200,
-              height: 640,
-              border: '16px solid #1f1b18',
-              borderRadius: 28,
-              background: '#fff1c5',
-              fontFamily: 'Microsoft YaHei, sans-serif',
-              color: '#2a2118',
-              boxShadow: '0 22px 38px rgba(0,0,0,.25)',
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                height: 112,
-                background: '#e84c42',
-                color: '#fff8e8',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 60,
-                fontWeight: 900,
-              }}
-            >
-              下午三点 活动现场见
-            </div>
-            <div style={{fontSize: 54, fontWeight: 900, padding: '72px 90px 28px'}}>
-              凭暗号领取双倍早餐券
-            </div>
-            <div style={{fontSize: 43, padding: '0 90px 24px'}}>
-              暗号：早餐自由
-            </div>
-            <div style={{fontSize: 36, padding: '0 90px', lineHeight: 1.45}}>
-              排队请保持理智，早餐不负责拯救世界。
-            </div>
-          </div>
+          <NoticeInsert />
         </SceneFrame>
       );
 

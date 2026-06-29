@@ -209,6 +209,12 @@ Generated shots now include a `motion_plan` block:
 
 This makes camera movement explicit enough for Remotion or AE to execute, instead of treating `camera.move` as a vague label.
 
+## Motion Plan Rendering
+
+`src/CinematicInteractionTest.tsx` now reads each shot's `motion_plan` instead of using renderer-local hard-coded camera formulas. The Remotion preview maps `start_scale` / `end_scale`, `start_offset` / `end_offset`, and `easing` into the shot transform, keeps captions outside the camera transform, and separates background-vs-foreground movement for `subtle` and `layered` parallax.
+
+The renderer also adds crop safety during camera offset moves so generated pan/truck shots do not reveal empty frame edges in the 1920x1080 preview.
+
 ## Asset Strategy
 
 Formal scene packs used:

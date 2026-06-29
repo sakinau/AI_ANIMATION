@@ -61,6 +61,7 @@ Required renderer behavior:
 - `reaction_close` means the audience should see the character response, not another wide shot.
 - `result_insert` means the prop or state after the action must be visible.
 - `location_establish` means show geography or signage before cutting into closer shots.
+- `motion_plan` means the renderer must execute the shot's scale, offset, easing, and parallax values. Do not replace these values with a renderer-local hard-coded `push_in`, `pan`, or `truck` preset.
 
 Never collapse an expanded shot group back into one front-facing master camera. If an asset is missing, select a declared fallback such as a crop insert, hand proxy, object-only insert, reaction icon, or text-safe UI insert.
 
@@ -168,6 +169,14 @@ Validation target:
 - Lateral moves need `subtle` or `layered` parallax.
 - Motion style should match `camera.move`.
 - Scale values above `1.35` fail to avoid over-cropping 2D collage assets.
+
+Renderer target:
+
+- Apply `start_scale` -> `end_scale` and `start_offset` -> `end_offset` over the shot duration with the declared `easing`.
+- Keep audience subtitles and debug-free UI outside the camera transform unless they are part of an in-world screen.
+- For `parallax: subtle`, move background layers at a reduced factor and foreground/character layers at full factor.
+- For `parallax: layered`, move background, midground, foreground, and character layers at separate factors when those layers exist; use at least background-vs-foreground separation in Remotion previews.
+- Add safe crop compensation during execution so offset motion does not reveal black frame edges.
 
 ## Directing Block
 
