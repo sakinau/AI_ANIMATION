@@ -263,7 +263,24 @@
         "contact_frame": 18,
         "actor_anchor": "xiaoming.hand_r",
         "prop_anchor": "fridge_shelf_eggs_milk",
-        "result_state": "prop_in_hand"
+        "result_state": "prop_in_hand",
+        "stages": {
+          "before": {
+            "purpose": "reveal_source",
+            "anchor": "fridge_shelf_eggs_milk",
+            "visible_state": "eggs_and_milk_on_fridge_shelf"
+          },
+          "contact": {
+            "purpose": "show_pickup",
+            "anchor": "xiaoming_hand_r",
+            "visible_state": "hand_closes_on_food"
+          },
+          "after": {
+            "purpose": "result_insert",
+            "anchor": "xiaoming_hand_r",
+            "visible_state": "eggs_and_milk_in_hand"
+          }
+        }
       }
     },
     {
@@ -295,7 +312,24 @@
         "contact_frame": 14,
         "actor_anchor": "xiaoming.hand_r",
         "prop_anchor": "breakfast_plate",
-        "result_state": "prop_on_table"
+        "result_state": "prop_on_table",
+        "stages": {
+          "before": {
+            "purpose": "contact",
+            "anchor": "xiaoming_hand_r",
+            "visible_state": "food_in_hand_above_table"
+          },
+          "contact": {
+            "purpose": "contact",
+            "anchor": "breakfast_plate",
+            "visible_state": "hand_places_food_on_table"
+          },
+          "after": {
+            "purpose": "result_insert",
+            "anchor": "breakfast_plate",
+            "visible_state": "breakfast_settled_on_table"
+          }
+        }
       }
     },
     {
@@ -358,6 +392,35 @@
         "caller_close": "小明：下午三点，城市广场，带胃不要带脑子。",
         "receiver_close": "阿强：懂了，我负责排队，你负责假装偶遇。",
         "split_result": "两个人隔着电话，同时确认了这个不太聪明但很坚定的计划。"
+      },
+      "blocking": {
+        "primary_action": "pickup_phone",
+        "screen_direction": "right_to_left",
+        "start_anchor": "phone",
+        "end_anchor": "xiaoming_hand_r"
+      },
+      "interaction": {
+        "contact_frame": 12,
+        "actor_anchor": "xiaoming.hand_r",
+        "prop_anchor": "phone",
+        "result_state": "phone_in_hand",
+        "stages": {
+          "before": {
+            "purpose": "pickup_phone",
+            "anchor": "phone",
+            "visible_state": "phone_resting_on_table"
+          },
+          "contact": {
+            "purpose": "pickup_phone",
+            "anchor": "xiaoming_hand_r",
+            "visible_state": "hand_reaches_phone"
+          },
+          "after": {
+            "purpose": "dial_screen",
+            "anchor": "xiaoming_hand_r",
+            "visible_state": "phone_screen_active_in_hand"
+          }
+        }
       }
     },
     {

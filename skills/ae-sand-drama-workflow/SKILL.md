@@ -59,6 +59,7 @@ The main agent integrates results and owns the runnable project files.
 - Do not let a single event render as one camera setup when it contains a physical interaction, screen discovery, phone call, entrance, meeting, or object transfer.
 - Define a `subject_registry` in event-driven sequences. Every `camera.subject`, non-dotted blocking anchor, and non-dotted interaction prop anchor must resolve to a character, actor anchor, scene-pack background/prop/anchor, or explicit temporary fallback.
 - Define an `action_registry` in event-driven sequences. Every `shot.action` must resolve to a scene-pack action template, renderer handler, runtime clip/state, or explicit temporary fallback.
+- For physical object interactions, define an `interaction` contract with `actor_anchor`, `prop_anchor`, `contact_frame`, `result_state`, and `stages.before/contact/after`. Each stage must name a shot `purpose`, a visible `anchor`, and a `visible_state`.
 - Define an `edit` block for every generated shot. It must explain `transition`, `continuity`, and `reason`, so cuts are motivated rather than arbitrary.
 - Define or generate a `directing` block for every shot. It must explain `action_phase`, `focus`, `composition`, and `emphasis`, so the renderer knows what the audience should look at and why the shot exists.
 - Define or generate a `continuity` block for every shot. It must explain `screen_side`, `eyeline`, `match`, and `cut_role`, so adjacent shots preserve screen direction, object-to-reaction logic, speaker reverses, and action-match cuts.
@@ -74,6 +75,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Validate shot rhythm per event, not only per whole video. A multi-shot event must switch at least two shot sizes and two angles; phone calls and meetings must also switch subjects.
 - Require every shot pattern to include its mandatory purposes. For example, `object_pickup_sequence` must include approach/contact/source/pickup/reaction/result coverage.
 - Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
+- Bind every physical interaction stage to an actual shot purpose. The stage contract should answer: where is the prop before contact, what exact contact is visible, and what state proves the result.
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
 - Every shot needs `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`. Use these fields to separate setup, approach, contact, information, speaker, reaction, reveal, transfer, and result phases.
 - Every shot needs `continuity.screen_side`, `continuity.eyeline`, `continuity.match`, and `continuity.cut_role`. The `match` value must align with `edit.continuity`.
@@ -158,6 +160,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - No multi-shot event should be entirely static. Validate visible motion per event, not only across the whole sequence.
 - Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
+- Every physical interaction must declare `interaction.stages.before/contact/after`; each stage must resolve to a shot purpose, anchor, and visible state. This is required even when the renderer uses a hand proxy or object-only insert.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.
 - Every 6-8 second shot should contain at least 2 visible action beats: pose swap, expression swap, mouth loop, gesture, prop movement, UI pop, entrance/exit, or reaction hold.
 - A 60-second sequence should include at least 8 action beats and at least 2 shots with internal focus changes, such as wide-to-medium, speaker-to-reaction, or prop insert.

@@ -22,13 +22,14 @@ Prefer this sequence for production:
 2. For each event, set `event_type`, `shot_pattern`, `scene_pack`, `background`, phase-specific `actions`, `dialogue`, `subjects`, and optional `blocking` / `interaction`.
 3. Add or update `subject_registry` so every subject and anchor used by the shots can be resolved.
 4. Add or update `action_registry` so every shot action can be executed by a scene pack, renderer, runtime clip/state, or fallback.
-5. Expand the event file:
+5. For physical object interactions, add `interaction.stages.before/contact/after` so the renderer knows what visible state proves each phase.
+6. Expand the event file:
 
 ```powershell
 python scripts\expand_cinematic_beats.py projects\<project-id>\shots\<sequence>_events.json --output projects\<project-id>\shots\<sequence>_generated.json
 ```
 
-6. Validate the generated shot list:
+7. Validate the generated shot list:
 
 ```powershell
 python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence>_generated.json
@@ -240,6 +241,9 @@ Validation rules:
 - `camera.subject` must exist in `subject_registry` or in the shot's `scene_pack` as a background, prop, or anchor.
 - `scene_pack`, `background`, `prop`, `variant`, and `anchor` references must exist in `scene.yaml`.
 - Non-dotted `blocking.start_anchor`, `blocking.end_anchor`, and `interaction.prop_anchor` must exist in `scene.yaml` or be declared as `actor_anchor` / `temporary_anchor`.
+- Physical interactions must include `interaction.actor_anchor`, `interaction.prop_anchor`, `interaction.contact_frame`, `interaction.result_state`, and `interaction.stages.before/contact/after`.
+- Each interaction stage must declare `purpose`, `anchor`, and `visible_state`; the purpose must exist in that event's expanded shots.
+- Stage anchors can resolve to scene anchors, scene props, or subject_registry entries.
 - Temporary subjects must include a `fallback` note so missing production assets stay visible.
 
 ## Action Registry
@@ -310,6 +314,10 @@ interaction:
   actor_anchor: xiaoming.hand_r
   prop_anchor: fridge_shelf_eggs
   result_state: prop_in_hand
+  stages:
+    before: {purpose: reveal_source, anchor: fridge_shelf_eggs, visible_state: eggs_on_shelf}
+    contact: {purpose: show_pickup, anchor: xiaoming_hand_r, visible_state: hand_closes_on_food}
+    after: {purpose: result_insert, anchor: xiaoming_hand_r, visible_state: food_in_hand}
 edit:
   transition: action_match_cut
   continuity: hand_to_contact

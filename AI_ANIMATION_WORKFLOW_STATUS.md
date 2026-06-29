@@ -1510,6 +1510,25 @@ Positive: breakfast_activity_cinematic_generated.json passes the new event-motio
 Negative: forcing every phone_call shot to static_cut is rejected.
 ```
 
+## 2026-06-29 Interaction Stage Contract
+
+Added a stricter physical-interaction contract for object pickup, put-down, and phone pickup beats.
+
+Changes:
+
+- Event data now includes `interaction.stages.before/contact/after`.
+- Each stage names the target shot `purpose`, visible `anchor`, and `visible_state`.
+- `scripts/validate_cinematic_shots.py` validates `interaction.actor_anchor`, `prop_anchor`, `contact_frame`, `result_state`, and all three stages.
+- Stage anchors can resolve to scene anchors, scene props, or subject registry entries.
+- The phone-call beat now declares its phone pickup interaction instead of treating the phone as a purely visual insert.
+
+Validation:
+
+```text
+Positive: breakfast_activity_cinematic_generated.json passes interaction-stage validation.
+Negative: removing interaction.stages from fridge_pickup is rejected.
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

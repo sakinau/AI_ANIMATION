@@ -217,6 +217,12 @@ The renderer also adds crop safety during camera offset moves so generated pan/t
 
 The phone-call pattern now uses small motivated camera movement: push-in for the dialing insert and caller close-up, then pull-back for the shared split result. This keeps dialogue sequences from collapsing into visually flat static reverse shots.
 
+## Interaction Stage Validation
+
+Physical object interactions now declare `interaction.stages.before/contact/after`. Each stage names the expanded shot `purpose`, the visible `anchor`, and the `visible_state` that the renderer must communicate. The validator rejects missing stages, unknown stage purposes, and unresolved stage anchors.
+
+This gives pickup and put-down beats a fixed before/contact/after contract, so future renderers should use contact inserts, object inserts, hand proxies, or result shots instead of letting props float across a wide shot.
+
 ## Asset Strategy
 
 Formal scene packs used:

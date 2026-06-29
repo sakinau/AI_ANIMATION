@@ -14,6 +14,7 @@ INTERACTION_TYPES = {
     "phone_call",
     "meeting",
 }
+PHYSICAL_INTERACTION_TYPES = {"object_pickup", "put_down", "interaction"}
 
 INTERACTION_ACTION_HINTS = (
     "pick",
@@ -88,6 +89,9 @@ REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_clo
 DIRECTING_REQUIRED_FIELDS = {"action_phase", "focus", "composition", "emphasis"}
 CONTINUITY_REQUIRED_FIELDS = {"screen_side", "eyeline", "match", "cut_role"}
 MOTION_REQUIRED_FIELDS = {"style", "start_scale", "end_scale", "start_offset", "end_offset", "easing", "focus_shift", "parallax"}
+INTERACTION_REQUIRED_FIELDS = {"actor_anchor", "prop_anchor", "contact_frame", "result_state", "stages"}
+INTERACTION_STAGE_NAMES = {"before", "contact", "after"}
+INTERACTION_STAGE_REQUIRED_FIELDS = {"purpose", "anchor", "visible_state"}
 MOTION_MOVES = {"push_in", "pull_back", "pan", "tilt", "truck", "handheld_bump", "whip"}
 STATIC_MOVES = {"cut", "static_hold"}
 MOVE_STYLE_PREFIX = {
@@ -447,22 +451,29 @@ def shot_subject_errors(shot: dict, registry: dict, scene_packs_root: Path, scen
     return errors
 
 
+def anchor_is_bound(anchor: str, registry: dict, scene_pack_id: str, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> bool:
+    if not anchor or "." in anchor:
+        return True
+    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
+    scene_anchors = set((scene or {}).get("anchors") or {})
+    scene_props = set((scene or {}).get("props") or {})
+    if anchor in scene_anchors:
+        return True
+    if anchor in scene_props:
+        return True
+    binding = registry.get(anchor)
+    return bool(binding and isinstance(binding, dict))
+
+
 def interaction_anchor_errors(shot: dict, registry: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
     shot_id = shot.get("shot_id", "<unknown>")
     scene_pack_id = str(shot.get("scene_pack", "") or "")
-    scene = load_scene_pack(scene_packs_root, scene_pack_id, scene_cache)
-    scene_anchors = set((scene or {}).get("anchors") or {})
     errors: list[str] = []
 
     def check_anchor(anchor: str, label: str) -> None:
-        if not anchor or "." in anchor:
+        if anchor_is_bound(anchor, registry, scene_pack_id, scene_packs_root, scene_cache):
             return
-        if anchor in scene_anchors:
-            return
-        binding = registry.get(anchor)
-        if binding and str(binding.get("type", "") or "") in ANCHOR_REGISTRY_TYPES:
-            return
-        errors.append(f"{shot_id}: {label} anchor '{anchor}' is not in scene_pack {scene_pack_id} or temporary subject_registry.")
+        errors.append(f"{shot_id}: {label} anchor '{anchor}' is not in scene_pack {scene_pack_id} or subject_registry.")
 
     blocking = shot.get("blocking") or {}
     interaction = shot.get("interaction") or {}
@@ -471,6 +482,58 @@ def interaction_anchor_errors(shot: dict, registry: dict, scene_packs_root: Path
         check_anchor(str(blocking.get("end_anchor", "") or ""), "blocking.end_anchor")
     if isinstance(interaction, dict):
         check_anchor(str(interaction.get("prop_anchor", "") or ""), "interaction.prop_anchor")
+    return errors
+
+
+def event_interaction_contract_errors(
+    event_id: str,
+    event_shots: list[dict],
+    registry: dict,
+    scene_packs_root: Path,
+    scene_cache: dict[str, dict | None],
+) -> list[str]:
+    event_types = {shot_event_type(s) for s in event_shots}
+    if not (event_types & PHYSICAL_INTERACTION_TYPES):
+        return []
+
+    interaction = event_shots[0].get("interaction")
+    if not isinstance(interaction, dict):
+        return [f"{event_id}: interaction event must declare interaction contract with actor_anchor/prop_anchor/contact_frame/result_state/stages."]
+
+    errors: list[str] = []
+    for key in sorted(INTERACTION_REQUIRED_FIELDS):
+        if key not in interaction or interaction.get(key) in ("", None):
+            errors.append(f"{event_id}: missing interaction.{key}.")
+
+    contact_frame = interaction.get("contact_frame")
+    if not isinstance(contact_frame, int) or contact_frame < 0:
+        errors.append(f"{event_id}: interaction.contact_frame must be a non-negative integer.")
+
+    stages = interaction.get("stages")
+    if not isinstance(stages, dict):
+        errors.append(f"{event_id}: interaction.stages must be an object with before/contact/after.")
+        return errors
+
+    missing_stages = sorted(INTERACTION_STAGE_NAMES - set(stages))
+    if missing_stages:
+        errors.append(f"{event_id}: interaction.stages missing {', '.join(missing_stages)}.")
+
+    purposes = {str(s.get("purpose", "") or "") for s in event_shots}
+    scene_pack_id = str(event_shots[0].get("scene_pack", "") or "")
+    for stage_name in sorted(INTERACTION_STAGE_NAMES & set(stages)):
+        stage = stages.get(stage_name)
+        if not isinstance(stage, dict):
+            errors.append(f"{event_id}: interaction.stages.{stage_name} must be an object.")
+            continue
+        for key in sorted(INTERACTION_STAGE_REQUIRED_FIELDS):
+            if key not in stage or stage.get(key) in ("", None):
+                errors.append(f"{event_id}: missing interaction.stages.{stage_name}.{key}.")
+        purpose = str(stage.get("purpose", "") or "")
+        if purpose and purpose not in purposes:
+            errors.append(f"{event_id}: interaction.stages.{stage_name}.purpose '{purpose}' is not present in event shots.")
+        anchor = str(stage.get("anchor", "") or "")
+        if anchor and not anchor_is_bound(anchor, registry, scene_pack_id, scene_packs_root, scene_cache):
+            errors.append(f"{event_id}: interaction.stages.{stage_name}.anchor '{anchor}' is not in scene_pack {scene_pack_id} or subject_registry.")
     return errors
 
 
@@ -738,6 +801,7 @@ def validate(path: Path) -> list[str]:
 
         if not (event_types & INTERACTION_TYPES or "interaction" in event_types):
             continue
+        errors.extend(event_interaction_contract_errors(event_id, event_shots, registry, scene_packs_root, scene_cache))
         purpose_text = " ".join(str(s.get("purpose", "") or "").lower() for s in event_shots)
         framings = {camera_field(s, "framing") for s in event_shots}
         motivations = {camera_field(s, "motivation") for s in event_shots}
