@@ -205,7 +205,7 @@ Generated shots now include a `motion_plan` block:
 - `focus_shift`: what attention changes toward during the move;
 - `parallax`: none, subtle, or layered.
 
-`scripts/validate_cinematic_shots.py` rejects missing motion plans, moving cameras without visible scale/offset change, static cuts with visible motion, moving cameras without focus shift, lateral moves without parallax, mismatched motion style, and unsafe over-cropped scale values.
+`scripts/validate_cinematic_shots.py` rejects missing motion plans, moving cameras without visible scale/offset change, static cuts with visible motion, moving cameras without focus shift, lateral moves without parallax, mismatched motion style, unsafe over-cropped scale values, too few visible moving shots across the sequence, and multi-shot events that stay entirely static.
 
 This makes camera movement explicit enough for Remotion or AE to execute, instead of treating `camera.move` as a vague label.
 
@@ -214,6 +214,8 @@ This makes camera movement explicit enough for Remotion or AE to execute, instea
 `src/CinematicInteractionTest.tsx` now reads each shot's `motion_plan` instead of using renderer-local hard-coded camera formulas. The Remotion preview maps `start_scale` / `end_scale`, `start_offset` / `end_offset`, and `easing` into the shot transform, keeps captions outside the camera transform, and separates background-vs-foreground movement for `subtle` and `layered` parallax.
 
 The renderer also adds crop safety during camera offset moves so generated pan/truck shots do not reveal empty frame edges in the 1920x1080 preview.
+
+The phone-call pattern now uses small motivated camera movement: push-in for the dialing insert and caller close-up, then pull-back for the shared split result. This keeps dialogue sequences from collapsing into visually flat static reverse shots.
 
 ## Asset Strategy
 

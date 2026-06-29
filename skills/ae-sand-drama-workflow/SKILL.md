@@ -78,6 +78,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Every shot needs `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`. Use these fields to separate setup, approach, contact, information, speaker, reaction, reveal, transfer, and result phases.
 - Every shot needs `continuity.screen_side`, `continuity.eyeline`, `continuity.match`, and `continuity.cut_role`. The `match` value must align with `edit.continuity`.
 - Every shot needs `motion_plan.style`, numeric `start_scale` / `end_scale`, two-number `start_offset` / `end_offset`, `easing`, `focus_shift`, and `parallax`. Moving cameras need visible scale or offset change and non-`none` focus shift; static cuts need no visible motion.
+- Every event with three or more shots needs at least one visible camera move. Longer events with four or more shots should include at least two non-static motion styles, such as a push-in plus a pull-back or track, so dialogue and phone-call sequences do not become static shot/reverse-shot blocks.
 - Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
 - Write audience-facing MP4s without debug overlays, parameter labels, file names, or shot test notes.
 
@@ -154,6 +155,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - No shot should pass with camera fields alone. Validate the shot's directing purpose: what phase it is in, what object or character gets attention, how it is composed, and what story emphasis it serves.
 - No cut should pass as a naked transition label. Validate continuity fields so the renderer knows whether the cut is an establish, insert, contact, transfer, reaction, speaker, reverse, bridge, reveal, or result.
 - No camera move should pass as a naked `camera.move` string. Validate `motion_plan` so push/pull/pan/truck moves have parameters, easing, focus shift, and safe crop limits.
+- No multi-shot event should be entirely static. Validate visible motion per event, not only across the whole sequence.
 - Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.

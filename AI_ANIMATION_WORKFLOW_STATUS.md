@@ -1491,6 +1491,25 @@ powershell -ExecutionPolicy Bypass -File scripts\render-cinematic-interaction-te
 Rendered output\scene-interaction-breakfast-activity-cinematic-test.mp4 successfully.
 ```
 
+## 2026-06-29 Per-Event Motion Quality Gate
+
+Added validation that checks visible camera motion per event, not only across the whole sequence.
+
+Changes:
+
+- `scripts/validate_cinematic_shots.py` now counts visible motion from `motion_plan` scale/offset deltas.
+- The validator rejects a sequence with too few visibly moving shots for its runtime.
+- Any event with three or more shots must include at least one visible camera move.
+- Longer events with four or more shots must include at least two non-static motion styles.
+- `scripts/expand_cinematic_beats.py` now gives the `phone_call` pattern motivated movement: push-in on dialing, push-in on caller close-up, and pull-back on the split result.
+
+Validation:
+
+```text
+Positive: breakfast_activity_cinematic_generated.json passes the new event-motion gate.
+Negative: forcing every phone_call shot to static_cut is rejected.
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

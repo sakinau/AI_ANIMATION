@@ -169,6 +169,9 @@ Validation target:
 - Lateral moves need `subtle` or `layered` parallax.
 - Motion style should match `camera.move`.
 - Scale values above `1.35` fail to avoid over-cropping 2D collage assets.
+- The whole sequence needs enough visible camera motion for its runtime.
+- Every event with three or more shots needs at least one visible camera move.
+- Events with four or more shots should include at least two non-static motion styles.
 
 Renderer target:
 
@@ -177,6 +180,7 @@ Renderer target:
 - For `parallax: subtle`, move background layers at a reduced factor and foreground/character layers at full factor.
 - For `parallax: layered`, move background, midground, foreground, and character layers at separate factors when those layers exist; use at least background-vs-foreground separation in Remotion previews.
 - Add safe crop compensation during execution so offset motion does not reveal black frame edges.
+- Dialogue and phone-call patterns should use small motivated moves, such as push-in on a readable insert or speaker close-up and pull-back on a shared decision, rather than leaving every reverse shot static.
 
 ## Directing Block
 

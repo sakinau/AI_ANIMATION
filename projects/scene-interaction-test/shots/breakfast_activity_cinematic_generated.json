@@ -1102,7 +1102,7 @@
         "angle": "insert",
         "framing": "insert",
         "lens": "telephoto",
-        "move": "cut",
+        "move": "push_in",
         "motivation": "reveal_object",
         "subject": "phone"
       },
@@ -1124,20 +1124,20 @@
         "cut_role": "insert"
       },
       "motion_plan": {
-        "style": "static_cut",
+        "style": "motivated_push",
         "start_scale": 1.0,
-        "end_scale": 1.0,
+        "end_scale": 1.08,
         "start_offset": [
           0,
           0
         ],
         "end_offset": [
           0,
-          0
+          -18
         ],
-        "easing": "hold",
-        "focus_shift": "none",
-        "parallax": "none"
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -1155,7 +1155,7 @@
         "angle": "front",
         "framing": "closeup",
         "lens": "telephoto",
-        "move": "cut",
+        "move": "push_in",
         "motivation": "show_reaction",
         "subject": "xiaoming"
       },
@@ -1177,20 +1177,20 @@
         "cut_role": "speaker"
       },
       "motion_plan": {
-        "style": "static_cut",
+        "style": "motivated_push",
         "start_scale": 1.0,
-        "end_scale": 1.0,
+        "end_scale": 1.08,
         "start_offset": [
           0,
           0
         ],
         "end_offset": [
           0,
-          0
+          -18
         ],
-        "easing": "hold",
-        "focus_shift": "none",
-        "parallax": "none"
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -1261,7 +1261,7 @@
         "angle": "front",
         "framing": "medium",
         "lens": "normal",
-        "move": "cut",
+        "move": "pull_back",
         "motivation": "show_result",
         "subject": "both"
       },
@@ -1283,20 +1283,20 @@
         "cut_role": "bridge"
       },
       "motion_plan": {
-        "style": "static_cut",
-        "start_scale": 1.0,
+        "style": "reveal_pull",
+        "start_scale": 1.08,
         "end_scale": 1.0,
         "start_offset": [
           0,
-          0
+          -16
         ],
         "end_offset": [
           0,
           0
         ],
-        "easing": "hold",
-        "focus_shift": "none",
-        "parallax": "none"
+        "easing": "ease_in_out",
+        "focus_shift": "subject_to_space",
+        "parallax": "subtle"
       }
     },
     {

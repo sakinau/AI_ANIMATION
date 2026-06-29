@@ -363,6 +363,28 @@ def motion_plan_errors(shot: dict) -> list[str]:
     return errors
 
 
+def motion_is_visible(shot: dict) -> bool:
+    motion_plan = shot.get("motion_plan")
+    if not isinstance(motion_plan, dict):
+        return False
+    start_scale = as_number(motion_plan.get("start_scale"))
+    end_scale = as_number(motion_plan.get("end_scale"))
+    start_offset = as_offset(motion_plan.get("start_offset"))
+    end_offset = as_offset(motion_plan.get("end_offset"))
+    if start_scale is None or end_scale is None or start_offset is None or end_offset is None:
+        return False
+    scale_delta = abs(end_scale - start_scale)
+    offset_delta = abs(end_offset[0] - start_offset[0]) + abs(end_offset[1] - start_offset[1])
+    return scale_delta >= 0.01 or offset_delta >= 4
+
+
+def motion_style(shot: dict) -> str:
+    motion_plan = shot.get("motion_plan")
+    if isinstance(motion_plan, dict):
+        return str(motion_plan.get("style", "") or "")
+    return ""
+
+
 def registry_subject_errors(subject: str, binding: dict, scene_packs_root: Path, scene_cache: dict[str, dict | None]) -> list[str]:
     errors: list[str] = []
     subject_type = str(binding.get("type", "") or "")
@@ -612,6 +634,11 @@ def validate(path: Path) -> list[str]:
     if reaction_count < min_reaction:
         errors.append(f"Reaction coverage too low: {reaction_count}, expected at least {min_reaction}.")
 
+    moving_count = sum(1 for s in shots if motion_is_visible(s))
+    min_moving = max(2, round(runtime / 60 * 6))
+    if moving_count < min_moving:
+        errors.append(f"Visible camera motion too low: {moving_count}, expected at least {min_moving}.")
+
     for shot in shots:
         shot_id = shot.get("shot_id", "<unknown>")
         duration = float(shot.get("duration", 0) or 0)
@@ -687,6 +714,13 @@ def validate(path: Path) -> list[str]:
                 errors.append(f"{event_id}: event lacks angle contrast; expected at least 2 angles.")
             if shot_pattern in {"phone_call", "meeting_at_location"} and len(subjects_in_event) < 2:
                 errors.append(f"{event_id}: multi-character event lacks subject switching.")
+            event_moving_count = sum(1 for s in event_shots if motion_is_visible(s))
+            event_motion_styles = {motion_style(s) for s in event_shots if motion_style(s)}
+            event_motion_styles.discard("static_cut")
+            if event_moving_count < 1:
+                errors.append(f"{event_id}: event has no visible camera motion; add a motivated push, pull, pan, or track to change emphasis.")
+            if len(event_shots) >= 4 and len(event_motion_styles) < 2:
+                errors.append(f"{event_id}: event lacks non-static motion style variation; expected at least 2 moving styles in a longer beat.")
 
         for previous, current in zip(event_shots, event_shots[1:]):
             previous_role = str((previous.get("continuity") or {}).get("cut_role", "") or "")
