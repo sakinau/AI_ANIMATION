@@ -90,6 +90,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - First route a shot by `purpose`: `establish_space`, `contact`, `reveal_source`, `show_pickup`, `screen_insert`, `reaction_close`, `pickup_phone`, `dial_screen`, `caller_close`, `receiver_close`, `split_or_two_panel`, `location_establish`, `arrival`, `counterpart_reveal`, `two_shot_result`, or `result_insert`.
 - Then resolve the subject through `camera.subject` and scene-pack data: background variant, foreground layer, prop variant, anchor, character state, and occlusion rule.
 - Execute `motion_plan` on every shot. Map scale/offset/easing to the camera or shot precomp transform, split background and foreground movement when `parallax` is `subtle` or `layered`, and keep the caption/UI layer outside the camera transform unless the shot explicitly calls for screen-space motion.
+- Execute `interaction.stages` for physical interaction shots. The renderer must use the matching stage to choose prop position/state, hand proxy or character anchor placement, and result visibility. Do not leave stages as validation-only metadata.
 - Use action-specific branches only when a shot needs unique layout, such as a special POV, split-screen call, large crowd reveal, or custom VFX beat.
 - If the renderer cannot find an anchor or prop state, fail validation or use an explicit fallback insert. Do not silently return to a front-facing master shot.
 
@@ -161,6 +162,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every physical interaction must declare `interaction.stages.before/contact/after`; each stage must resolve to a shot purpose, anchor, and visible state. This is required even when the renderer uses a hand proxy or object-only insert.
+- Renderers must consume the interaction stage contract. If `visible_state` says `phone_resting_on_table`, `hand_reaches_phone`, or `phone_screen_active_in_hand`, the rendered prop/hand state should visibly change across those shots.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.
 - Every 6-8 second shot should contain at least 2 visible action beats: pose swap, expression swap, mouth loop, gesture, prop movement, UI pop, entrance/exit, or reaction hold.
 - A 60-second sequence should include at least 8 action beats and at least 2 shots with internal focus changes, such as wide-to-medium, speaker-to-reaction, or prop insert.

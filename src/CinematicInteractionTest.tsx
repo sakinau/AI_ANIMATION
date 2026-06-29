@@ -20,6 +20,12 @@ type MotionPlan = {
   easing?: string;
   parallax?: string;
 };
+type InteractionStageName = 'before' | 'contact' | 'after';
+type InteractionStage = {
+  purpose?: string;
+  anchor?: string;
+  visible_state?: string;
+};
 
 export const CINEMATIC_TEST_FPS = 12;
 export const CINEMATIC_TEST_TOTAL_FRAMES = sequence.shots.reduce(
@@ -61,6 +67,24 @@ const motionEasing = (name?: string) => {
 
 const offsetPair = (value?: number[]) =>
   Array.isArray(value) && value.length === 2 ? [Number(value[0]) || 0, Number(value[1]) || 0] : [0, 0];
+
+const interactionStageForShot = (shot: Shot, frame: number): InteractionStage | undefined => {
+  const stages = shot.interaction?.stages as Partial<Record<InteractionStageName, InteractionStage>> | undefined;
+  if (!stages) {
+    return undefined;
+  }
+  const matching = (Object.keys(stages) as InteractionStageName[]).filter((name) => stages[name]?.purpose === shot.purpose);
+  if (matching.length === 1) {
+    return stages[matching[0]];
+  }
+  if (matching.length > 1) {
+    const contactFrame = Number(shot.interaction?.contact_frame ?? 0);
+    return frame < contactFrame ? stages.before : stages.contact;
+  }
+  return stages.after?.purpose === shot.purpose ? stages.after : undefined;
+};
+
+const stageVisibleState = (shot: Shot, frame: number) => interactionStageForShot(shot, frame)?.visible_state ?? '';
 
 const fallbackMotionPlan = (shot: Shot): MotionPlan => {
   const move = shot.camera.move;
@@ -384,7 +408,21 @@ const NoticeInsert: React.FC = () => (
 const GenericScreenInsert: React.FC<{shot: Shot}> = ({shot}) => {
   const subject = shot.camera.subject;
   if (subject === 'phone') {
-    return <Img src={assets.phoneCall} style={{position: 'absolute', left: 690, top: 150, width: 540}} />;
+    return (
+      <>
+        <HandProxy x={650} y={590} scale={0.85} rotate={-8} />
+        <Img
+          src={assets.phoneCall}
+          style={{
+            position: 'absolute',
+            left: 690,
+            top: 150,
+            width: 540,
+            filter: 'drop-shadow(0 18px 18px rgba(0,0,0,.28))',
+          }}
+        />
+      </>
+    );
   }
   if (subject === 'event_notice') {
     return <NoticeInsert />;
@@ -411,6 +449,7 @@ const GenericScreenInsert: React.FC<{shot: Shot}> = ({shot}) => {
 
 const GenericContactInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame}) => {
   const subject = shot.camera.subject;
+  const visibleState = stageVisibleState(shot, frame);
   if (subject === 'fridge_handle') {
     return (
       <>
@@ -422,18 +461,41 @@ const GenericContactInsert: React.FC<{shot: Shot; frame: number}> = ({shot, fram
     );
   }
   if (subject === 'phone') {
+    const isContact = visibleState === 'hand_reaches_phone';
+    const phoneX = isContact ? ease(frame, [0, 18], [820, 760]) : 820;
+    const phoneY = isContact ? ease(frame, [0, 18], [400, 430]) : 400;
     return (
       <>
-        <Img src={assets.phoneTable} style={{position: 'absolute', left: 820, top: 400, width: 250}} />
+        <Img
+          src={assets.phoneTable}
+          style={{
+            position: 'absolute',
+            left: phoneX,
+            top: phoneY,
+            width: 250,
+            transform: `rotate(${isContact ? ease(frame, [0, 18], [0, -7]) : 0}deg)`,
+            filter: 'drop-shadow(0 14px 12px rgba(0,0,0,.25))',
+          }}
+        />
         <HandProxy x={ease(frame, [0, 24], [1240, 925])} y={455} scale={0.9} rotate={-15} />
       </>
     );
   }
   if (subject === 'breakfast') {
+    const isContact = visibleState === 'hand_places_food_on_table';
     return (
       <>
-        <HandProxy x={ease(frame, [0, 24], [1250, 900])} y={260} scale={0.85} rotate={-20} />
-        <Img src={assets.breakfastClose} style={{position: 'absolute', left: 560, top: 230, width: 780}} />
+        <HandProxy x={ease(frame, [0, 24], [1260, isContact ? 900 : 980])} y={ease(frame, [0, 24], [240, 270])} scale={0.85} rotate={-20} />
+        <Img
+          src={assets.breakfastClose}
+          style={{
+            position: 'absolute',
+            left: 560,
+            top: isContact ? ease(frame, [0, 16], [205, 230]) : 205,
+            width: 780,
+            filter: 'drop-shadow(0 16px 16px rgba(0,0,0,.22))',
+          }}
+        />
       </>
     );
   }
@@ -460,6 +522,7 @@ const GenericReaction: React.FC<{shot: Shot; lean: number}> = ({shot, lean}) => 
 };
 
 const GenericResultInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame}) => {
+  const visibleState = stageVisibleState(shot, frame);
   if (shot.camera.subject === 'breakfast' || shot.camera.subject === 'eggs_milk') {
     return (
       <>
@@ -475,7 +538,7 @@ const GenericResultInsert: React.FC<{shot: Shot; frame: number}> = ({shot, frame
           }}
         />
         {shot.camera.subject === 'eggs_milk' ? (
-          <HandProxy x={1140} y={360} scale={0.78} rotate={-16} />
+          <HandProxy x={visibleState === 'eggs_and_milk_in_hand' ? 1100 : 1140} y={360} scale={0.78} rotate={-16} />
         ) : null}
       </>
     );
@@ -580,6 +643,8 @@ const renderShot = (shot: Shot, frame: number) => {
       );
 
     case 'food_to_hand_close':
+      const foodPickupState = stageVisibleState(shot, frame);
+      const foodInHand = foodPickupState === 'hand_closes_on_food';
       return (
         <SceneFrame shot={shot}>
           <AbsoluteFill style={{background: '#dff5ff'}} />
@@ -587,13 +652,14 @@ const renderShot = (shot: Shot, frame: number) => {
             src={assets.breakfast}
             style={{
               position: 'absolute',
-              left: ease(frame, [0, 24], [615, 850]),
-              top: ease(frame, [0, 24], [330, 410]),
+              left: ease(frame, [0, 24], [615, foodInHand ? 850 : 780]),
+              top: ease(frame, [0, 24], [330, foodInHand ? 410 : 360]),
               width: 480,
+              transform: `rotate(${ease(frame, [0, 24], [0, foodInHand ? -8 : -3])}deg)`,
               filter: 'drop-shadow(0 18px 18px rgba(0,0,0,.3))',
             }}
           />
-          <HandProxy x={760} y={520} scale={1.35} rotate={-10} />
+          <HandProxy x={foodInHand ? 760 : 835} y={foodInHand ? 520 : 470} scale={1.35} rotate={-10} />
         </SceneFrame>
       );
 

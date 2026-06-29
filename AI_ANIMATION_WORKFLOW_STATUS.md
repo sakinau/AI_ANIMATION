@@ -1529,6 +1529,23 @@ Positive: breakfast_activity_cinematic_generated.json passes interaction-stage v
 Negative: removing interaction.stages from fridge_pickup is rejected.
 ```
 
+## 2026-06-29 Interaction Stage Rendering
+
+Connected the physical interaction stage contract to the Remotion cinematic test renderer.
+
+Implementation:
+
+- `src/CinematicInteractionTest.tsx` now reads `interaction.stages` for the current shot purpose.
+- The renderer uses stage `visible_state` to adjust hand-proxy and prop placement for phone pickup, phone screen activation, food pickup, and breakfast placement.
+- This keeps the before/contact/after contract from becoming validation-only metadata.
+
+Validation:
+
+```text
+powershell -ExecutionPolicy Bypass -File scripts\render-cinematic-interaction-test.ps1
+Rendered output\scene-interaction-breakfast-activity-cinematic-test.mp4 successfully.
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

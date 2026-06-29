@@ -63,6 +63,7 @@ Required renderer behavior:
 - `result_insert` means the prop or state after the action must be visible.
 - `location_establish` means show geography or signage before cutting into closer shots.
 - `motion_plan` means the renderer must execute the shot's scale, offset, easing, and parallax values. Do not replace these values with a renderer-local hard-coded `push_in`, `pan`, or `truck` preset.
+- `interaction.stages` means the renderer must select the visible object/hand/result state for physical interaction shots. Do not treat stage names as comments.
 
 Never collapse an expanded shot group back into one front-facing master camera. If an asset is missing, select a declared fallback such as a crop insert, hand proxy, object-only insert, reaction icon, or text-safe UI insert.
 
@@ -466,6 +467,7 @@ shots:
 - If no alternate background angle exists, crop the wide background into motivated inserts: door handle, table top, TV, phone, fridge shelf, signboard.
 - If no facial closeups exist, use silhouette closeups, reaction icons, or body-pose reaction cuts.
 - If no limb articulation exists, represent contact with cut timing: before contact -> contact insert -> result state.
+- The renderer should read the stage matching the current shot purpose and use `visible_state` to choose prop position, hand proxy position, opacity, rotation, or the result insert variant.
 
 ## Validation Checklist
 

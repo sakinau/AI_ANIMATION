@@ -223,6 +223,8 @@ Physical object interactions now declare `interaction.stages.before/contact/afte
 
 This gives pickup and put-down beats a fixed before/contact/after contract, so future renderers should use contact inserts, object inserts, hand proxies, or result shots instead of letting props float across a wide shot.
 
+`src/CinematicInteractionTest.tsx` now consumes this contract in the Remotion preview. Phone pickup, phone screen activation, food pickup, and breakfast placement use the stage `visible_state` to adjust hand-proxy and prop placement instead of relying only on action-specific hard-coded motion.
+
 ## Asset Strategy
 
 Formal scene packs used:
