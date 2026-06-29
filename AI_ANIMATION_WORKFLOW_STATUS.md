@@ -1431,6 +1431,43 @@ Negative: removing a continuity block is rejected
 Negative: changing G05_04 continuity.match from caller_to_receiver is rejected
 ```
 
+## 2026-06-29 Executable Motion Plans
+
+Added a camera-execution `motion_plan` layer to generated cinematic shots.
+
+Each generated shot now carries:
+
+- `motion_plan.style`: static_cut, motivated_push, reveal_pull, geography_pan, lateral_track, etc.
+- `motion_plan.start_scale` and `motion_plan.end_scale`: numeric crop scale.
+- `motion_plan.start_offset` and `motion_plan.end_offset`: `[x, y]` pixel offsets at 1080p.
+- `motion_plan.easing`: hold, linear_soft, ease_out, ease_in_out, etc.
+- `motion_plan.focus_shift`: none, toward_subject, subject_to_space, scan_space, follow_subject.
+- `motion_plan.parallax`: none, subtle, or layered.
+
+Why this matters:
+
+- `camera.move` alone is too vague for stable AE/Remotion execution.
+- Motion plans make push/pull/pan/truck moves measurable, reviewable, and reusable.
+- This prevents "decorative drift" by requiring movement to change emphasis or geography.
+
+Validator additions:
+
+- Missing `motion_plan` blocks fail validation.
+- Moving cameras must have visible scale or offset change.
+- Static cuts must not include visible movement.
+- Moving cameras must declare non-none `focus_shift`.
+- Lateral moves must declare subtle or layered parallax.
+- Motion style must match `camera.move`.
+- Scale values above 1.35 fail to avoid over-cropping 2D collage assets.
+
+Validation:
+
+```text
+Positive: OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+Negative: removing a motion_plan block is rejected
+Negative: changing a push_in motion plan to static no-motion values is rejected
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.

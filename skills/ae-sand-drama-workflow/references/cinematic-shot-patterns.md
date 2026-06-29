@@ -48,10 +48,11 @@ Execution order:
 2. Read `edit.transition`, `edit.continuity`, and `edit.reason`.
 3. Read `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`.
 4. Read `continuity.screen_side`, `continuity.eyeline`, `continuity.match`, and `continuity.cut_role`.
-5. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
-6. Resolve scene-pack background, foreground, prop state, and anchor data.
-7. Execute the matching template for that purpose.
-8. Use action-specific custom code only when the generic purpose template cannot express the shot.
+5. Read `motion_plan.style`, scale/offset endpoints, `easing`, `focus_shift`, and `parallax`.
+6. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
+7. Resolve scene-pack background, foreground, prop state, and anchor data.
+8. Execute the matching template for that purpose.
+9. Use action-specific custom code only when the generic purpose template cannot express the shot.
 
 Required renderer behavior:
 
@@ -129,6 +130,44 @@ Validation target:
 - Reaction shots should return to actor screen side and preserve eyeline from the previous object or screen.
 - Speaker reverse coverage should declare eyelines toward the other speaker.
 - Adjacent shots must follow sensible edit grammar, such as contact -> source/transfer/reaction/result and speaker -> reverse -> bridge.
+
+## Motion Plan
+
+Every generated shot must include a `motion_plan` block. This is the camera-execution contract:
+
+```json
+{
+  "motion_plan": {
+    "style": "motivated_push",
+    "start_scale": 1.0,
+    "end_scale": 1.08,
+    "start_offset": [0, 0],
+    "end_offset": [0, -18],
+    "easing": "ease_out",
+    "focus_shift": "toward_subject",
+    "parallax": "subtle"
+  }
+}
+```
+
+Fields:
+
+- `style`: named movement family, such as `static_cut`, `motivated_push`, `reveal_pull`, `geography_pan`, or `lateral_track`.
+- `start_scale` / `end_scale`: numeric crop scale. Keep values positive and normally <= `1.35`.
+- `start_offset` / `end_offset`: `[x, y]` pixel offsets at 1080p.
+- `easing`: `hold`, `linear_soft`, `ease_in`, `ease_out`, or `ease_in_out`.
+- `focus_shift`: what the motion changes attention toward, such as `toward_subject`, `subject_to_space`, `scan_space`, or `follow_subject`.
+- `parallax`: `none`, `subtle`, or `layered`.
+
+Validation target:
+
+- Missing `motion_plan` fails validation.
+- Moving cameras (`push_in`, `pull_back`, `pan`, `truck`) need visible scale or offset change.
+- Static cuts should not include visible motion.
+- Moving cameras need non-`none` `focus_shift`.
+- Lateral moves need `subtle` or `layered` parallax.
+- Motion style should match `camera.move`.
+- Scale values above `1.35` fail to avoid over-cropping 2D collage assets.
 
 ## Directing Block
 
@@ -232,6 +271,15 @@ continuity:
   eyeline: none
   match: hand_to_contact
   cut_role: contact
+motion_plan:
+  style: static_cut
+  start_scale: 1.0
+  end_scale: 1.0
+  start_offset: [0, 0]
+  end_offset: [0, 0]
+  easing: hold
+  focus_shift: none
+  parallax: none
 camera:
   angle: eye_level | high_angle | low_angle | pov | over_shoulder | side | front | insert
   framing: wide | full | medium | closeup | extreme_closeup | insert

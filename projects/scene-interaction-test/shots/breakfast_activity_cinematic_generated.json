@@ -231,6 +231,22 @@
         "eyeline": "none",
         "match": "establish_context",
         "cut_role": "establish"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -268,6 +284,22 @@
         "eyeline": "target",
         "match": "look_to_object",
         "cut_role": "insert"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -305,6 +337,22 @@
         "eyeline": "from_object",
         "match": "object_to_reaction",
         "cut_role": "reaction"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -342,6 +390,22 @@
         "eyeline": "toward_object",
         "match": "screen_direction",
         "cut_role": "action_start"
+      },
+      "motion_plan": {
+        "style": "lateral_track",
+        "start_scale": 1.03,
+        "end_scale": 1.03,
+        "start_offset": [
+          -70,
+          0
+        ],
+        "end_offset": [
+          70,
+          0
+        ],
+        "easing": "linear_soft",
+        "focus_shift": "follow_subject",
+        "parallax": "layered"
       },
       "blocking": {
         "primary_action": "grab",
@@ -392,6 +456,22 @@
         "match": "hand_to_contact",
         "cut_role": "contact"
       },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -440,6 +520,22 @@
         "eyeline": "pov",
         "match": "contact_to_source",
         "cut_role": "pov_reveal"
+      },
+      "motion_plan": {
+        "style": "reveal_pull",
+        "start_scale": 1.08,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          -16
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "ease_in_out",
+        "focus_shift": "subject_to_space",
+        "parallax": "subtle"
       },
       "blocking": {
         "primary_action": "grab",
@@ -490,6 +586,22 @@
         "match": "source_to_hand",
         "cut_role": "transfer"
       },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -538,6 +650,22 @@
         "eyeline": "from_object",
         "match": "object_to_reaction",
         "cut_role": "reaction"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       },
       "blocking": {
         "primary_action": "grab",
@@ -588,6 +716,22 @@
         "match": "reaction_to_result",
         "cut_role": "result"
       },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
+      },
       "blocking": {
         "primary_action": "grab",
         "screen_direction": "left_to_right",
@@ -636,6 +780,22 @@
         "eyeline": "none",
         "match": "hand_to_surface",
         "cut_role": "contact"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       },
       "blocking": {
         "primary_action": "place",
@@ -686,6 +846,22 @@
         "match": "contact_to_result",
         "cut_role": "result"
       },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
+      },
       "blocking": {
         "primary_action": "place",
         "screen_direction": "inward",
@@ -734,6 +910,22 @@
         "eyeline": "toward_screen",
         "match": "actor_context",
         "cut_role": "context"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -771,6 +963,22 @@
         "eyeline": "pov",
         "match": "look_to_screen",
         "cut_role": "insert"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -808,6 +1016,22 @@
         "eyeline": "from_screen",
         "match": "screen_to_reaction",
         "cut_role": "reaction"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -845,6 +1069,22 @@
         "eyeline": "none",
         "match": "hand_to_phone",
         "cut_role": "contact"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -882,6 +1122,22 @@
         "eyeline": "target",
         "match": "phone_to_screen",
         "cut_role": "insert"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -919,6 +1175,22 @@
         "eyeline": "to_receiver",
         "match": "screen_to_caller",
         "cut_role": "speaker"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -956,6 +1228,22 @@
         "eyeline": "to_caller",
         "match": "caller_to_receiver",
         "cut_role": "reverse"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -993,6 +1281,22 @@
         "eyeline": "paired",
         "match": "two_sided_call",
         "cut_role": "bridge"
+      },
+      "motion_plan": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none"
       }
     },
     {
@@ -1030,6 +1334,22 @@
         "eyeline": "none",
         "match": "new_location",
         "cut_role": "establish"
+      },
+      "motion_plan": {
+        "style": "geography_pan",
+        "start_scale": 1.05,
+        "end_scale": 1.05,
+        "start_offset": [
+          -80,
+          0
+        ],
+        "end_offset": [
+          80,
+          0
+        ],
+        "easing": "ease_in_out",
+        "focus_shift": "scan_space",
+        "parallax": "layered"
       }
     },
     {
@@ -1067,6 +1387,22 @@
         "eyeline": "from_actor",
         "match": "arrival_to_counterpart",
         "cut_role": "reveal"
+      },
+      "motion_plan": {
+        "style": "lateral_track",
+        "start_scale": 1.03,
+        "end_scale": 1.03,
+        "start_offset": [
+          -70,
+          0
+        ],
+        "end_offset": [
+          70,
+          0
+        ],
+        "easing": "linear_soft",
+        "focus_shift": "follow_subject",
+        "parallax": "layered"
       }
     },
     {
@@ -1104,6 +1440,22 @@
         "eyeline": "target",
         "match": "counterpart_to_notice",
         "cut_role": "insert"
+      },
+      "motion_plan": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [
+          0,
+          0
+        ],
+        "end_offset": [
+          0,
+          -18
+        ],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle"
       }
     },
     {
@@ -1141,6 +1493,22 @@
         "eyeline": "shared",
         "match": "notice_to_pair",
         "cut_role": "result"
+      },
+      "motion_plan": {
+        "style": "reveal_pull",
+        "start_scale": 1.08,
+        "end_scale": 1.0,
+        "start_offset": [
+          0,
+          -16
+        ],
+        "end_offset": [
+          0,
+          0
+        ],
+        "easing": "ease_in_out",
+        "focus_shift": "subject_to_space",
+        "parallax": "subtle"
       }
     }
   ],

@@ -194,6 +194,21 @@ Generated shots now include a `continuity` block:
 
 This makes the test check not only whether each shot is locally cinematic, but whether shots can cut together coherently.
 
+## Motion Plan Validation
+
+Generated shots now include a `motion_plan` block:
+
+- `style`: movement family such as `static_cut`, `motivated_push`, `reveal_pull`, `geography_pan`, or `lateral_track`;
+- `start_scale` / `end_scale`: numeric crop scale;
+- `start_offset` / `end_offset`: two-number pixel offsets at 1080p;
+- `easing`: hold, linear, ease-in, ease-out, or ease-in-out behavior;
+- `focus_shift`: what attention changes toward during the move;
+- `parallax`: none, subtle, or layered.
+
+`scripts/validate_cinematic_shots.py` rejects missing motion plans, moving cameras without visible scale/offset change, static cuts with visible motion, moving cameras without focus shift, lateral moves without parallax, mismatched motion style, and unsafe over-cropped scale values.
+
+This makes camera movement explicit enough for Remotion or AE to execute, instead of treating `camera.move` as a vague label.
+
 ## Asset Strategy
 
 Formal scene packs used:

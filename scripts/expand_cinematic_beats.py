@@ -334,6 +334,59 @@ PURPOSE_DIRECTING: dict[str, dict] = {
     },
 }
 
+MOVE_PLANS: dict[str, dict] = {
+    "cut": {
+        "style": "static_cut",
+        "start_scale": 1.0,
+        "end_scale": 1.0,
+        "start_offset": [0, 0],
+        "end_offset": [0, 0],
+        "easing": "hold",
+        "focus_shift": "none",
+        "parallax": "none",
+    },
+    "push_in": {
+        "style": "motivated_push",
+        "start_scale": 1.0,
+        "end_scale": 1.08,
+        "start_offset": [0, 0],
+        "end_offset": [0, -18],
+        "easing": "ease_out",
+        "focus_shift": "toward_subject",
+        "parallax": "subtle",
+    },
+    "pull_back": {
+        "style": "reveal_pull",
+        "start_scale": 1.08,
+        "end_scale": 1.0,
+        "start_offset": [0, -16],
+        "end_offset": [0, 0],
+        "easing": "ease_in_out",
+        "focus_shift": "subject_to_space",
+        "parallax": "subtle",
+    },
+    "pan": {
+        "style": "geography_pan",
+        "start_scale": 1.05,
+        "end_scale": 1.05,
+        "start_offset": [-80, 0],
+        "end_offset": [80, 0],
+        "easing": "ease_in_out",
+        "focus_shift": "scan_space",
+        "parallax": "layered",
+    },
+    "truck": {
+        "style": "lateral_track",
+        "start_scale": 1.03,
+        "end_scale": 1.03,
+        "start_offset": [-70, 0],
+        "end_offset": [70, 0],
+        "easing": "linear_soft",
+        "focus_shift": "follow_subject",
+        "parallax": "layered",
+    },
+}
+
 
 def read_json(path: Path) -> dict:
     with path.open("r", encoding="utf-8-sig") as fh:
@@ -360,6 +413,14 @@ def phase_continuity(event: dict, phase: dict, purpose: str) -> dict:
     return continuity
 
 
+def phase_motion_plan(event: dict, phase: dict, purpose: str) -> dict:
+    move = str((phase.get("camera") or {}).get("move", "") or "cut")
+    plan = deepcopy(MOVE_PLANS.get(move, MOVE_PLANS["cut"]))
+    plan.update(deepcopy(phase.get("motion_plan", {})))
+    plan.update(deepcopy(phase_value(event, "motion_plan", purpose, {})))
+    return plan
+
+
 def expand_event(event: dict, event_index: int) -> list[dict]:
     pattern_name = event["shot_pattern"]
     if pattern_name not in PATTERNS:
@@ -383,6 +444,7 @@ def expand_event(event: dict, event_index: int) -> list[dict]:
             "edit": deepcopy(phase.get("edit", {})),
             "directing": phase_directing(event, phase, purpose),
             "continuity": phase_continuity(event, phase, purpose),
+            "motion_plan": phase_motion_plan(event, phase, purpose),
         }
         subject = phase_value(event, "subjects", purpose, event.get("subject"))
         if subject:

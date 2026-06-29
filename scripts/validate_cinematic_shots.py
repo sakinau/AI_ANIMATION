@@ -87,6 +87,16 @@ INSERT_PURPOSES = {"screen_insert", "event_notice_insert", "dial_screen", "picku
 REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_close", "reaction_pair_result"}
 DIRECTING_REQUIRED_FIELDS = {"action_phase", "focus", "composition", "emphasis"}
 CONTINUITY_REQUIRED_FIELDS = {"screen_side", "eyeline", "match", "cut_role"}
+MOTION_REQUIRED_FIELDS = {"style", "start_scale", "end_scale", "start_offset", "end_offset", "easing", "focus_shift", "parallax"}
+MOTION_MOVES = {"push_in", "pull_back", "pan", "tilt", "truck", "handheld_bump", "whip"}
+STATIC_MOVES = {"cut", "static_hold"}
+MOVE_STYLE_PREFIX = {
+    "cut": {"static", "hold"},
+    "push_in": {"motivated", "push"},
+    "pull_back": {"reveal", "pull"},
+    "pan": {"geography", "pan", "scan"},
+    "truck": {"lateral", "track", "truck"},
+}
 TRANSITION_CUT_ROLES = {
     "scene_start": {"establish"},
     "context_cut": {"context", "establish"},
@@ -280,6 +290,76 @@ def continuity_errors(shot: dict) -> list[str]:
     if purpose in {"caller_close", "receiver_close"} and "to_" not in str(continuity.get("eyeline", "") or ""):
         errors.append(f"{shot_id}: speaker reverse coverage should declare eyeline toward the other speaker.")
 
+    return errors
+
+
+def as_number(value) -> float | None:
+    if isinstance(value, (int, float)):
+        return float(value)
+    return None
+
+
+def as_offset(value) -> tuple[float, float] | None:
+    if not isinstance(value, list) or len(value) != 2:
+        return None
+    x = as_number(value[0])
+    y = as_number(value[1])
+    if x is None or y is None:
+        return None
+    return x, y
+
+
+def motion_plan_errors(shot: dict) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    motion_plan = shot.get("motion_plan")
+    if not isinstance(motion_plan, dict):
+        return [f"{shot_id}: missing motion_plan block with style/start_scale/end_scale/start_offset/end_offset/easing/focus_shift/parallax."]
+
+    errors: list[str] = []
+    for key in sorted(MOTION_REQUIRED_FIELDS):
+        if key not in motion_plan or motion_plan.get(key) in ("", None):
+            errors.append(f"{shot_id}: missing motion_plan.{key}.")
+
+    move = camera_field(shot, "move")
+    style = str(motion_plan.get("style", "") or "")
+    focus_shift = str(motion_plan.get("focus_shift", "") or "")
+    parallax = str(motion_plan.get("parallax", "") or "")
+    start_scale = as_number(motion_plan.get("start_scale"))
+    end_scale = as_number(motion_plan.get("end_scale"))
+    start_offset = as_offset(motion_plan.get("start_offset"))
+    end_offset = as_offset(motion_plan.get("end_offset"))
+
+    if start_scale is None:
+        errors.append(f"{shot_id}: motion_plan.start_scale must be a number.")
+    if end_scale is None:
+        errors.append(f"{shot_id}: motion_plan.end_scale must be a number.")
+    if start_offset is None:
+        errors.append(f"{shot_id}: motion_plan.start_offset must be [x, y].")
+    if end_offset is None:
+        errors.append(f"{shot_id}: motion_plan.end_offset must be [x, y].")
+
+    allowed_style_terms = MOVE_STYLE_PREFIX.get(move)
+    if allowed_style_terms and style and not any(term in style for term in allowed_style_terms):
+        errors.append(f"{shot_id}: camera.move '{move}' has mismatched motion_plan.style '{style}'.")
+
+    if start_scale is not None and end_scale is not None and start_offset is not None and end_offset is not None:
+        scale_delta = abs(end_scale - start_scale)
+        offset_delta = abs(end_offset[0] - start_offset[0]) + abs(end_offset[1] - start_offset[1])
+        if move in MOTION_MOVES and scale_delta < 0.01 and offset_delta < 4:
+            errors.append(f"{shot_id}: moving camera '{move}' has no meaningful scale or offset change.")
+        if move in STATIC_MOVES and (scale_delta >= 0.01 or offset_delta >= 4):
+            errors.append(f"{shot_id}: static camera '{move}' should not include visible motion.")
+        if start_scale <= 0 or end_scale <= 0:
+            errors.append(f"{shot_id}: motion_plan scale values must be positive.")
+        if start_scale > 1.35 or end_scale > 1.35:
+            errors.append(f"{shot_id}: motion_plan scale exceeds 1.35, likely over-cropped for 2D collage.")
+
+    if move in MOTION_MOVES and focus_shift == "none":
+        errors.append(f"{shot_id}: moving camera '{move}' needs a non-none focus_shift.")
+    if move in {"pan", "truck"} and parallax == "none":
+        errors.append(f"{shot_id}: lateral camera '{move}' should declare subtle or layered parallax.")
+    if move in STATIC_MOVES and focus_shift != "none":
+        errors.append(f"{shot_id}: static camera '{move}' should use focus_shift 'none'.")
     return errors
 
 
@@ -556,6 +636,7 @@ def validate(path: Path) -> list[str]:
             errors.append(f"{shot_id}: missing shot_pattern.")
         errors.extend(directing_errors(shot))
         errors.extend(continuity_errors(shot))
+        errors.extend(motion_plan_errors(shot))
         errors.extend(shot_subject_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(interaction_anchor_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(action_errors(shot, action_registry, scene_packs_root, scene_cache))
