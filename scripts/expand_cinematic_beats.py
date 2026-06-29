@@ -13,6 +13,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "high_angle", "framing": "wide", "lens": "wide", "move": "push_in", "motivation": "establish_space"},
             "edit": {"transition": "scene_start", "continuity": "establish_context", "reason": "orient audience before information insert"},
+            "continuity": {"screen_side": "neutral", "eyeline": "none", "match": "establish_context", "cut_role": "establish"},
         },
         {
             "suffix": "02",
@@ -21,6 +22,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "insert", "framing": "insert", "lens": "telephoto", "move": "cut", "motivation": "reveal_object"},
             "edit": {"transition": "insert_cut", "continuity": "look_to_object", "reason": "make the discovered screen readable"},
+            "continuity": {"screen_side": "object", "eyeline": "target", "match": "look_to_object", "cut_role": "insert"},
         },
         {
             "suffix": "03",
@@ -29,6 +31,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "front", "framing": "closeup", "lens": "telephoto", "move": "push_in", "motivation": "show_reaction"},
             "edit": {"transition": "reaction_cut", "continuity": "object_to_reaction", "reason": "show why the information matters"},
+            "continuity": {"screen_side": "actor", "eyeline": "from_object", "match": "object_to_reaction", "cut_role": "reaction"},
         },
     ],
     "object_pickup_sequence": [
@@ -38,6 +41,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "side", "framing": "medium", "lens": "normal", "move": "truck", "motivation": "establish_space"},
             "edit": {"transition": "action_start", "continuity": "screen_direction", "reason": "establish actor route to the object"},
+            "continuity": {"screen_side": "actor_left_to_right", "eyeline": "toward_object", "match": "screen_direction", "cut_role": "action_start"},
         },
         {
             "suffix": "02",
@@ -45,6 +49,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "insert", "framing": "extreme_closeup", "lens": "telephoto", "move": "cut", "motivation": "show_contact"},
             "edit": {"transition": "action_match_cut", "continuity": "hand_to_contact", "reason": "cut from approach to the exact contact point"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "hand_to_contact", "cut_role": "contact"},
         },
         {
             "suffix": "03",
@@ -52,6 +57,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "pov", "framing": "insert", "lens": "wide", "move": "pull_back", "motivation": "reveal_object"},
             "edit": {"transition": "pov_cut", "continuity": "contact_to_source", "reason": "show what is inside or behind the contacted object"},
+            "continuity": {"screen_side": "object", "eyeline": "pov", "match": "contact_to_source", "cut_role": "pov_reveal"},
         },
         {
             "suffix": "04",
@@ -59,6 +65,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "insert", "framing": "extreme_closeup", "lens": "telephoto", "move": "cut", "motivation": "show_contact"},
             "edit": {"transition": "action_match_cut", "continuity": "source_to_hand", "reason": "compress the detailed pickup into a clear contact insert"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "source_to_hand", "cut_role": "transfer"},
         },
         {
             "suffix": "05",
@@ -67,6 +74,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "front", "framing": "closeup", "lens": "telephoto", "move": "push_in", "motivation": "show_reaction"},
             "edit": {"transition": "reaction_cut", "continuity": "object_to_reaction", "reason": "show the character response after pickup"},
+            "continuity": {"screen_side": "actor", "eyeline": "from_object", "match": "object_to_reaction", "cut_role": "reaction"},
         },
         {
             "suffix": "06",
@@ -74,6 +82,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "high_angle", "framing": "insert", "lens": "normal", "move": "cut", "motivation": "show_result"},
             "edit": {"transition": "result_cut", "continuity": "reaction_to_result", "reason": "confirm the post-action object state"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "reaction_to_result", "cut_role": "result"},
         },
     ],
     "object_putdown_sequence": [
@@ -83,6 +92,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "high_angle", "framing": "insert", "lens": "normal", "move": "push_in", "motivation": "show_contact"},
             "edit": {"transition": "action_match_cut", "continuity": "hand_to_surface", "reason": "show contact with the destination surface"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "hand_to_surface", "cut_role": "contact"},
         },
         {
             "suffix": "02",
@@ -90,6 +100,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "high_angle", "framing": "insert", "lens": "normal", "move": "cut", "motivation": "show_result"},
             "edit": {"transition": "result_cut", "continuity": "contact_to_result", "reason": "show the completed placed state"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "contact_to_result", "cut_role": "result"},
         },
     ],
     "watch_screen_discovery": [
@@ -99,6 +110,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "eye_level", "framing": "medium", "lens": "normal", "move": "cut", "motivation": "establish_space"},
             "edit": {"transition": "context_cut", "continuity": "actor_context", "reason": "show what the actor is doing before discovery"},
+            "continuity": {"screen_side": "actor", "eyeline": "toward_screen", "match": "actor_context", "cut_role": "context"},
         },
         {
             "suffix": "02",
@@ -106,6 +118,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "pov", "framing": "insert", "lens": "telephoto", "move": "push_in", "motivation": "reveal_object"},
             "edit": {"transition": "insert_cut", "continuity": "look_to_screen", "reason": "make screen information readable"},
+            "continuity": {"screen_side": "object", "eyeline": "pov", "match": "look_to_screen", "cut_role": "insert"},
         },
         {
             "suffix": "03",
@@ -113,6 +126,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "low_angle", "framing": "closeup", "lens": "telephoto", "move": "push_in", "motivation": "show_reaction"},
             "edit": {"transition": "reaction_cut", "continuity": "screen_to_reaction", "reason": "show the decision beat after screen discovery"},
+            "continuity": {"screen_side": "actor", "eyeline": "from_screen", "match": "screen_to_reaction", "cut_role": "reaction"},
         },
     ],
     "phone_call": [
@@ -123,6 +137,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "high_angle", "framing": "insert", "lens": "normal", "move": "cut", "motivation": "show_contact"},
             "edit": {"transition": "action_match_cut", "continuity": "hand_to_phone", "reason": "show how the call begins"},
+            "continuity": {"screen_side": "object", "eyeline": "none", "match": "hand_to_phone", "cut_role": "contact"},
         },
         {
             "suffix": "02",
@@ -131,6 +146,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "insert", "framing": "insert", "lens": "telephoto", "move": "cut", "motivation": "reveal_object"},
             "edit": {"transition": "insert_cut", "continuity": "phone_to_screen", "reason": "show the dialing state before dialogue"},
+            "continuity": {"screen_side": "object", "eyeline": "target", "match": "phone_to_screen", "cut_role": "insert"},
         },
         {
             "suffix": "03",
@@ -139,6 +155,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "front", "framing": "closeup", "lens": "telephoto", "move": "cut", "motivation": "show_reaction"},
             "edit": {"transition": "speaker_cut", "continuity": "screen_to_caller", "reason": "move from call setup to caller line"},
+            "continuity": {"screen_side": "caller", "eyeline": "to_receiver", "match": "screen_to_caller", "cut_role": "speaker"},
         },
         {
             "suffix": "04",
@@ -147,6 +164,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "front", "framing": "closeup", "lens": "telephoto", "move": "cut", "motivation": "show_reaction"},
             "edit": {"transition": "reverse_cut", "continuity": "caller_to_receiver", "reason": "cut to response speaker"},
+            "continuity": {"screen_side": "receiver", "eyeline": "to_caller", "match": "caller_to_receiver", "cut_role": "reverse"},
         },
         {
             "suffix": "05",
@@ -155,6 +173,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 5,
             "camera": {"angle": "front", "framing": "medium", "lens": "normal", "move": "cut", "motivation": "show_result"},
             "edit": {"transition": "split_screen_bridge", "continuity": "two_sided_call", "reason": "summarize the shared decision"},
+            "continuity": {"screen_side": "split", "eyeline": "paired", "match": "two_sided_call", "cut_role": "bridge"},
         },
     ],
     "meeting_at_location": [
@@ -165,6 +184,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "high_angle", "framing": "wide", "lens": "wide", "move": "pan", "motivation": "establish_space"},
             "edit": {"transition": "time_cut", "continuity": "new_location", "reason": "jump to the meeting location after the call"},
+            "continuity": {"screen_side": "neutral", "eyeline": "none", "match": "new_location", "cut_role": "establish"},
         },
         {
             "suffix": "02",
@@ -173,6 +193,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "over_shoulder", "framing": "medium", "lens": "normal", "move": "truck", "motivation": "reveal_object"},
             "edit": {"transition": "reveal_cut", "continuity": "arrival_to_counterpart", "reason": "reveal the other character from the first character's side"},
+            "continuity": {"screen_side": "counterpart", "eyeline": "from_actor", "match": "arrival_to_counterpart", "cut_role": "reveal"},
         },
         {
             "suffix": "03",
@@ -181,6 +202,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 3,
             "camera": {"angle": "insert", "framing": "insert", "lens": "telephoto", "move": "push_in", "motivation": "reveal_object"},
             "edit": {"transition": "insert_cut", "continuity": "counterpart_to_notice", "reason": "show the sign that motivates the meeting"},
+            "continuity": {"screen_side": "object", "eyeline": "target", "match": "counterpart_to_notice", "cut_role": "insert"},
         },
         {
             "suffix": "04",
@@ -189,6 +211,7 @@ PATTERNS: dict[str, list[dict]] = {
             "duration": 4,
             "camera": {"angle": "eye_level", "framing": "medium", "lens": "normal", "move": "pull_back", "motivation": "show_reaction"},
             "edit": {"transition": "result_cut", "continuity": "notice_to_pair", "reason": "return to the pair and complete the beat"},
+            "continuity": {"screen_side": "pair", "eyeline": "shared", "match": "notice_to_pair", "cut_role": "result"},
         },
     ],
 }
@@ -331,6 +354,12 @@ def phase_directing(event: dict, phase: dict, purpose: str) -> dict:
     return directing
 
 
+def phase_continuity(event: dict, phase: dict, purpose: str) -> dict:
+    continuity = deepcopy(phase.get("continuity", {}))
+    continuity.update(deepcopy(phase_value(event, "continuity", purpose, {})))
+    return continuity
+
+
 def expand_event(event: dict, event_index: int) -> list[dict]:
     pattern_name = event["shot_pattern"]
     if pattern_name not in PATTERNS:
@@ -353,6 +382,7 @@ def expand_event(event: dict, event_index: int) -> list[dict]:
             "camera": deepcopy(phase["camera"]),
             "edit": deepcopy(phase.get("edit", {})),
             "directing": phase_directing(event, phase, purpose),
+            "continuity": phase_continuity(event, phase, purpose),
         }
         subject = phase_value(event, "subjects", purpose, event.get("subject"))
         if subject:

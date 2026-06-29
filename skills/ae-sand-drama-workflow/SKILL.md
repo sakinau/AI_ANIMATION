@@ -61,6 +61,7 @@ The main agent integrates results and owns the runnable project files.
 - Define an `action_registry` in event-driven sequences. Every `shot.action` must resolve to a scene-pack action template, renderer handler, runtime clip/state, or explicit temporary fallback.
 - Define an `edit` block for every generated shot. It must explain `transition`, `continuity`, and `reason`, so cuts are motivated rather than arbitrary.
 - Define or generate a `directing` block for every shot. It must explain `action_phase`, `focus`, `composition`, and `emphasis`, so the renderer knows what the audience should look at and why the shot exists.
+- Define or generate a `continuity` block for every shot. It must explain `screen_side`, `eyeline`, `match`, and `cut_role`, so adjacent shots preserve screen direction, object-to-reaction logic, speaker reverses, and action-match cuts.
 - For repeatable production, write an event file first, then run the beat expander:
 
 ```powershell
@@ -74,6 +75,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Use cuts to represent missing limb detail. If there is no hand rig, use a hand proxy, object-only insert, or before/contact/after cut. Do not make props float from one side of a wide frame to the character.
 - Every shot needs `camera.angle`, `camera.framing`, `camera.move`, `camera.subject`, and `camera.motivation`.
 - Every shot needs `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`. Use these fields to separate setup, approach, contact, information, speaker, reaction, reveal, transfer, and result phases.
+- Every shot needs `continuity.screen_side`, `continuity.eyeline`, `continuity.match`, and `continuity.cut_role`. The `match` value must align with `edit.continuity`.
 - Use camera moves only when the subject emphasis changes. Otherwise use a cut to a more appropriate angle.
 - Write audience-facing MP4s without debug overlays, parameter labels, file names, or shot test notes.
 
@@ -94,6 +96,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - Reaction and speaker shots must use reaction/speaker/reverse/result transitions.
 - When returning from an insert to a character reaction, use `reaction_cut` and explain the story reason.
 - Preserve pattern order. Do not shuffle contact before approach, reaction before information, or result before contact unless a deliberate flashback pattern exists and the validator has been extended for it.
+- Preserve continuity roles. A contact cut should lead to a source reveal, transfer, insert, reaction, or result; a speaker cut should reverse to the receiver before bridging; an insert-to-reaction cut should declare a directional match such as `screen_to_reaction` or `object_to_reaction`.
 
 ## Subject And Anchor Binding
 
@@ -146,6 +149,7 @@ python scripts\validate_cinematic_shots.py projects\<project-id>\shots\<sequence
 - No single camera setup should carry more than 8 seconds of continuous story unless the user explicitly asks for a stage-play style.
 - No event should pass only because the whole sequence has enough variety. Validate every event's local shot grammar: required purposes, angle contrast, shot-size contrast, subject switching, and visible result state.
 - No shot should pass with camera fields alone. Validate the shot's directing purpose: what phase it is in, what object or character gets attention, how it is composed, and what story emphasis it serves.
+- No cut should pass as a naked transition label. Validate continuity fields so the renderer knows whether the cut is an establish, insert, contact, transfer, reaction, speaker, reverse, bridge, reveal, or result.
 - Reject unmotivated scene or background jumps. A shot that changes scene pack or background must explain the edit as a time cut, scene cut, insert cut, reaction cut, action match cut, or bridge.
 - Every object interaction must include a visible before/contact/after structure, usually through insert shots or closeups.
 - Every screen or UI discovery must include an insert shot where the information is readable and a reaction shot showing why it matters.

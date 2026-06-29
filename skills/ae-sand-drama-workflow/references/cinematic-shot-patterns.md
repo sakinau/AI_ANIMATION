@@ -47,10 +47,11 @@ Execution order:
 1. Read `purpose`.
 2. Read `edit.transition`, `edit.continuity`, and `edit.reason`.
 3. Read `directing.action_phase`, `directing.focus`, `directing.composition`, and `directing.emphasis`.
-4. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
-5. Resolve scene-pack background, foreground, prop state, and anchor data.
-6. Execute the matching template for that purpose.
-7. Use action-specific custom code only when the generic purpose template cannot express the shot.
+4. Read `continuity.screen_side`, `continuity.eyeline`, `continuity.match`, and `continuity.cut_role`.
+5. Read `camera.subject`, `camera.angle`, `camera.framing`, and `camera.move`.
+6. Resolve scene-pack background, foreground, prop state, and anchor data.
+7. Execute the matching template for that purpose.
+8. Use action-specific custom code only when the generic purpose template cannot express the shot.
 
 Required renderer behavior:
 
@@ -96,6 +97,38 @@ Validation target:
 - Reaction and speaker purposes require reaction/speaker/reverse/result transitions.
 - Background changes inside one scene pack must be motivated by insert, context, result, reaction, POV, or action-match editing.
 - Purpose order must follow the selected shot pattern. For example, object pickup should proceed approach -> contact -> source reveal -> pickup transfer -> reaction -> result.
+
+## Continuity Block
+
+Every generated shot must include a `continuity` block. This is the cut-to-cut contract:
+
+```json
+{
+  "continuity": {
+    "screen_side": "object",
+    "eyeline": "target",
+    "match": "look_to_screen",
+    "cut_role": "insert"
+  }
+}
+```
+
+Fields:
+
+- `screen_side`: where the shot sits in screen geography, such as `actor`, `object`, `caller`, `receiver`, `pair`, `split`, or `neutral`.
+- `eyeline`: how the character or insert relates visually, such as `toward_object`, `from_object`, `target`, `pov`, `to_receiver`, or `to_caller`.
+- `match`: the explicit match phrase. This must equal `edit.continuity`.
+- `cut_role`: the editorial role: `establish`, `context`, `action_start`, `contact`, `pov_reveal`, `insert`, `transfer`, `reaction`, `speaker`, `reverse`, `bridge`, `reveal`, or `result`.
+
+Validation target:
+
+- Missing `continuity` fails validation.
+- `continuity.match` must match `edit.continuity`.
+- `cut_role` must match the transition and shot purpose.
+- Information inserts should use object/split screen side and target/POV eyeline.
+- Reaction shots should return to actor screen side and preserve eyeline from the previous object or screen.
+- Speaker reverse coverage should declare eyelines toward the other speaker.
+- Adjacent shots must follow sensible edit grammar, such as contact -> source/transfer/reaction/result and speaker -> reverse -> bridge.
 
 ## Directing Block
 
@@ -194,6 +227,11 @@ directing:
   focus: hand_or_object_contact
   composition: contact_point_priority
   emphasis: sell the physical touch before the result
+continuity:
+  screen_side: object
+  eyeline: none
+  match: hand_to_contact
+  cut_role: contact
 camera:
   angle: eye_level | high_angle | low_angle | pov | over_shoulder | side | front | insert
   framing: wide | full | medium | closeup | extreme_closeup | insert

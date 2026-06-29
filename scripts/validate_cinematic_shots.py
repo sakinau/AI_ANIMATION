@@ -86,6 +86,44 @@ SCENE_CHANGE_TRANSITIONS = {"scene_cut", "time_cut", "graphic_match", "split_scr
 INSERT_PURPOSES = {"screen_insert", "event_notice_insert", "dial_screen", "pickup_phone", "contact", "reveal_source", "show_pickup", "result_insert"}
 REACTION_PURPOSES = {"reaction", "reaction_close", "caller_close", "receiver_close", "reaction_pair_result"}
 DIRECTING_REQUIRED_FIELDS = {"action_phase", "focus", "composition", "emphasis"}
+CONTINUITY_REQUIRED_FIELDS = {"screen_side", "eyeline", "match", "cut_role"}
+TRANSITION_CUT_ROLES = {
+    "scene_start": {"establish"},
+    "context_cut": {"context", "establish"},
+    "insert_cut": {"insert"},
+    "action_start": {"action_start"},
+    "action_match_cut": {"contact", "transfer"},
+    "pov_cut": {"pov_reveal", "insert"},
+    "reaction_cut": {"reaction"},
+    "speaker_cut": {"speaker"},
+    "reverse_cut": {"reverse"},
+    "result_cut": {"result"},
+    "split_screen_bridge": {"bridge"},
+    "scene_cut": {"establish"},
+    "time_cut": {"establish"},
+    "graphic_match": {"bridge", "insert", "result"},
+}
+PURPOSE_CUT_ROLES = {
+    "establish_space": {"establish"},
+    "screen_insert": {"insert"},
+    "reaction_close": {"reaction"},
+    "approach_object": {"action_start"},
+    "contact": {"contact"},
+    "reveal_source": {"pov_reveal", "insert"},
+    "show_pickup": {"transfer"},
+    "reaction": {"reaction"},
+    "result_insert": {"result"},
+    "actor_context": {"context"},
+    "pickup_phone": {"contact"},
+    "dial_screen": {"insert"},
+    "caller_close": {"speaker"},
+    "receiver_close": {"reverse"},
+    "split_result": {"bridge"},
+    "location_establish": {"establish"},
+    "counterpart_reveal": {"reveal"},
+    "event_notice_insert": {"insert"},
+    "reaction_pair_result": {"result"},
+}
 
 
 def load_sequence(path: Path) -> dict:
@@ -198,6 +236,50 @@ def directing_errors(shot: dict) -> list[str]:
         errors.append(f"{shot_id}: speaker closeup needs performance or speaker focus in directing.")
     if purpose in {"result_insert", "split_result", "reaction_pair_result"} and "result" not in focus and "result" not in action_phase:
         errors.append(f"{shot_id}: result purpose needs result focus in directing.")
+    return errors
+
+
+def continuity_errors(shot: dict) -> list[str]:
+    shot_id = shot.get("shot_id", "<unknown>")
+    continuity = shot.get("continuity")
+    if not isinstance(continuity, dict):
+        return [f"{shot_id}: missing continuity block with screen_side/eyeline/match/cut_role."]
+
+    errors: list[str] = []
+    for key in sorted(CONTINUITY_REQUIRED_FIELDS):
+        if not continuity.get(key):
+            errors.append(f"{shot_id}: missing continuity.{key}.")
+
+    match = str(continuity.get("match", "") or "")
+    cut_role = str(continuity.get("cut_role", "") or "")
+    edit_continuity = edit_field(shot, "continuity")
+    transition = edit_field(shot, "transition")
+    purpose = str(shot.get("purpose", "") or "")
+
+    if edit_continuity and match and edit_continuity != match:
+        errors.append(f"{shot_id}: continuity.match '{match}' must match edit.continuity '{edit_continuity}'.")
+
+    allowed_roles = TRANSITION_CUT_ROLES.get(transition)
+    if allowed_roles and cut_role and cut_role not in allowed_roles:
+        errors.append(f"{shot_id}: edit.transition '{transition}' expects continuity.cut_role in {sorted(allowed_roles)}, got '{cut_role}'.")
+
+    purpose_roles = PURPOSE_CUT_ROLES.get(purpose)
+    if purpose_roles and cut_role and cut_role not in purpose_roles:
+        errors.append(f"{shot_id}: purpose '{purpose}' expects continuity.cut_role in {sorted(purpose_roles)}, got '{cut_role}'.")
+
+    if purpose in {"screen_insert", "dial_screen", "event_notice_insert"}:
+        if str(continuity.get("screen_side", "") or "") not in {"object", "split"}:
+            errors.append(f"{shot_id}: information insert should put continuity.screen_side on object or split.")
+        if str(continuity.get("eyeline", "") or "") not in {"target", "pov"}:
+            errors.append(f"{shot_id}: information insert should use target or pov eyeline.")
+    if purpose in {"reaction", "reaction_close"}:
+        if str(continuity.get("screen_side", "") or "") != "actor":
+            errors.append(f"{shot_id}: reaction shot should return continuity.screen_side to actor.")
+        if not str(continuity.get("eyeline", "") or "").startswith("from_"):
+            errors.append(f"{shot_id}: reaction shot should preserve eyeline from the previous object/screen.")
+    if purpose in {"caller_close", "receiver_close"} and "to_" not in str(continuity.get("eyeline", "") or ""):
+        errors.append(f"{shot_id}: speaker reverse coverage should declare eyeline toward the other speaker.")
+
     return errors
 
 
@@ -473,6 +555,7 @@ def validate(path: Path) -> list[str]:
         if not shot.get("shot_pattern"):
             errors.append(f"{shot_id}: missing shot_pattern.")
         errors.extend(directing_errors(shot))
+        errors.extend(continuity_errors(shot))
         errors.extend(shot_subject_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(interaction_anchor_errors(shot, registry, scene_packs_root, scene_cache))
         errors.extend(action_errors(shot, action_registry, scene_packs_root, scene_cache))
@@ -523,6 +606,20 @@ def validate(path: Path) -> list[str]:
                 errors.append(f"{event_id}: event lacks angle contrast; expected at least 2 angles.")
             if shot_pattern in {"phone_call", "meeting_at_location"} and len(subjects_in_event) < 2:
                 errors.append(f"{event_id}: multi-character event lacks subject switching.")
+
+        for previous, current in zip(event_shots, event_shots[1:]):
+            previous_role = str((previous.get("continuity") or {}).get("cut_role", "") or "")
+            current_role = str((current.get("continuity") or {}).get("cut_role", "") or "")
+            current_match = str((current.get("continuity") or {}).get("match", "") or "")
+            current_id = current.get("shot_id", "<unknown>")
+            if previous_role in {"contact", "transfer"} and current_role not in {"pov_reveal", "insert", "transfer", "reaction", "result"}:
+                errors.append(f"{current_id}: shot after {previous_role} should reveal source, insert information, continue transfer, react, or show result.")
+            if previous_role == "insert" and current_role in {"reaction", "reverse", "speaker"} and "_to_" not in current_match:
+                errors.append(f"{current_id}: cut from insert to {current_role} should declare a directional match, got '{current_match}'.")
+            if previous_role == "speaker" and current_role == "reverse" and current_match != "caller_to_receiver":
+                errors.append(f"{current_id}: reverse speaker cut should match caller_to_receiver.")
+            if previous_role == "reverse" and current_role == "bridge" and current_match != "two_sided_call":
+                errors.append(f"{current_id}: bridge after reverse speaker cut should match two_sided_call.")
 
         if not (event_types & INTERACTION_TYPES or "interaction" in event_types):
             continue

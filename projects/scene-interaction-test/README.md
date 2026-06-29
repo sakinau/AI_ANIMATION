@@ -181,6 +181,19 @@ Generated shots now include a `directing` block:
 
 This makes the test stricter than "many shots with many camera moves"; each shot must also declare its story job.
 
+## Continuity Validation
+
+Generated shots now include a `continuity` block:
+
+- `screen_side`: actor, object, caller, receiver, pair, split, or neutral screen geography;
+- `eyeline`: how the look or POV connects across the cut;
+- `match`: the explicit match phrase, which must equal `edit.continuity`;
+- `cut_role`: establish, context, action_start, contact, insert, transfer, reaction, speaker, reverse, bridge, reveal, or result.
+
+`scripts/validate_cinematic_shots.py` rejects missing continuity blocks, mismatch between `continuity.match` and `edit.continuity`, cut roles that do not fit the transition or purpose, information inserts without object/target continuity, reaction shots that do not return to the actor, and broken adjacent edit grammar such as speaker cuts that skip the reverse side before bridging.
+
+This makes the test check not only whether each shot is locally cinematic, but whether shots can cut together coherently.
+
 ## Asset Strategy
 
 Formal scene packs used:

@@ -1396,6 +1396,41 @@ Negative: removing a directing block is rejected
 Negative: reversing contact and approach order is rejected
 ```
 
+## 2026-06-29 Structured Continuity Blocks
+
+Added a cut-to-cut `continuity` layer to generated cinematic shots.
+
+Each generated shot now carries:
+
+- `continuity.screen_side`: actor, object, caller, receiver, pair, split, or neutral screen geography.
+- `continuity.eyeline`: how a look, POV, or speaker direction connects across the cut.
+- `continuity.match`: the explicit match phrase; this must equal `edit.continuity`.
+- `continuity.cut_role`: establish, context, action_start, contact, insert, transfer, reaction, speaker, reverse, bridge, reveal, or result.
+
+Why this matters:
+
+- A shot can have good camera/directing fields and still cut badly.
+- Continuity data lets the validator catch broken object-to-reaction logic, mismatched edit labels, and incomplete speaker/reverse coverage.
+- This moves the workflow closer to real editing grammar: the shot list now describes not only what each shot is, but how it connects to the previous and next shot.
+
+Validator additions:
+
+- Missing `continuity` blocks fail validation.
+- `continuity.match` must match `edit.continuity`.
+- `cut_role` must match both the transition and the shot purpose.
+- Information inserts must use object/split screen side and target/POV eyeline.
+- Reaction shots must return to actor screen side and preserve eyeline from the previous object or screen.
+- Speaker reverse coverage must declare eyelines toward the other speaker.
+- Adjacent shots must follow sensible grammar, such as contact -> source/insert/transfer/reaction/result and speaker -> reverse -> bridge.
+
+Validation:
+
+```text
+Positive: OK: cinematic shot coverage looks usable for projects/scene-interaction-test/shots/breakfast_activity_cinematic_generated.json
+Negative: removing a continuity block is rejected
+Negative: changing G05_04 continuity.match from caller_to_receiver is rejected
+```
+
 1. Build a reference-guided ComfyUI test.
    - Use `public/免费素材库/背景/旧学校.png` as the style/reference source.
    - Generate a school corridor or classroom close-up that better matches the existing library.
